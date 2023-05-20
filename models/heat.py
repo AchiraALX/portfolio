@@ -15,6 +15,7 @@ from sqlalchemy.orm import (
 )
 from datetime import datetime
 
+
 class Heat(Base):
     """Health Articles class. Manages health_articles table
 

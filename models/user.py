@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """User module."""
 
+from datetime import datetime
+from models.base import Base
 from sqlalchemy import String, DateTime
 from sqlalchemy.orm import (
     relationship,
     Mapped,
     mapped_column
 )
-from models.base import Base
 from typing import List, Optional
-from datetime import datetime
+
 
 # Declare User class
 class User(Base):
@@ -91,7 +92,7 @@ class User(Base):
     # Representation
     def __repr__(self) -> str:
         return \
-        f'<User {self.id}> \
-        username={self.username} \
-        email={self.email} \
-        name={self.name}'
+            f'<User {self.id}> \
+            username={self.username} \
+            email={self.email} \
+            name={self.name}'

@@ -9,8 +9,8 @@ from sqlalchemy.orm import (
     Mapped,
     mapped_column
 )
-
 from typing import Optional
+
 
 # Declare Ghub class
 class Ghub(Base):
@@ -44,8 +44,8 @@ class Ghub(Base):
     # Representation
     def __repr__(self) -> str:
         return \
-        f'<Ghub={self.id}\
-        repositories={self.repos}\
-        followers={self.followers}\
-        stars={self.stars}\
-        description={self.description}'
+            f'<Ghub={self.id}\
+            repositories={self.repos}\
+            followers={self.followers}\
+            stars={self.stars}\
+            description={self.description}'

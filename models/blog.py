@@ -15,6 +15,7 @@ from sqlalchemy.orm import (
 )
 from datetime import datetime
 
+
 # Declare Blog class
 class Blog(Base):
     """The Blog class. Manages blogs table
@@ -63,11 +64,11 @@ class Blog(Base):
             str: String representation of the class
         """
         return \
-        f'<Blog {self.blog_title!r}>\n\
-        author={self.author!r} \n\
-        author_id={self.author_id!r}\n\
-        added_date={self.blog_published_date!r} \n\
-        '
+            f'<Blog {self.blog_title!r}>\n\
+            author={self.author!r} \n\
+            author_id={self.author_id!r}\n\
+            added_date={self.blog_published_date!r} \n\
+            '
 
 
 # Declare BlogComment class

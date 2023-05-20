@@ -12,8 +12,8 @@ from sqlalchemy.orm import (
     Mapped,
     mapped_column
 )
-
 from typing import Optional
+
 
 # Declare Repo class
 class Repo(Base):
@@ -52,8 +52,8 @@ class Repo(Base):
     # Representation
     def __repr__(self) -> str:
         return \
-        f'<Repo {self.id}> \
-        user_id={self.username_id} \
-        name={self.repository_name} \
-        url={self.repository_url} \
-        description={self.repository_description}'
+            f'<Repo {self.id}> \
+            user_id={self.author_id} \
+            name={self.repository_name} \
+            url={self.repository_url} \
+            description={self.repository_description}'

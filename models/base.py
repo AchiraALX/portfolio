@@ -13,6 +13,7 @@ from sqlalchemy import (
     Column
 )
 
+
 class Base(DeclarativeBase):
     """Base class for all models in the project.
 

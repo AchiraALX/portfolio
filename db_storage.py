@@ -12,6 +12,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from datetime import datetime
 
+
 class DBStorage:
     """Data Base Storage class.
     """
@@ -29,18 +30,14 @@ class DBStorage:
         # Create all tables
         Base.metadata.create_all(self.engine)
 
-        #C Create a new session
+        # Create a new session
         self.session = Session(bind=self.engine)
-
 
     def n_session(self):
         """session method
         Object:
             Creates the current session
         """
-        pass
-
-
     def query_all(self, limit: int, model: str, filter: str) -> str:
         """query_all
 
@@ -53,9 +50,6 @@ class DBStorage:
             model: specifies the table to be queried ("users", "blog")
             filter: specifies the criteria of the query ("date")
         """
-        pass
-
-
     def query_one(self, model: str):
         """query_one: DB method
 
@@ -65,9 +59,6 @@ class DBStorage:
             args:
                 model: specifies the table and row to be queried (table.row)
         """
-        pass
-
-
     def commit(self):
         """commit: model method
 
@@ -75,9 +66,6 @@ class DBStorage:
             The method will be responsible for applying changes
             in the current session
         """
-        pass
-
-
     def discard(self):
         """discard instance
 
@@ -85,14 +73,12 @@ class DBStorage:
             The method will discard changes staged in the current
             session
         """
-
-
     def __str__(self) -> str:
         return "Database storage"
 
-
     def __repr__(self) -> str:
         return super().__repr__()
+
 
 user1 = User(
     username='user1',
@@ -101,8 +87,6 @@ user1 = User(
     name='User 1',
     gender='Male'
 )
-
-
 user2 = User(
     username='user2',
     email='user2@example.com',
@@ -112,27 +96,21 @@ user2 = User(
     reg_date=datetime.utcnow(),
     last_login=datetime.utcnow()
 )
-
-# Create dummy blogs for user1
 blog1 = Blog(
     blog_title='Blog 1',
     blog_content='This is blog 1 content',
     author=user1
 )
-
-# Create dummy heats for user2
 heat1 = Heat(
     title='Heat 1',
     content='This is heat 1 content',
     published_date=datetime.utcnow(),
     author=user2
 )
-
 comm = HeatComment(
     comment="I like this kind of .....",
     comment_date=datetime.utcnow(),
     author=user1,
     heat=heat1
 )
-
 print(comm)

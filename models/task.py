@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Tasks model
 """
+
 from models.base import Base
 from sqlalchemy import (
     ForeignKey,
@@ -14,6 +15,7 @@ from sqlalchemy.orm import (
 )
 from typing import Optional
 from datetime import datetime
+
 
 # Declare Task class
 class Task(Base):
@@ -65,12 +67,12 @@ class Task(Base):
     # Representation
     def __repr__(self) -> str:
         return \
-        f'<Task {self.id}> \
-        user_id={self.username_id} \
-        title={self.task_title} \
-        description={self.task_description} \
-        status={self.task_status} \
-        due_date={self.task_due_date}'
+            f'<Task {self.id}> \
+            user_id={self.username_id} \
+            title={self.task_title} \
+            description={self.task_description} \
+            status={self.task_status} \
+            due_date={self.task_due_date}'
 
 
 # Declare TaskComment class
@@ -118,7 +120,7 @@ class TaskComment(Base):
     # Representation
     def __repr__(self) -> str:
         return \
-        f'<TaskComment {self.id}> \
-        task_id={self.task_id} \
-        author_id={self.author_id} \
-        comment={self.task_comment}'
+            f'<TaskComment {self.id}> \
+            task_id={self.task_id} \
+            author_id={self.author_id} \
+            comment={self.task_comment}'
