@@ -8,7 +8,7 @@ from models.task import Task, TaskComment
 from models.repo import Repo
 from models.user import User
 from models.ghub import Ghub
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select, text
 from sqlalchemy.orm import Session
 from datetime import datetime
 
@@ -20,11 +20,12 @@ class DBStorage:
     engine = None
     session = None
 
+
     # Initialize class
     def __init__(self):
         # Create connection to the database
         self.engine = create_engine(
-            'mysql+pymysql://diary:@lazyachiraJ1/localhost/portfolio'
+            'mysql+pymysql://diary:diarydb@localhost/portfolio'
         )
 
         # Create all tables
@@ -33,12 +34,32 @@ class DBStorage:
         # Create a new session
         self.session = Session(bind=self.engine)
 
+    @staticmethod
+    def _class(_class: str):
+        classes = {
+            'blog': Blog,
+            'blog_comment': BlogComment,
+            'task': Task,
+            'task_comment': TaskComment,
+            'heat': Heat,
+            'heat_comment': HeatComment,
+            'repo': Repo,
+            'user': User,
+            'ghub': Ghub
+        }
+
+        return classes[_class]
+
     def n_session(self):
         """session method
         Object:
             Creates the current session
         """
-    def query_all(self, limit: int, model: str, filter: str) -> str:
+        return self.session
+
+    def query_all(
+            self,
+            limit: int, model: str) -> str:
         """query_all
 
         dict:
@@ -50,6 +71,11 @@ class DBStorage:
             model: specifies the table to be queried ("users", "blog")
             filter: specifies the criteria of the query ("date")
         """
+
+        model = self._class(model)
+
+        return self.n_session().execute(select(model))
+
     def query_one(self, model: str):
         """query_one: DB method
 
@@ -85,14 +111,14 @@ user1 = User(
     email='user1@example.com',
     password='password1',
     name='User 1',
-    gender='Male'
+    gender='M'
 )
 user2 = User(
     username='user2',
     email='user2@example.com',
     password='password2',
     name='User 2',
-    gender='Female',
+    gender='F',
     reg_date=datetime.utcnow(),
     last_login=datetime.utcnow()
 )
@@ -113,4 +139,37 @@ comm = HeatComment(
     author=user1,
     heat=heat1
 )
-print(comm)
+
+db = DBStorage()
+ses = db.n_session()
+
+#ses.add(user1)
+
+
+#print(ses.new)
+#ses.flush()
+
+#person = ses.get(User, user1.id)
+#print(person == user1)
+
+#ses.commit()
+
+
+jacob = db.query_all(10, "user")
+u3 = ses.execute(select(User).filter_by(name="User 3")).scalar_one()
+print(u3)
+
+ses.delete(u3)
+ses.flush()
+print(u3 in ses)
+
+for row in jacob:
+    obj = row[0]
+    print(obj)
+    #print(f"ID: {obj.id}, name: {obj.name}, email: {obj.email}, username: {obj.username}")
+
+ses.rollback()
+print(u3 in ses)
+
+user = db._class("blog")
+print(user)

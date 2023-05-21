@@ -4,7 +4,8 @@
 from models.base import Base
 
 from sqlalchemy import (
-    ForeignKey
+    ForeignKey,
+    String
 )
 
 from sqlalchemy.orm import (
@@ -28,14 +29,18 @@ class Repo(Base):
 
     # Columns
     repository_name: Mapped[str] = mapped_column(
+        String(100),
         nullable=False
     )
 
     repository_url: Mapped[str] = mapped_column(
+        String(255),
         nullable=False
     )
 
-    repository_description: Mapped[Optional[str]]
+    repository_description: Mapped[Optional[str]] = mapped_column(
+        String(500)
+    )
 
     # Foreign keys
     owner_id: Mapped[int] = mapped_column(

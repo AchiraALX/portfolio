@@ -35,11 +35,13 @@ class Task(Base):
     )
 
     task_description: Mapped[str] = mapped_column(
+        String(1000),
         nullable=False,
         default='No description'
     )
 
     task_status: Mapped[str] = mapped_column(
+        String(10),
         nullable=False,
         default='pending'
     )

@@ -3,7 +3,7 @@
 """
 
 from models.base import Base
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import (
     relationship,
     Mapped,
@@ -27,7 +27,7 @@ class Ghub(Base):
     repos: Mapped[int] = mapped_column(nullable=False)
     followers: Mapped[int] = mapped_column(nullable=False)
     stars: Mapped[int] = mapped_column(nullable=False)
-    description: Mapped[Optional[str]]
+    description: Mapped[Optional[str]] = mapped_column(String(1000))
 
     # Foreign Keys
     owner_id: Mapped[int] = mapped_column(
