@@ -50,6 +50,18 @@ class Task(Base):
         nullable=False
     )
 
+    task_created_date: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow(),
+        nullable=False
+    )
+
+    task_last_modified_date: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow(),
+        nullable=False
+    )
+
     # Foreign keys
     assignee_id: Mapped[int] = mapped_column(
         ForeignKey('users.id'),
@@ -94,6 +106,11 @@ class TaskComment(Base):
         nullable=False
     )
     task_comment_date: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow()
+    )
+    last_modified_date: Mapped[datetime] = mapped_column(
+        DateTime,
         default=datetime.utcnow()
     )
 

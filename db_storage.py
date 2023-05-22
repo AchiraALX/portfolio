@@ -20,7 +20,6 @@ class DBStorage:
     engine = None
     session = None
 
-
     # Initialize class
     def __init__(self):
         # Create connection to the database
@@ -122,11 +121,24 @@ class DBStorage:
         except Exception as e:
             raise e
 
+    def close_session(self):
+        """close_session instance
+
+        description:
+            The method will close the current session
+        """
+
+        return self.n_session().close()
+
     def __str__(self) -> str:
-        # Check for engine
-        if self.engine:
-            ses = str(self.n_session())
-            return f"<DBStorage: {ses}>"
+        # Check for engine connection
+        messages = [
+            "You can add new objects to the database",
+            "You can't add new objects to the database"
+        ]
+        ses_status = "Connected" if self.engine else "Not connected"
+        message = messages[0] if self.engine else messages[1]
+        return f"<DBStorage: {ses_status}> {message!r}"
 
     def __repr__(self) -> str:
         ses = self.n_session()
@@ -138,75 +150,19 @@ class DBStorage:
         else:
             # No uncommitted changes? Return last committed object
             model_classes = [
-                Blog, BlogComment, Task, TaskComment, Heat, HeatComment, Repo, User, Ghub
+                Blog, BlogComment, Task, TaskComment,
+                Heat, HeatComment, Repo, User, Ghub
             ]
 
             for model in model_classes:
-                last_committed_obj = ses.query(model).order_by(model.id.desc()).first()
+                last_committed_obj = ses.query(model)\
+                    .order_by(model.id.desc()).first()
                 if last_committed_obj:
                     break
 
             return "<DBStorage: {}>".format(last_committed_obj)
 
 
-
-user1 = User(
-    username='user1',
-    email='user1@example.com',
-    password='password1',
-    name='User 1',
-    gender='M'
-)
-user2 = User(
-    username='user2',
-    email='user2@example.com',
-    password='password2',
-    name='User 2',
-    gender='F',
-    reg_date=datetime.utcnow(),
-    last_login=datetime.utcnow()
-)
-blog1 = Blog(
-    blog_title='Blog 1',
-    blog_content='This is blog 1 content',
-    author=user1
-)
-heat1 = Heat(
-    title='Heat 1',
-    content='This is heat 1 content',
-    published_date=datetime.utcnow(),
-    author=user2
-)
-comm = HeatComment(
-    comment="I like this kind of .....",
-    comment_date=datetime.utcnow(),
-    author=user1,
-    heat=heat1
-)
-
-db = DBStorage()
-ses = db.n_session()
-
-#ses.add(user1)
-
-
-#print(ses.new)
-#ses.flush()
-
-#person = ses.get(User, user1.id)
-#print(person == user1)
-
-#ses.commit()
-
-
-jacob = db.query_all(10, "heat")
-u3 = db.query_one("user")
-print(u3)
-
-for row in jacob:
-    obj = row[0]
-    print(obj)
-    #print(f"ID: {obj.id}, name: {obj.name}, email: {obj.email}, username: {obj.username}")
-
-user = db._class("blog")
-print(user)
+if __name__ == "__main__":
+    db = DBStorage()
+    print(db.__repr__())

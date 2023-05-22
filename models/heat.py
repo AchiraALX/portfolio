@@ -36,6 +36,12 @@ class Heat(Base):
         nullable=False,
     )
     published_date: Mapped[datetime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow()
+    )
+    last_modified_date: Mapped[datetime] = mapped_column(
+        DateTime,
         nullable=False,
         default=datetime.utcnow()
     )
@@ -88,6 +94,12 @@ class HeatComment(Base):
         nullable=False
     )
     comment_date: Mapped[datetime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow()
+    )
+    last_modified_date: Mapped[datetime] = mapped_column(
+        DateTime,
         nullable=False,
         default=datetime.utcnow()
     )

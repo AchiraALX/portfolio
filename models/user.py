@@ -36,11 +36,13 @@ class User(Base):
     )
     email: Mapped[str] = mapped_column(
         String(50),
-        nullable=False
+        nullable=False,
+        unique=True
     )
     password: Mapped[str] = mapped_column(
         String(50),
-        nullable=False
+        nullable=False,
+        unique=True
     )
     name: Mapped[Optional[str]] = mapped_column(
         String(100),
