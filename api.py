@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-import graphene
+from graphene import ObjectType, Schema, String
 
-class Query(graphene.ObjectType):
-    hello = graphene.String(name=graphene.String(default_value="World"))
+class Query(ObjectType):
+    hello = String()
+    def resolve_hello(self, info):
+        return "Hello world."
 
-    def resolve_hell(self, info, name):
-        return 'Hello' + name
+schema = Schema(query=Query)
+result = schema.execute('{ hello }')
 
-
-schema = graphene.Schema(query=Query)
-result = schema.execute('{hello}')
 print(result.data['hello'])

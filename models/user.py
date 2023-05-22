@@ -10,6 +10,11 @@ from sqlalchemy.orm import (
     mapped_column
 )
 from typing import List, Optional
+from .blog import Blog, BlogComment
+from .heat import Heat, HeatComment
+from .task import Task, TaskComment
+from .repo import Repo
+from .ghub import Ghub
 
 
 # Declare User class
@@ -57,36 +62,43 @@ class User(Base):
     )
 
     # Relationships
-    blogs: Mapped[List[str]] = relationship(
-        'Blog',
-        back_populates='author'
+    blogs = relationship(
+        Blog,
+        back_populates='author',
+        uselist=True
     )
-    heats: Mapped[List[str]] = relationship(
-        'Heat', back_populates='author'
+    heats = relationship(
+        Heat, back_populates='author', uselist=True
     )
-    blog_comments: Mapped[List[str]] = relationship(
-        'BlogComment',
-        back_populates='author'
+    blog_comments = relationship(
+        BlogComment,
+        back_populates='author',
+        uselist=True
     )
-    heat_comments: Mapped[List[str]] = relationship(
-        'HeatComment',
-        back_populates='author'
+    heat_comments = relationship(
+        HeatComment,
+        back_populates='author',
+        uselist=True
     )
-    tasks: Mapped[List[str]] = relationship(
-        'Task',
-        back_populates='task_assignee'
+    tasks = relationship(
+        Task,
+        back_populates='task_assignee',
+        uselist=True
     )
-    task_comments: Mapped[List[str]] = relationship(
-        'TaskComment',
-        back_populates='author'
+    task_comments = relationship(
+        TaskComment,
+        back_populates='author',
+        uselist=True
     )
-    repos: Mapped[List[str]] = relationship(
-        'Repo',
-        back_populates='author_id'
+    repos = relationship(
+        Repo,
+        back_populates='author_id',
+        uselist=True
     )
-    ghub: Mapped[List[str]] = relationship(
-        'Ghub',
-        back_populates='owner_info'
+    ghub = relationship(
+        Ghub,
+        back_populates='owner_info',
+        uselist=True
     )
 
     # Representation

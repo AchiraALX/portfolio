@@ -85,13 +85,29 @@ class DBStorage:
             args:
                 model: specifies the table and row to be queried (table.row)
         """
-    def commit(self):
+        model = self._class(model)
+
+        return self.n_session().execute(select(model))
+
+    def commit(self, obj):
         """commit: model method
 
         None:
             The method will be responsible for applying changes
             in the current session
         """
+        ses = self.n_session()
+        try:
+            ses.add(obj)
+            ses.flush()
+            ses.commit()
+
+            return obj
+
+        except Exception as e:
+            ses.rollback()
+            raise e
+
     def discard(self):
         """discard instance
 
@@ -99,11 +115,39 @@ class DBStorage:
             The method will discard changes staged in the current
             session
         """
+
+        ses = self.n_session()
+        try:
+            ses.rollback()
+        except Exception as e:
+            raise e
+
     def __str__(self) -> str:
-        return "Database storage"
+        # Check for engine
+        if self.engine:
+            ses = str(self.n_session())
+            return f"<DBStorage: {ses}>"
 
     def __repr__(self) -> str:
-        return super().__repr__()
+        ses = self.n_session()
+
+        # Check for uncommitted changes
+        if ses.new:
+            return f"<DBStorage: {ses}>"
+
+        else:
+            # No uncommitted changes? Return last committed object
+            model_classes = [
+                Blog, BlogComment, Task, TaskComment, Heat, HeatComment, Repo, User, Ghub
+            ]
+
+            for model in model_classes:
+                last_committed_obj = ses.query(model).order_by(model.id.desc()).first()
+                if last_committed_obj:
+                    break
+
+            return "<DBStorage: {}>".format(last_committed_obj)
+
 
 
 user1 = User(
@@ -155,21 +199,14 @@ ses = db.n_session()
 #ses.commit()
 
 
-jacob = db.query_all(10, "user")
-u3 = ses.execute(select(User).filter_by(name="User 3")).scalar_one()
+jacob = db.query_all(10, "heat")
+u3 = db.query_one("user")
 print(u3)
-
-ses.delete(u3)
-ses.flush()
-print(u3 in ses)
 
 for row in jacob:
     obj = row[0]
     print(obj)
     #print(f"ID: {obj.id}, name: {obj.name}, email: {obj.email}, username: {obj.username}")
-
-ses.rollback()
-print(u3 in ses)
 
 user = db._class("blog")
 print(user)

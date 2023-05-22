@@ -57,6 +57,7 @@ class Heat(Base):
             str: String representation of the class
         """
         def rep():
+            id = f"(ID {self.id!r}) -> "
             title = f"<Heat {self.title!r}> "
             content = f"((Content={self.content!r}) "
             p_date = f"(Added_date={self.published_date!r}) "
@@ -65,7 +66,7 @@ class Heat(Base):
             comments = f"(Comments={self.heat_comments!r})) "
 
             return (
-                title + content + p_date + author_id + author + comments
+                id + title + content + p_date + author_id + author + comments
             )
         return rep()
 
