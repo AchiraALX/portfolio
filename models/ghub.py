@@ -26,7 +26,7 @@ class Ghub(Base):
 
     # Columns
     repos_num: Mapped[int] = mapped_column(nullable=False)
-    repos: Mapped[list] = mapped_column(nullable=False)
+    repos: Mapped[str] = mapped_column(nullable=False)
     followers: Mapped[int] = mapped_column(nullable=False)
     stars: Mapped[int] = mapped_column(nullable=False)
     description: Mapped[Optional[str]] = mapped_column(String(1000))

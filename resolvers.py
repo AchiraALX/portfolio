@@ -436,6 +436,7 @@ if __name__ == "__main__":
             title
             content
             publishedDate
+            lastModifiedDate
         }
     }
     '''
