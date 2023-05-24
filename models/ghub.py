@@ -25,8 +25,7 @@ class Ghub(Base):
     __tablename__ = 'ghub'
 
     # Columns
-    repos_num: Mapped[int] = mapped_column(nullable=False)
-    repos: Mapped[str] = mapped_column(nullable=False)
+    repos: Mapped[int] = mapped_column(nullable=False)
     followers: Mapped[int] = mapped_column(nullable=False)
     stars: Mapped[int] = mapped_column(nullable=False)
     description: Mapped[Optional[str]] = mapped_column(String(1000))
@@ -51,8 +50,10 @@ class Ghub(Base):
     # Representation
     def __repr__(self) -> str:
         return \
-            f'<Ghub={self.id}\
+            f'<Ghub={self.id}>\
             repositories={self.repos}\
             followers={self.followers}\
             stars={self.stars}\
-            description={self.description}'
+            description={self.description}\
+            owner_info = {self.owner_info}\
+            '

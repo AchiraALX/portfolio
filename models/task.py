@@ -82,7 +82,6 @@ class Task(Base):
     def __repr__(self) -> str:
         return \
             f'<Task {self.id}> \
-            user_id={self.username_id} \
             title={self.task_title} \
             description={self.task_description} \
             status={self.task_status} \

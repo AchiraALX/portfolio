@@ -45,7 +45,7 @@ class UserType(ObjectType):
     heat_comments = List(lambda: HeatCommentType)
     task_comments = List(lambda: TaskCommentType)
     repos = List(lambda: RepoType)
-    ghub = Field(lambda: GhubType)
+    ghub = List(lambda: GhubType)
 
 
 # Define TaskType
@@ -56,9 +56,9 @@ class TaskType(ObjectType):
         ObjectType (Inherited): graphene ObjectType
     """
     id = Int()
-    title = String()
-    description = String()
-    status = String()
+    task_title = String()
+    task_description = String()
+    task_status = String()
     task_due_date = DateTime()
     task_created_date = DateTime()
     task_last_modified_date = DateTime()
@@ -112,7 +112,7 @@ class GhubType(ObjectType):
         ObjectType (Inherited): graphene ObjectType
     """
     id = Int()
-    repos_num = Int()
+    repos = Int()
     followers = Int()
     stars = Int()
     description = String()
@@ -203,19 +203,19 @@ class Query(ObjectType):
         users = session.query(User).all()
 
         # Blogs filter by user id
-        blogs = session.query(Blog).filter(Blog.author_id == User.id).all()
+        blogs = session.query(Blog).all()
 
         # Tasks filter by user id
-        tasks = session.query(Task).filter(Task.assignee_id == User.id).all()
+        tasks = session.query(Task).all()
 
         # Heats filter by user id
-        heats = session.query(Heat).filter(Heat.author_id == User.id).all()
+        heats = session.query(Heat).all()
 
         # Repos filter by user id
-        repos = session.query(Repo).filter(Repo.owner_id == User.id).all()
+        repos = session.query(Repo).all()
 
         # Ghub filter by user id
-        ghub = session.query(Ghub).filter(Ghub.owner_id == User.id).all()
+        ghubs = session.query(Ghub).all()
 
         # TaskComments filter by user id
         task_comments = session.query(TaskComment).filter(TaskComment.author_id == User.id).all()
@@ -233,8 +233,8 @@ class Query(ObjectType):
             user['blogs'] = [blog.__dict__ for blog in blogs if blog.author_id == user['id']]
             user['tasks'] = [task.__dict__ for task in tasks if task.assignee_id == user['id']]
             user['heats'] = [heat.__dict__ for heat in heats if heat.author_id == user['id']]
-            user['repos'] = [repo.__dict__ for repo in repos if repo.author_id == user['id']]
-            user['ghub'] = [ghub.__dict__ for ghub in ghub if ghub.owner_id == user['id']]
+            user['repos'] = [repo.__dict__ for repo in repos if repo.owner_id == user['id']]
+            user['ghub'] = [ghub.__dict__ for ghub in ghubs if ghub.owner_id == user['id']]
             user['task_comments'] = [task_comment.__dict__ for task_comment in task_comments if task_comment.author_id == user['id']]
             user['blog_comments'] = [blog_comment.__dict__ for blog_comment in blog_comments if blog_comment.author_id == user['id']]
             user['heat_comments'] = [heat_comment.__dict__ for heat_comment in heat_comments if heat_comment.author_id == user['id']]
@@ -471,7 +471,7 @@ if __name__ == "__main__":
             }
             tasks {
                 id
-                title
+                taskTitle
             }
             heats {
                 id
@@ -492,6 +492,7 @@ if __name__ == "__main__":
             repos {
                 id
                 repositoryName
+                repositoryUrl
             }
             ghub {
                 id
@@ -504,9 +505,9 @@ if __name__ == "__main__":
     {
         tasks {
             id
-            title
-            description
-            status
+            taskTitle
+            taskDescription
+            taskStatus
             taskDueDate
         }
     }
@@ -546,7 +547,7 @@ if __name__ == "__main__":
     {
         ghub {
             id
-            reposNum
+            repos
             followers
             stars
             description
@@ -580,8 +581,7 @@ if __name__ == "__main__":
     '''
 
     all_data = {
-        **execute_query(users),
-        **execute_query(ghub)
+        **execute_query(users)
     }
 
     print(json.dumps(all_data, indent=4, sort_keys=True))
