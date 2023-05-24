@@ -67,40 +67,47 @@ class User(Base):
     blogs = relationship(
         Blog,
         back_populates='author',
-        uselist=True
+        uselist=True,
+        cascade='all, delete'
     )
     heats = relationship(
-        Heat, back_populates='author', uselist=True
+        Heat, back_populates='author', uselist=True, cascade='all, delete'
     )
     blog_comments = relationship(
         BlogComment,
         back_populates='author',
-        uselist=True
+        uselist=True,
+        cascade='all, delete'
     )
     heat_comments = relationship(
         HeatComment,
         back_populates='author',
-        uselist=True
+        uselist=True,
+        cascade='all, delete'
     )
     tasks = relationship(
         Task,
         back_populates='task_assignee',
-        uselist=True
+        uselist=True,
+        cascade='all, delete'
     )
     task_comments = relationship(
         TaskComment,
         back_populates='author',
-        uselist=True
+        uselist=True,
+        cascade='all, delete'
     )
     repos = relationship(
         Repo,
         back_populates='author_id',
-        uselist=True
+        uselist=True,
+        cascade='all, delete'
     )
     ghub = relationship(
         Ghub,
         back_populates='owner_info',
-        uselist=True
+        uselist=True,
+        cascade='all, delete'
     )
 
     # Representation
@@ -108,5 +115,6 @@ class User(Base):
         return \
             f'<User {self.id}> \
             username={self.username} \
+            name={self.name}\
             email={self.email} \
-            name={self.name}'
+            '
