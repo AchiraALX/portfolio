@@ -16,27 +16,17 @@ class Add:
     """Class for add methods
     """
 
-    user = None
-    task = None
-    task_comment = None
-    repo = None
-    heat = None
-    heat_comment = None
-    ghub = None
-    blog = None
-    blog_comment = None
-
-    all_classes = (
-        user,
-        task,
-        task_comment,
-        repo,
-        heat,
-        heat_comment,
-        ghub,
-        blog,
-        blog_comment
-    )
+    all_classes = {
+        'user': User,
+        'task': Task,
+        'task_comment': TaskComment,
+        'repo': Repo,
+        'heat': Heat,
+        'heat_comment': HeatComment,
+        'ghub': Ghub,
+        'blog': Blog,
+        'blog_comment': BlogComment
+    }
     failed = []
 
 
@@ -239,29 +229,167 @@ class Add:
             'author': author
         }
 
-        return self.check_for_none_and_add_to_db(
-            details, TaskComment, 'task comment', 'author'
+        details = self.add_comment(
+            details, 'task'
         )
+
+        return self.unpack_and_add_to_db(
+            details, TaskComment, 'task comment'
+        )
+
+    def add_blog_comment(
+        self,
+        comment = None,
+        blog = None,
+        author = None
+    ) -> BlogComment:
+        details = {
+            'comment': comment,
+            'blog': blog,
+            'author': author
+        }
+
+        details = self.add_comment(
+            details, 'blog'
+        )
+
+        return self.unpack_and_add_to_db(
+            details, BlogComment, 'blog comment'
+        )
+
+    def add_heat_comment(
+        self,
+        comment = None,
+        heat = None,
+        author = None
+    ) -> HeatComment:
+        details = {
+            'comment': comment,
+            'heat': heat,
+            'author': author
+        }
+
+        details = self.add_comment(
+            details, 'heat'
+        )
+
+        return self.unpack_and_add_to_db(
+            details, HeatComment, 'heat comment'
+        )
+
+    def add_comment(
+        self,
+        details: dict,
+        spec: str
+    ):
+
+        for key, value in details.items():
+            if value == None:
+                value = self.add_field(key)
+
+            if self.check_for_validity(value):
+                if key == spec:
+                    try:
+                        if spec == 'task':
+                            value = self.ensure_obj_present(
+                                task=value
+                            )
+                        elif spec == 'blog':
+                            value = self.ensure_obj_present(
+                                blog = value
+                            )
+                        elif spec == 'heat':
+                            value = self.ensure_obj_present(
+                                heat=value
+                            )
+
+                        else:
+                            return None
+
+                    except RuntimeError:
+                        print(f"Task with id {value!r} was not found.")
+                        print("Check a retry")
+                        value = None
+                        self.failed.append('key')
+                        return None
+
+                if key == 'author':
+                    value = self.ensure_user_present(value)
+                    value = self.get_user(value)
+
+                details[key] = value
+
+            else:
+                self.failed.append(key)
+
+        return details
+
+    def get_task(self, id):
+        id = id
+        obj =lambda id: self.ses.query(Task).filter_by(id=id).first()
+
+        while not obj(id):
+            print("Enter a valid task id.")
+            id = self.add_field('task_id')
+
+        return obj(id)
+
+
+    def get_blog(self, id):
+        id = id
+        obj =lambda id: self.ses.query(Blog).filter_by(id=id).first()
+
+        while not obj(id):
+            print("Enter a valid blog id.")
+            id = self.add_field('blog_id')
+
+        return obj(id)
+
+    def get_heat(self, id):
+        id = id
+        obj = lambda id: self.ses.query(Heat).filter_by(id=id).first()
+
+        while not obj(id):
+            print("Enter a valid Health article id")
+            id = self.add_field('health_article_id')
+
+        return obj(id)
 
     def ensure_obj_present(
         self,
-        model,
-        filter: dict,
+        task = None,
+        blog = None,
+        heat = None
+    ) -> int:
+        details = {
+            'task': task,
+            'blog': blog,
+            'heat': heat
+        }
 
-    ):
-        parent = self.ses.query(model).filter_by(**filter).first()
+        for key, value in details.items():
+            if value is not None:
+                if key == 'task':
+                    value = self.get_task(value)
+                elif key == 'blog':
+                    value = self.get_blog(value)
+                elif key == 'heat':
+                    value = self.get_heat(value)
+                else:
+                    continue
 
-        if parent:
-            return parent
+                return value
 
-    def check_for_int(self, value):
+        return None
+
+    def check_for_int(self, value, key = None) -> int:
         while True:
             try:
                 value = int(value)
                 break
             except ValueError:
-                print("Value must be an integer!")
-                value = self.add_field('num')
+                print(f" {key!r} must be an integer!")
+                value = self.add_field(key)
 
         return value
 
@@ -358,4 +486,4 @@ class Add:
 
 if __name__ == "__main__":
     add = Add()
-    print(add.add_repo())
+    print(add.add_heat_comment())
