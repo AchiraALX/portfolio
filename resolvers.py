@@ -140,8 +140,8 @@ class BlogCommentType(ObjectType):
         ObjectType (Inherited): graphene ObjectType
     """
     id = Int()
-    blog_comment = String()
-    blog_comment_date = DateTime()
+    comment = String()
+    comment_date = DateTime()
     last_modified_date = DateTime()
 
 
@@ -483,7 +483,7 @@ if __name__ == "__main__":
             }
             blogComments {
                 id
-                blogComment
+                comment
             }
             taskComments {
                 id
@@ -567,7 +567,7 @@ if __name__ == "__main__":
     {
         blogComments {
             id
-            blogComment
+            comment
         }
     }
     '''
@@ -581,7 +581,15 @@ if __name__ == "__main__":
     '''
 
     all_data = {
-        **execute_query(users)
+        **execute_query(users),
+        **execute_query(tasks),
+        **execute_query(blogs),
+        **execute_query(heats),
+        **execute_query(repos),
+        **execute_query(ghub),
+        **execute_query(heat_comments),
+        **execute_query(blog_comments),
+        **execute_query(task_comments)
     }
 
     print(json.dumps(all_data, indent=4, sort_keys=True))

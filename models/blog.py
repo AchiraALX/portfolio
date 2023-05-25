@@ -112,4 +112,4 @@ class BlogComment(Base):
         Returns:
             str: String representation of the class
         """
-        return f'<BlogComment {self.comment}>'
+        return f'<BlogComment {self.comment} blog={self.blog} author={self.author}>'
