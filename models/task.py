@@ -139,6 +139,6 @@ class TaskComment(Base):
     def __repr__(self) -> str:
         return \
             f'<TaskComment {self.id}> \
-            task_id={self.task_id} \
-            author_id={self.author_id} \
+            task_id={self.task} \
+            author_id={self.author} \
             comment={self.task_comment}'
