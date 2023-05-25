@@ -1,0 +1,27 @@
+/*
+ * This is the main stylesheet for the application.
+    * It is loaded by the main layout template.
+    * It contains all of the styles for the application.
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition-duration: .4s;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background-image: linear-gradient(
+        135deg,
+        #98FB98 0% 33.3%,
+        #50C878 33.33% 66.6%,
+        #00A86B 66.6%
+    );
+    text-align: justify;
+}
