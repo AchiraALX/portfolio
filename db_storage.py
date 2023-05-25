@@ -166,3 +166,10 @@ class DBStorage:
 if __name__ == "__main__":
     db = DBStorage()
     print(db.__repr__())
+
+
+#
+# Copyright
+# Jacob Achira Obara
+# 2023
+#

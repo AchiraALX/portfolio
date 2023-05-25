@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """Base module for all other modules in the project."""
 
+#
+# Copyright
+# Jacob Achira Obara
+# 2023
+#
+
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
@@ -8,9 +14,7 @@ from sqlalchemy.orm import (
 )
 
 from sqlalchemy import (
-    Integer,
-    String,
-    Column
+    Integer
 )
 
 

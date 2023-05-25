@@ -2,6 +2,12 @@
 """Health model.
 """
 
+#
+# Copyright
+# Jacob Achira Obara
+# 2023
+#
+
 from models.base import Base
 from sqlalchemy import (
     ForeignKey,

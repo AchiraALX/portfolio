@@ -7,12 +7,10 @@ from graphene import (
     ObjectType,
     String,
     Schema,
-    Field,
     List,
     Int,
     DateTime
 )
-from datetime import datetime
 from db_storage import DBStorage
 from models.user import User
 from models.task import Task, TaskComment
@@ -454,7 +452,15 @@ def execute_query(query):
         return result_dict
 
 
-if __name__ == "__main__":
+def main(query: str = None) -> dict:
+    """Main method. Executes GraphQL query
+
+    Keyword arguments:
+    query -- GraphQL query (default None)
+
+    Return: dict object
+    """
+
     users = '''
     {
         users {
@@ -580,16 +586,33 @@ if __name__ == "__main__":
     }
     '''
 
-    all_data = {
-        **execute_query(users),
-        **execute_query(tasks),
-        **execute_query(blogs),
-        **execute_query(heats),
-        **execute_query(repos),
-        **execute_query(ghub),
-        **execute_query(heat_comments),
-        **execute_query(blog_comments),
-        **execute_query(task_comments)
+    query_list = {
+        'users': users,
+        'tasks': tasks,
+        'blogs': blogs,
+        'heats': heats,
+        'repos': repos,
+        'ghub': ghub,
+        'heat_comments': heat_comments,
+        'blog_comments': blog_comments,
+        'task_comments': task_comments
     }
 
-    print(json.dumps(all_data, indent=4, sort_keys=True))
+    for key, value in query_list.items():
+        if query == key:
+            all_data = {
+                **execute_query(value)
+            }
+            break
+
+    return json.dumps(all_data, indent=4, sort_keys=False)
+
+if __name__ == "__main__":
+    print(main('repos'))
+
+
+#
+# Copyright
+# Jacob Achira Obara
+# 2023
+#

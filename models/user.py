@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """User module."""
 
+#
+# Copyright
+# Jacob Achira Obara
+# 2023
+#
+
 from datetime import datetime
 from models.base import Base
 from sqlalchemy import String, DateTime
