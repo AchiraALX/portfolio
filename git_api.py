@@ -5,8 +5,8 @@ from github import Github
 import requests
 from urllib.parse import urlencode, parse_qs
 
-token = "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"
-client_id = "876f14bc9874ac5be6f2"
+token = ""
+client_id = ""
 redirect_uri = "https://www.blissprism.tech"
 g = Github(token)
 
