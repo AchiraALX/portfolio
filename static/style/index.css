@@ -17,11 +17,42 @@ body, html {
     font-size: 16px;
     line-height: 1.5;
     color: #333;
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: 	#21421E;
+    text-align: center;
+    color: honeydew;
+    font-weight: 800;
+    opacity: 0.8;
+}
+
+#back {
     background-image: linear-gradient(
         135deg,
         #98FB98 0% 33.3%,
         #50C878 33.33% 66.6%,
         #00A86B 66.6%
     );
-    text-align: justify;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+button {
+    background: #00AD83;
+    color: #333;
 }

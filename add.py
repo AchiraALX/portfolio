@@ -12,6 +12,7 @@ from models.repo import Repo
 from models.task import Task, TaskComment
 from models.user import User
 
+
 class Add:
     """Class for add methods
     """
@@ -29,7 +30,6 @@ class Add:
     }
     failed = []
 
-
     def __init__(self):
         """Initialize the database
         """
@@ -41,7 +41,7 @@ class Add:
         name: str = None,
         username: str = None,
         email: str = None,
-        gender: str =None,
+        gender: str = None,
         password: str = None
     ) -> User:
         """Add a new user to the database
@@ -65,7 +65,7 @@ class Add:
         }
 
         for key, value in details.items():
-            if value == None:
+            if value is None:
                 value = input(f"Enter {key!r}: ")\
                     if key != 'password' else \
                     getpass.getpass("Enter a password: ")
@@ -93,20 +93,22 @@ class Add:
                 self.failed.append(key)
 
         if len(self.failed) != 0:
-            return f"\nSome values failed {self.failed} and the user was not added."
+            return (
+                f"\nSome values failed {self.failed}."
+            )
 
         else:
             user = User(**details)
-            if self.add_to_database(user) == None:
+            if self.add_to_database(user) is None:
                 print(f"Added user as successfully!")
 
         return User(**details) if User(**details) else None
 
     def add_blog(
         self,
-        blog_title = None,
-        blog_content = None,
-        author = None
+        blog_title: str = None,
+        blog_content: str = None,
+        author: str = None
     ) -> Blog:
         """Add blog to the database.
 
@@ -125,7 +127,7 @@ class Add:
         }
 
         for key, value in details.items():
-            if value == None:
+            if value is None:
                 value = self.add_field(key)
 
             if self.check_for_validity(value):
@@ -145,11 +147,11 @@ class Add:
 
     def add_task(
         self,
-        task_title = None,
-        task_description = None,
-        task_status = None,
-        task_assignee = None
-        ) -> Task:
+        task_title: str = None,
+        task_description: str = None,
+        task_status: str = None,
+        task_assignee=None
+    ) -> Task:
         """Add task to the database.
 
         Keyword arguments:
@@ -170,7 +172,7 @@ class Add:
         }
 
         for key, value in details.items():
-            if value == None:
+            if value is None:
                 value = self.add_field(key)
 
             if self.check_for_validity(value):
@@ -195,8 +197,8 @@ class Add:
 
     def add_heat(
         self,
-        title = None,
-        content = None,
+        title: str = None,
+        content: str = None,
         author=None
     ) -> Heat:
         """Add heat to the database.
@@ -220,11 +222,11 @@ class Add:
 
     def add_ghub(
         self,
-        repos = None,
-        followers = None,
-        stars = None,
-        description = None,
-        owner_info = None
+        repos: int = None,
+        followers: int = None,
+        stars: int = None,
+        description: str = None,
+        owner_info=None
     ) -> Ghub:
         """Add GitHub info to the database.
 
@@ -254,10 +256,10 @@ class Add:
 
     def add_repo(
         self,
-        repository_name = None,
-        repository_url = None,
-        repository_description = None,
-        author_id = None
+        repository_name: str = None,
+        repository_url: str = None,
+        repository_description: str = None,
+        author_id=None
     ) -> Repo:
         """Add a repository to the database.
 
@@ -283,9 +285,9 @@ class Add:
 
     def add_task_comment(
         self,
-        task_comment = None,
-        task = None,
-        author = None
+        task_comment: str = None,
+        task=None,
+        author=None
     ) -> TaskComment:
         """Add a comment to a task.
 
@@ -313,9 +315,9 @@ class Add:
 
     def add_blog_comment(
         self,
-        comment = None,
-        blog = None,
-        author = None
+        comment: str = None,
+        blog=None,
+        author=None
     ) -> BlogComment:
         """Add a comment to a blog.
 
@@ -343,9 +345,9 @@ class Add:
 
     def add_heat_comment(
         self,
-        comment = None,
-        heat = None,
-        author = None
+        comment: str = None,
+        heat=None,
+        author=None
     ) -> HeatComment:
         """Add a comment to a health article.
 
@@ -385,7 +387,7 @@ class Add:
         """
 
         for key, value in details.items():
-            if value == None:
+            if value is None:
                 value = self.add_field(key)
 
             if self.check_for_validity(value):
@@ -397,7 +399,7 @@ class Add:
                             )
                         elif spec == 'blog':
                             value = self.ensure_obj_present(
-                                blog = value
+                                blog=value
                             )
                         elif spec == 'heat':
                             value = self.ensure_obj_present(
@@ -435,14 +437,13 @@ class Add:
         """
 
         id = id
-        obj =lambda id: self.ses.query(Task).filter_by(id=id).first()
+        obj = lambda id: self.ses.query(Task).filter_by(id=id).first()
 
         while not obj(id):
             print("Enter a valid task id.")
             id = self.add_field('task_id')
 
         return obj(id)
-
 
     def get_blog(self, id: int) -> Blog:
         """Get blog method gets the blog object
@@ -454,7 +455,7 @@ class Add:
         """
 
         id = id
-        obj =lambda id: self.ses.query(Blog).filter_by(id=id).first()
+        obj = lambda id: self.ses.query(Blog).filter_by(id=id).first()
 
         while not obj(id):
             print("Enter a valid blog id.")
@@ -482,9 +483,9 @@ class Add:
 
     def ensure_obj_present(
         self,
-        task = None,
-        blog = None,
-        heat = None
+        task=None,
+        blog=None,
+        heat=None
     ) -> int:
         """Ensure obj present method ensures that the
         object is present in the database
@@ -517,7 +518,7 @@ class Add:
 
         return None
 
-    def check_for_int(self, value, key = None) -> int:
+    def check_for_int(self, value, key=None) -> int:
         """Check for int method checks for
         int values in the details dictionary and the input
         fields
@@ -543,7 +544,7 @@ class Add:
         details: dict,
         model,
         df,
-        special = [],
+        special: list = [],
         int_fields: list = [],
     ):
         """Check for none and add to db method checks for
@@ -561,7 +562,7 @@ class Add:
         """
 
         for key, value in details.items():
-            if value == None:
+            if value is None:
                 value = self.add_field(key)
 
             if self.check_for_validity(value):
@@ -629,14 +630,13 @@ class Add:
 
         if len(self.failed) == 0:
             pack = model(**details)
-            if self.add_to_database(pack) == None:
+            if self.add_to_database(pack) is None:
                 print(f"Added {df} as successfully!")
         else:
             print(f"Some values failed {self.failed}. Check and try again!")
             return None
 
         return model(**details) if model(**details) else None
-
 
     def add_to_database(self, model) -> None:
         """Add to database method adds the model to the database
@@ -717,8 +717,9 @@ class Add:
             str: Representation of the class
         """
         for c in self.all_classes:
-            if c != None:
+            if c is not None:
                 return f"{dict(c)}"
+
 
 def main(model: str = None, items: dict = None):
     """This is the main function

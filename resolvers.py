@@ -216,26 +216,67 @@ class Query(ObjectType):
         ghubs = session.query(Ghub).all()
 
         # TaskComments filter by user id
-        task_comments = session.query(TaskComment).filter(TaskComment.author_id == User.id).all()
+        task_comments = session.query(TaskComment).all()
 
         # BlogComments filter by user id
-        blog_comments = session.query(BlogComment).filter(BlogComment.author_id == User.id).all()
+        blog_comments = session.query(BlogComment).all()
 
         # HeatComments filter by user id
-        heat_comments = session.query(HeatComment).filter(HeatComment.author_id == User.id).all()
+        heat_comments = session.query(HeatComment).all()
 
         users_list = [user.__dict__ for user in users]
 
         # Add blogs,  to users_list
         for user in users_list:
-            user['blogs'] = [blog.__dict__ for blog in blogs if blog.author_id == user['id']]
-            user['tasks'] = [task.__dict__ for task in tasks if task.assignee_id == user['id']]
-            user['heats'] = [heat.__dict__ for heat in heats if heat.author_id == user['id']]
-            user['repos'] = [repo.__dict__ for repo in repos if repo.owner_id == user['id']]
-            user['ghub'] = [ghub.__dict__ for ghub in ghubs if ghub.owner_id == user['id']]
-            user['task_comments'] = [task_comment.__dict__ for task_comment in task_comments if task_comment.author_id == user['id']]
-            user['blog_comments'] = [blog_comment.__dict__ for blog_comment in blog_comments if blog_comment.author_id == user['id']]
-            user['heat_comments'] = [heat_comment.__dict__ for heat_comment in heat_comments if heat_comment.author_id == user['id']]
+            user['blogs'] = [
+                blog.__dict__ for blog in blogs if blog.author_id == user[
+                    'id'
+                ]
+            ]
+            user['tasks'] = [
+                task.__dict__ for task in tasks if task.assignee_id == user[
+                    'id'
+                ]
+            ]
+            user['heats'] = [
+                heat.__dict__ for heat in heats if heat.author_id == user[
+                    'id'
+                ]
+            ]
+            user['repos'] = [
+                repo.__dict__ for repo in repos if repo.owner_id == user[
+                    'id'
+                ]
+            ]
+            user['ghub'] = [
+                ghub.__dict__ for ghub in ghubs if ghub.owner_id == user[
+                    'id'
+                ]
+            ]
+            user[
+                'task_comments'
+            ] = [
+                task_comment.__dict__ for task_comment in
+                task_comments if task_comment.author_id == user[
+                    'id'
+                ]
+            ]
+            user[
+                'blog_comments'
+            ] = [
+                blog_comment.__dict__ for blog_comment in
+                blog_comments if blog_comment.author_id == user[
+                    'id'
+                ]
+            ]
+            user[
+                'heat_comments'
+            ] = [
+                heat_comment.__dict__ for heat_comment in
+                heat_comments if heat_comment.author_id == user[
+                    'id'
+                ]
+            ]
 
         # Close the session
         session.close()
@@ -432,7 +473,9 @@ class Query(ObjectType):
 
         return heat_comments_list
 
+
 schema = Schema(query=Query)
+
 
 # GraphQL query execution method
 def execute_query(query):
@@ -607,8 +650,9 @@ def main(query: str = None) -> dict:
 
     return json.dumps(all_data, indent=4, sort_keys=False)
 
+
 if __name__ == "__main__":
-    print(main('repos'))
+    print(main('users'))
 
 
 #

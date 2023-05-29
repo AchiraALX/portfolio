@@ -1,0 +1,51 @@
+<!--
+
+    Copyright
+    Jacob Achira Obara
+    2023
+
+-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>
+        Sign Up
+    </h1>
+    <br>
+    <form action="/register" method="post">
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required class="form-control">
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" type="text" required id="username" name="username">
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="gender">
+                Gender
+            </label>
+            <br>
+            <input type="radio" name="gender" id="female" required>
+            <label for="female">Female</label>
+            <br>
+            <input type="radio" name="gender" id="male" required>
+            <label for="male">Male</label>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input class="form-control" type="password" required id="password" name="password">
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="confirmation">Confirm Password</label>
+            <input class="form-control" type="password" required id="confirmation" name="confirmation">
+        </div>
+        <br>
+        <button class="btn btn-primary" type="submit">Sign Up</button>
+    </form>
+{% endblock %}

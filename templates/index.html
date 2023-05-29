@@ -6,107 +6,13 @@
 
 -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/style/index.css">
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="js/jquery-3.3.1.slim.min.js"></script>
-    <!-- Popper.js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap JS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+{% extends 'base.html' %}
 
-    <script src="/static/script/index.js"></script>
-</head>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">My Website</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- Navbar links -->
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <!-- Home -->
-                <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-                <!-- About -->
-                <a class="nav-item nav-link" href="#">About</a>
-                <!-- Services -->
-                <a class="nav-item nav-link" href="#">Services</a>
-                <!-- Contact -->
-                <a class="nav-item nav-link" href="#">Contact</a>
-            </div>
-        </div>
-    </nav>
-</header>
-<main>
-    <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Home</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, adipisci alias aliquid
-                    architecto
-                    asperiores atque autem beatae commodi consequatur cumque cupiditate delectus deleniti dicta
-                    distinctio
-                    dolorum
-                    ducimus ea earum eius eligendi eos error est eum eveniet excepturi exercitationem expedita
-                    explicabo
-                    facere
-                    facilis fugiat fugit harum hic id illum impedit in incidunt ipsa ipsum iste itaque iure labore
-                    laboriosam
-                    laborum libero magnam magni maiores maxime minima minus molestiae mollitia nam natus nemo neque
-                    nihil
-                    nisi
-                    nobis non nostrum nulla numquam obcaecati odio officia officiis omnis optio pariatur perferendis
-                    perspiciatis
-                    placeat porro possimus praesentium provident quae quam quasi quia quibusdam quisquam quod
-                    recusandae
-                    reiciendis
-                    rem repellat repellendus reprehenderit repudiandae rerum saepe sapiente sequi similique sit
-                    soluta
-                    sunt
-                    suscipit tempora temporibus tenetur totam ullam unde ut vel veniam veritatis voluptas voluptate
-                    voluptatum?
-                    Accusamus accusantium ad adipisci alias aliquam aliquid amet animi aperiam architecto asperiores
-                    aspernatur
-                    assumenda at atque aut autem beatae blanditiis consequatur corporis culpa cum cupiditate
-                    dignissimos
-                    distinctio
-                    dolor doloribus doloremque dolorum ducimus ea eius eligendi eos error esse est et eum eveniet
-                    excepturi
-                    exercitationem
-                    expedita explicabo facere facilis fugiat fugit harum hic id illum impedit in incidunt ipsa
-                    ipsum
-                    iste
-                    itaque iure labore laboriosam laborum laudantium libero magnam magni maiores maxime minima
-                    minus
-                    molestiae
-                    molestias mollitia nam natus necessitatibus nemo neque nihil nisi nobis non nostrum nulla
-                    numquam
-                    obcaecati
-                    odio officia officiis omnis optio pariatur perferendis perspiciatis placeat porro possimus
-                    praesentium
-                </p>
-            </div>
-        </div>
-    </div>
-    </body>
-</main>
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <p>My Website &copy; 2023</p>
-            </div>
-        </div>
-    </div>
-</footer>
-</html>
+{% block content %}
+    <p>I am the home content and I go <h1>Here</h1></p>
+    <a href="{{ url_for('projects') }}">Project</a>
+{% endblock %}
+
+{% block footer %}
+    <p>I am the home footer and I go <h1>Here</h1></p>
+{% endblock %}

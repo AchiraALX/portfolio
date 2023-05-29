@@ -1,0 +1,67 @@
+<!--
+
+    Copyright
+    Jacob Achira Obara
+    2023
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% if title %}
+            {{ title }} - Code Well
+        {% else %}
+            My Website
+        {% endif %}
+    </title>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/style/index.css">
+    <!-- Bootstrap JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+
+    <script src="/static/script/index.js"></script>
+</head>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">My Website</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <!-- Home -->
+                <a class="nav-item nav-link active" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
+                <!-- About -->
+                <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+                <!-- Services -->
+                <a class="nav-item nav-link" href="{{ url_for('projects') }}">Services</a>
+                <!-- Contact -->
+                <a class="nav-item nav-link" href="{{ url_for('contact') }}">Contact</a>
+                <!-- Sign Up -->
+                <a class="nav-item nav-link" href="{{ url_for('register') }}">Sign Up</a>
+                <!-- Log In -->
+                <a class="nav-item nav-link" href="{{ url_for('login') }}">Log In</a>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <body>
+        <div id="back"></div>
+        <div class="container">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </body>
+</main>
+<footer>
+   {% block footer %}
+   {% endblock %}
+</footer>
+</html>
