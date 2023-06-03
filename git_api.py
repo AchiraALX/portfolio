@@ -3,11 +3,22 @@
 """
 from github import Github
 import requests
-from urllib.parse import urlencode, parse_qs
+from urllib.parse import urlencode
+import json
 
-token = ""
-client_id = ""
-client_secret = ""
+# GitHub OAuth app credentials
+file_dir = "/home/achira/Desktop/achira/token.json"
+with open(file_dir) as f:
+    admin_data = json.load(f)
+
+client_id = admin_data["client_id"]
+client_secret = admin_data["client_secret"]
+token = admin_data["token"]
+
+print(client_id)
+print(client_secret)
+print(token)
+
 redirect_uri = "http://127.0.0.1:5000"
 g = Github(token)
 
