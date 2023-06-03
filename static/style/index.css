@@ -56,3 +56,19 @@ button {
     background: #00AD83;
     color: #333;
 }
+
+header {
+    font-weight: 800;
+}
+
+.navbar {
+    height: 50px;
+    font-size: medium;
+}
+
+/* media queries */
+@media only screen and (min-width: 768px) {
+    .navbar {
+        height: 100px;
+    }
+}

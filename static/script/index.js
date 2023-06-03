@@ -7,3 +7,5 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = repo_url;
     });
 });
+
+// Scroll offSet

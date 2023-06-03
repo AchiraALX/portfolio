@@ -7,7 +7,8 @@ from urllib.parse import urlencode, parse_qs
 
 token = ""
 client_id = ""
-redirect_uri = "https://www.blissprism.tech"
+client_secret = ""
+redirect_uri = "http://127.0.0.1:5000"
 g = Github(token)
 
 scope = "user:email,repo"
@@ -49,3 +50,64 @@ def get_repo_details(name):
         return {
             "error": "Repository not found"
         }
+
+# Using the code returned by the OAuth app
+def get_user_details(code):
+    """Get user details
+
+    Args:
+        code (str): Code returned by the OAuth app
+
+    Returns:
+        dict: User details
+    """
+    global client_id
+    global client_secret
+    global redirect_uri
+
+    base_url = "https://api.github.com"
+
+    # Exchange the authorization code for access token
+    token_url = "https://github.com/login/oauth/access_token"
+    client_id = client_id
+    client_secret = client_secret
+
+    payload = {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "code": code,
+        "redirect_uri": redirect_uri,
+    }
+
+    response = requests.post(
+        token_url,
+        data=payload,
+        headers={"Accept": "application/json"}
+    )
+
+    if response.status_code == 200:
+        response_data = response.json()
+        if 'access_token' in response_data:
+            access_token = response_data['access_token']
+
+        else:
+            return response_data
+
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+
+        # Get user details
+        user_url = f"{base_url}/user"
+        user = requests.get(user_url, headers=headers)
+
+        # Get user emails
+        if user.status_code == 200:
+            user_data = user.json()
+            return user_data
+        else:
+            return f"IError: {user.status_code}"
+
+    else:
+        return f"Error: {response.status_code}"

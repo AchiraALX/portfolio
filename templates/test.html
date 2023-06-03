@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if code %}
+    <p>Code generated is: {{ code }}</p>
+    {% else %}
+    <p>Code not generated yet <a href="{{ url_for('auth') }}">Get code</a></p>
+    {% endif %}
+
+    {% if data %}
+    <p>Data generated is: {{ data }}</p>
+    {% else %}
+    <p>Data not generated yet <a href="{{ url_for('auth') }}">Get data</a></p>
+    {% endif %}
+
+{% endblock %}
