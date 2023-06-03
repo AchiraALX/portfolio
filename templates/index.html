@@ -24,6 +24,12 @@
         <p>Data not generated yet <a href="{{ url_for('index') }}">Get data</a></p>
     {% endif %}
 
+    {% if user %}
+        {{ user }}
+    {% else %}
+        <p>No in yet</p>
+    {% endif %}
+
 {% endblock %}
 
 {% block footer %}

@@ -5,3 +5,23 @@
     2023
 
 -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if blogs %}
+        {% for blog in blogs %}
+            <div class="blog">
+                <div>
+                    <h2>{{blog.blogTitle}}   {{blog.blogPublishedDate}}</h2>
+                </div>
+                <div>
+                    <p>{{blog.blogContent}}</p>
+                </div>
+                <div>
+                    {{ blog.comments }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

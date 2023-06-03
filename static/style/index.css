@@ -66,6 +66,11 @@ header {
     font-size: medium;
 }
 
+.alert {
+    padding: 10px;
+    text-align: center;
+}
+
 /* media queries */
 @media only screen and (min-width: 768px) {
     .navbar {

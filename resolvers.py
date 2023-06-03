@@ -514,6 +514,7 @@ def main(query: str = None) -> dict:
             gender
             regDate
             lastLogin
+            password
             blogs {
                 id
                 blogTitle
@@ -628,6 +629,13 @@ def main(query: str = None) -> dict:
         }
     }
     '''
+    usernames = '''
+    {
+        users {
+            username
+        }
+    }
+    '''
 
     query_list = {
         'users': users,
@@ -638,17 +646,16 @@ def main(query: str = None) -> dict:
         'ghub': ghub,
         'heat_comments': heat_comments,
         'blog_comments': blog_comments,
-        'task_comments': task_comments
+        'task_comments': task_comments,
+        'usernames': usernames
     }
 
     for key, value in query_list.items():
         if query == key:
-            all_data = {
-                **execute_query(value)
-            }
+            data = execute_query(value)
             break
 
-    return json.dumps(all_data, indent=4, sort_keys=False)
+    return json.loads(json.dumps(data))
 
 
 if __name__ == "__main__":

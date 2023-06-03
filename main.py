@@ -8,55 +8,75 @@ from flask import (
     render_template,
     request,
     redirect,
+    flash,
+    url_for
 )
 from flask_login import (
     LoginManager,
     UserMixin,
-    current_user
+    current_user,
+    login_required,
+    login_user,
+    logout_user
 )
 from git_api import *
 from add import *
 import os
+from queries import *
+from add import Add
+add = Add()
 
 app = Flask(__name__)
 login_manager = LoginManager(app)
 
 app.debug = True
 app.secret_key = os.urandom(24)
+login_manager.init_app(app)
+message = None
 
-# User class
 class User(UserMixin):
-    """User class
+    """User
     """
-    def __init__(self, username=None, password=None):
+    def __init__(self, username):
         self.username = username
-        self.password = password
+
+    def get_id(self):
+        """Get id
+        """
+        return self.username
+
+    def __repr__(self):
+        return f'<User: {self.username}>'
 
 @login_manager.user_loader
 def load_user(username):
     """Load user
     """
-    user = User('achira', 'jacobachiraoabara')
-    if user.username == username:
-        return user
-
-    return None
+    return User(username)
 
 @app.route('/', strict_slashes=False)
 def index():
     """Index
     """
+
     if request.args.get('code'):
         data = get_user_details(request.args.get('code'))
+        if 'login' in data:
+            pass
     else:
         data = "No data!"
+
     if current_user.is_authenticated:
-        pass
+        user = current_user.username
+    else:
+        user = 'Guest'
+
     return render_template(
         'index.html',
         title="Home",
         data=data,
-        code=request.args.get('code')
+        code=request.args.get('code'),
+        user=user
     )
 
 
@@ -86,7 +106,8 @@ def auth():
 def blogs():
     """Blogs
     """
-    return render_template('blogs.html', title="Blogs")
+    data = main('blogs')['blogs']
+    return render_template('blogs.html', title="Blogs", blogs=data)
 
 
 @app.route('/projects', strict_slashes=False)
@@ -114,21 +135,32 @@ def register():
     """
     if request.method == 'POST':
         details = {
-            'name': request.form['name'],
             'username': request.form['username'],
-            'gender': request.form['gender']
+            'password': request.form['password'],
+            'email': request.form['email'],
+            'gender': request.form['gender'],
+            'name': request.form['name']
         }
 
-        return render_template(
-            'profile.html',
-            title = 'Success',
-            details=details
-        )
+        if query_user(details['username']):
+            flash("User already exists")
+            message = 'user already exists'
+            return redirect(
+                url_for(
+                    'register',
+                    message=message
+                )
+            )
 
-    return render_template(
-        'register.html',
-        title="Register"
-    )
+        if add.add_user(**details):
+            flash('You were successfully registered')
+            return redirect(url_for('login', status="success"))
+
+        else:
+            flash('Fatal error', 'warning')
+            return
+
+    return render_template('register.html', title="Register")
 
 
 @app.route('/about', strict_slashes=False)
@@ -145,13 +177,71 @@ def contact():
 
     return render_template('contact.html', title="Contact")
 
-@app.route('/login', strict_slashes=False)
+
+@app.route('/login', strict_slashes=False, methods=['POST', 'GET'])
 def login():
     """Login
     """
+    message = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
-    return render_template('login.html', title="Login")
+        user = query_user(username)
 
+        if user:
+            if user['password'] == password and user['username'] == username:
+                login_user(User(username))
+                flash('You were successfully logged in')
+                return redirect('/profile')
+            elif user['password'] != password:
+                message = 'Invalid password'
+
+            elif user['username'] != username:
+                message = 'Invalid username'
+
+            else:
+                message = 'Invalid credentials'
+        else:
+            flash("User doesn't exist")
+            return redirect('/register')
+
+    return render_template('login.html', title="Login", message=message)
+
+
+@app.route('/logout', strict_slashes=False)
+def logout():
+    """Logout
+    """
+    logout_user()
+    return redirect('/')
+
+@login_required
+@app.route('/profile', strict_slashes=False)
+def profile():
+    """Profile
+    """
+
+    return render_template('profile.html', title="Profile")
+
+
+# Deal with messages
+def get_message_and_category(
+    text: str,
+    category: str = 'info') -> dict:
+    """Format to render message
+
+    Args:
+        message (str): the message
+        category (str): category it belongs
+
+    Returns:
+        dict: dictionary
+    """
+    return {
+        'text': text,
+        'category': category
+    }
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
