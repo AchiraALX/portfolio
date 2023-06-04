@@ -10,17 +10,20 @@
 
 {% block content %}
     <!-- Add a login for with username and password input -->
-    <form action="{{ url_for('login') }}" method="post">
-        <p>
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username">
-        </p>
-        <p>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password">
-        </p>
-        <p>
-            <input type="submit" value="Login">
-        </p>
-    </form>
+    <div class="fix-form">
+        <form class="form oct" action="{{ url_for('login') }}" method="post">
+            <div class="title">Welcome,<br><span>sign in to continue</span></div>
+            <a href="{{ url_for('auth') }}">
+                <div class="login-with oct">
+                    <div class="button-log github"> </div>
+                    <div>Log in with Github</div>
+                </div>
+            </a>
+            <input type="text" placeholder="Username" name="username" class="input">
+            <input type="password" placeholder="Password" name="password" class="input">
+            <div class="letsGo">
+                <button class="button-confirm oct" type="submit">Let`s go →</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

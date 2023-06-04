@@ -8,30 +8,122 @@
 
 {% extends 'base.html' %}
 
-{% block content %}
-    <p><i class="fa-solid fa-house"></i></p>
-    <p>I am the home content and I go <h1>Here</h1></p>
-    <a href="{{ url_for('projects') }}">Project</a>
-    {% if code %}
-        <p>Code generated is: {{ code }}</p>
-    {% else %}
-        <p>Code not generated yet <a href="{{ url_for('auth') }}">Get code</a></p>
-    {% endif %}
+{% block cover %}
 
-    {% if data %}
-        <p>Data generated is: {{ data }}</p>
-    {% else %}
-        <p>Data not generated yet <a href="{{ url_for('index') }}">Get data</a></p>
-    {% endif %}
-
-    {% if user %}
-        {{ user }}
-    {% else %}
-        <p>No in yet</p>
-    {% endif %}
+    <div id="home-cover-parent">
+        <div class="description">
+            <p id="home-title" class="oct">
+                MindfulTask - Prioritize Your Mental Health
+                and Stay Organized and Productive with
+                GitHub Integration
+            </p>
+            <br>
+            <p id="home-subtitle" class="oct">
+                Prioritize you mental health and stay organized with
+                our powerful task management tool. Connect with GitHub
+                to track you projects and collaborate with the team, while
+                also setting reminders and managing you mental wellbeing.
+                Take a control of you work-life balance today
+            </p>
+            <button class="btn" id="cover-btn">
+                Button
+            </button>
+        </div>
+        <div class="home-sign oct">
+            <div class="fix-form">
+        <form class="form oct">
+        <div class="form-left">
+            <div class="title">Welcome,<br><span>sign up to continue</span></div>
+            <a href="{{ url_for('auth') }}">
+                <div class="login-with oct">
+                    <div class="button-log github"> </div>
+                    <div>Continue with Github</div>
+                </div>
+            </a>
+            <br>
+        <div id="parent-form">
+            <div id="parent-form-first">
+                <input type="text" placeholder="Name" name="name" class="input">
+                <input type="text" placeholder="Username" name="username" class="input">
+                <input type="email" placeholder="Email" name="email" class="input">
+            </div>
+            <div id="parent-form-second">
+                <div class="radio-wrapper">
+                    <div class="radio-option">
+                        <input class="radio-input" type="radio" name="gender" value="f" checked="">
+                        <div class="radio-btn">
+                        <span class="radio-span">Female</span>
+                        </div>
+                    </div>
+                    <div class="radio-option">
+                        <input class="radio-input" type="radio" name="gender" value="m">
+                        <div class="radio-btn">
+                        <span class="radio-span">Male</span>
+                        </div>  </div>
+                    <div class="radio-option">
+                        <input class="radio-input" type="radio" name="gender" value="o">
+                        <div class="radio-btn">
+                        <span class="radio-span">Other</span>
+                        </div>
+                    </div>
+                    </div>
+                    <br>
+                <input type="password" placeholder="Password" name="password" class="input">
+                <input type="password" placeholder="Password" name="password" class="input">
+            </div>
+        </div>
+        <div id="rightLeft">
+            <div class="btn" id="left">Previous</div>
+            <div class="btn" id="right">Next</div>
+        </div>
+        <div id="confirm">
+            <button class="button-confirm oct">Let`s go →</button>
+        </div>
+        </div>
+        </form>
+    </div>
+        </div>
+    </div>
 
 {% endblock %}
 
+{% block content %}
+    <div id="index-body">
+        <div id="index-blog">
+        </div>
+        <div id="index-health">
+        </div>
+    </div>
+    <div id="index-end" class="oct">
+        <div>
+            <h3>Work Smarter, Not harder</h3>
+        </div>
+        <br>
+        <p>Get notified</p>
+        <br>
+        <form action="#" method="post">
+            <div class="sub-parent">
+                <div class="sub oct">
+                    <input type="email" placeholder="Email">
+                </div>
+                <div>
+                    <button class="btn">Subscribe</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
 {% block footer %}
-    <p>I am the home footer and I go <h1>Here</h1></p>
+    <div class="nav index-foot">
+        <li class="oct nav-item foot-item" id="year">
+            <script>
+                 document.querySelector('#year').innerHTML =
+                    'Copyright © ' + new Date().getFullYear() + ' Jacob';
+            </script>
+        </li>
+        <li class="oct nav-item foot-item">Facebook</li>
+        <li class="oct nav-item foot-item">Twitter</li>
+        <li class="oct nav-item foot-item">LinkedIn</li>
+    </div>
 {% endblock %}

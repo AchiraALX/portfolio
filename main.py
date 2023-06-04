@@ -225,6 +225,29 @@ def profile():
     return render_template('profile.html', title="Profile")
 
 
+@app.route('/index_heat_and_blog', strict_slashes=False)
+@app.route('/index_heat_and_blog/<num>', strict_slashes=False)
+def two_articles(num=2):
+    """Return data that will be rendered on home page"""
+    try:
+        num = int(num)
+        if request.args.get('num'):
+            num = int(request.args.get('num'))
+
+    except ValueError:
+        return redirect(url_for('index_heat_and_blog'))
+
+
+    heats = main('heats')['heats'][:num]
+    blogs = main('blogs')['blogs'][:num]
+
+    data = {
+        'blogs': blogs,
+        'heats': heats
+    }
+
+    return dict(data)
+
 # Deal with messages
 def get_message_and_category(
     text: str,

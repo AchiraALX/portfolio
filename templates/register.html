@@ -9,57 +9,57 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>
-        Sign Up
-    </h1>
-    <br>
-    <form action="/register" method="post">
-        <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required class="form-control">
-        </div>
-        <br>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input class="form-control" type="text" required id="username" name="username">
-        </div>
-        <br>
-        <div class="form-group">
-            <label for="gender">
-                Gender
-            </label>
+    <div class="fix-form">
+        <form class="form oct">
+        <div class="form-left">
+            <div class="title">Welcome,<br><span>sign up to continue</span></div>
+            <a href="{{ url_for('auth') }}">
+                <div class="login-with oct">
+                    <div class="button-log github"> </div>
+                    <div>Continue with Github</div>
+                </div>
+            </a>
             <br>
-            <label>
-                <input type="radio" name="gender" id="female" value= "f" required>
-                Female
-            </label>
-            <br>
-            <label>
-                <input type="radio" name="gender" id="male" value="m" required>
-                Male
-            </label>
-            <br>
-            <label>
-                <input type="radio" name="gender" id="other" value="o" required>
-                Other
-            </label>
+        <div id="parent-form">
+            <div id="parent-form-first">
+                <input type="text" placeholder="Name" name="name" class="input">
+                <input type="text" placeholder="Username" name="username" class="input">
+                <input type="email" placeholder="Email" name="email" class="input">
+            </div>
+            <div id="parent-form-second">
+                <div class="radio-wrapper">
+                    <div class="radio-option">
+                        <input class="radio-input" type="radio" name="gender" value="f" checked="">
+                        <div class="radio-btn">
+                        <span class="radio-span">Female</span>
+                        </div>
+                    </div>
+                    <div class="radio-option">
+                        <input class="radio-input" type="radio" name="gender" value="m">
+                        <div class="radio-btn">
+                        <span class="radio-span">Male</span>
+                        </div>  </div>
+                    <div class="radio-option">
+                        <input class="radio-input" type="radio" name="gender" value="o">
+                        <div class="radio-btn">
+                        <span class="radio-span">Other</span>
+                        </div>
+                    </div>
+                    </div>
+                    <br>
+                <input type="password" placeholder="Password" name="password" class="input">
+                <input type="password" placeholder="Password" name="password" class="input">
+            </div>
         </div>
-        <br>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input class="form-control" type="email" required id="email" name="email">
+        <div id="rightLeft">
+            <div class="btn" id="left">Previous</div>
+            <div class="btn" id="right">Next</div>
         </div>
-        <br>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input class="form-control" type="password" required id="password" name="password">
+        <div id="confirm">
+            <button class="button-confirm oct">Let`s go →</button>
         </div>
-        <br>
-        <div class="form-group">
-            <label for="confirmation">Confirm Password</label>
-            <input class="form-control" type="password" required id="confirmation" name="confirmation">
         </div>
-        <br>
-        <button class="btn btn-primary" type="submit">Sign Up</button>
-    </form>
+        </form>
+    </div>
+
 {% endblock %}

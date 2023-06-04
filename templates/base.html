@@ -17,6 +17,7 @@
             My Website
         {% endif %}
     </title>
+    <link rel="shortcut icon" href="/media/icons/favicon.png" type="image/x-icon">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/style/index.css">
     <!-- Bootstrap JS -->
@@ -25,69 +26,118 @@
     {% if title == 'Blogs' %}
         <link rel="stylesheet" href="/static/style/blog.css">
     {% endif %}
+    {% if title == 'Projects' %}
+        <!-- Css for project template -->
+        <link rel="stylesheet" href="/static/style/project.css">
+    {% endif %}
+    <!-- CSS for login template -->
+    {% if title == 'Login' or title == 'Register' or title == 'Home' %}
+        <link rel="stylesheet" href="/static/style/forms.css">
+    {% endif %}
+    <!-- CSS for health articles template -->
+    {% if title == 'Health Articles' %}
+        <link rel="stylesheet" href="/static/style/health.css">
+    {% endif %}
+    <!-- CSS for profile template -->
+    {% if title == 'Profile' %}
+        <link rel="stylesheet" href="/static/style/profile.css">
+    {% endif %}
 
 
     <script src="/static/script/index.js"></script>
 </head>
 <header>
-    <nav class="navbar bg-dark">
+    <nav class="navbar oct">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('index') }}">Code Well</a>
+            <a class="navbar-brand oct" href="{{ url_for('index') }}">
+                Code Well
+            </a>
             <ul class="nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('index') }}">
-                        <i class="fa-light fa-diagram-project"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('projects') }}">
-                        Projects
-                    </a>
+                <li class="nav-item dropdown oct" id="menu" onclick="nav()">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Menu
+                        </a>
                 </li>
                 {% if current_user.is_authenticated %}
-                    <li class="nav-item">
+                    <li class="nav-item oct">
                         <a class="nav-link" href="{{ url_for('profile') }}">
                             {{ current_user.username }}
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item oct">
                         <a class="nav-link" href="{{ url_for('logout') }}">
-                            Logout
+                            <img width="20" height="20" src="https://img.icons8.com/ios-filled/20/logout-rounded.png" alt="logout-rounded"/>
                         </a>
                     </li>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth') }}">
-                            Auth
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('register') }}">
-                            Register
-                        </a>
-                    </li>
+                    <!-- dropdown button -->
+
                     <!-- login -->
-                    <li class="nav-item">
+                    <li class="nav-item oct">
                         <a class="nav-link" href="{{ url_for('login') }}">
-                            Login
+                            Sign in
                         </a>
                     </li>
                 {% endif %}
             </ul>
         </div>
     </nav>
+    <div class="drop-menu oct nav">
+        <li class="nav-item oct">
+            <a href="{{ url_for('index') }}" class="nav-link">
+                Home
+            </a>
+        </li>
+        <!-- Blogs -->
+        <li class="nav-item oct">
+            <a href="{{ url_for('blogs') }}" class="nav-link">
+                Blogs
+            </a>
+        </li>
+        <!-- Projects -->
+        <li class="nav-item oct">
+            <a href="{{ url_for('projects') }}" class="nav-link">
+                Projects
+            </a>
+        </li>
+        <!-- Health Articles -->
+        <li class="nav-item oct">
+            <a href="{{ url_for('wellness') }}" class="nav-link">
+                Wellness
+            </a>
+        </li>
+        <!-- About -->
+        <li class="nav-item oct">
+            <a href="{{ url_for('about') }}" class="nav-link">
+                About
+            </a>
+        </li>
+        <!-- Contact -->
+        <li class="nav-item oct">
+            <a href="{{ url_for('contact') }}" class="nav-link">
+                Contact
+            </a>
+        </li>
+
+    </div>
 </header>
 <main>
     <body>
         <div id="back"></div>
-        <div class="container">
-            {% with messages = get_flashed_messages()  %}
-                {% if messages %}
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+        <div class="cover">
+            {% block cover %}
+            {% endblock %}
+        </div>
+        {% with messages = get_flashed_messages()  %}
+        {% if messages %}
+        {% for message in messages %}
+        <div id="alert" class="oct">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="parent oct">
             {% block content %}
 
             {% endblock %}
