@@ -118,6 +118,14 @@
                 Contact
             </a>
         </li>
+        {% if current_user.is_authenticated %}
+            <!-- Profile -->
+            <li class="nav-item oct">
+                <a href="{{ url_for('tasks') }}" class="nav-link">
+                    Tasks
+                </a>
+            </li>
+        {% endif %}
 
     </div>
 </header>

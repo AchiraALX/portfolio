@@ -13,7 +13,7 @@
         {% for health_article in data %}
             <div class="health_article oct">
                 <div>
-                    <a href="{{ url_for('wellness', id=health_article.id) }}">
+                    <a href="{{ url_for('article', id=health_article.id) }}">
                         <h2>{{health_article.title}}   {{health_article.PublishedDate}}</h2>
                     </a>
                 </div>

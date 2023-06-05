@@ -60,6 +60,7 @@ class TaskType(ObjectType):
     task_due_date = DateTime()
     task_created_date = DateTime()
     task_last_modified_date = DateTime()
+    assignee_id = Int()
 
 
 # Define BlogType
@@ -559,6 +560,7 @@ def main(query: str = None) -> dict:
             taskDescription
             taskStatus
             taskDueDate
+            assigneeId
         }
     }
     '''
@@ -659,7 +661,7 @@ def main(query: str = None) -> dict:
 
 
 if __name__ == "__main__":
-    print(main('users'))
+    print(main('usernames'))
 
 
 #

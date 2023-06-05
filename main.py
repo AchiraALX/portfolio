@@ -37,8 +37,11 @@ message = None
 class User(UserMixin):
     """User
     """
+    global query_user
+
     def __init__(self, username):
         self.username = username
+        self.user = query_user(self.username)
 
     def get_id(self):
         """Get id
@@ -117,12 +120,29 @@ def wellness():
     return render_template('health_articles.html', title="Wellness", data=data)
 
 
+@login_required
+@app.route('/tasks', strict_slashes=False)
+def tasks():
+    """Tasks
+    """
+    all_tasks = main('tasks')['tasks']
+    tasks = []
+    for task in all_tasks:
+        if task['assigneeId'] == current_user.user['id']:
+            tasks.append(task)
+
+    print(tasks)
+
+    return render_template('tasks.html', title="Tasks", tasks=tasks, date=datetime.utcnow())
+
+
 @app.route('/register', strict_slashes=False, methods=['POST', 'GET'])
 @app.route('/register/<name>', strict_slashes=False)
 def register():
     """Register
     """
     if request.method == 'POST':
+        add = Add()
         details = {
             'username': request.form['username'],
             'password': request.form['password'],
@@ -133,17 +153,15 @@ def register():
 
         if query_user(details['username']):
             flash("User already exists")
-            message = 'user already exists'
-            return redirect(
-                url_for(
-                    'register',
-                    message=message
-                )
-            )
+            return redirect(url_for('register'))
 
-        if add.add_user(**details):
-            flash('You were successfully registered')
-            return redirect(url_for('login', status="success"))
+        try:
+            add.add_user(**details)
+            flash("User seem to have been added successfully")
+            return redirect(url_for('login'))
+        except Exception as e:
+            flash("Error adding user")
+            return redirect(url_for('register'))
 
         else:
             flash('Fatal error', 'warning')
@@ -251,6 +269,7 @@ def blog(id):
     blog = get_blog(id)
     return render_template('blog.html', title=blog['blogTitle'], blog=blog)
 
+@app.route('/article', strict_slashes=False)
 @app.route('/article/<id>', strict_slashes=False)
 def article(id):
     """Wellness article

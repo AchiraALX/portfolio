@@ -404,11 +404,35 @@ img {
   color: #fff;
 }
 
+/* For blog articles shared */
 .blog{
     --border-color: rgba(192, 192, 192, 0.899);
     background: var(--border-color);
     padding: 20px;
     margin: 15px auto;
+}
+
+/* For health articles shared */
+.health_article {
+    --border-color: lavender;
+    background-color: var(--border-color);
+    padding: 10px;
+    margin: 10px auto;
+}
+
+.task {
+    --border-color: #B9D9EB;
+    background-color: var(--border-color);
+}
+
+.task-yellow {
+    --border-color: #F9F871;
+    background-color: var(--border-color);
+}
+
+.task-red {
+    --border-color: #F87171;
+    background-color: var(--border-color);
 }
 
 .index-foot {

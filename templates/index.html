@@ -31,7 +31,7 @@
         </div>
         <div class="home-sign oct">
             <div class="fix-form">
-        <form class="form oct">
+        <form class="form oct" action="{{ url_for('register') }}" method="post">
         <div class="form-left">
             <div class="title">Welcome,<br><span>sign up to continue</span></div>
             <a href="{{ url_for('auth') }}">
@@ -101,7 +101,7 @@
         <br>
         <p>Get notified</p>
         <br>
-        <form action="#" method="post">
+        <form action="{{ url_for('register') }}" method="post">
             <div class="sub-parent">
                 <div class="sub oct">
                     <input type="email" placeholder="Email">

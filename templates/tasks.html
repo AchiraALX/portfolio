@@ -1,0 +1,30 @@
+<!--
+
+    Copyright
+    Jacob Achira Obara
+    2023
+
+-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if tasks %}
+        {% for task in tasks %}
+            {% set later = task.taskDueDate > date %}
+            <div class="task oct">
+                <div>
+                    <h2>{{task.taskTitle}}   {{task.taskDueDate}} {{ task.taskStatus }}</h2>
+                </div>
+                <div>
+                    <p>{{task.taskDescription}}</p>
+                </div>
+                <div>
+                    {{ task.comments }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h1>Bad task!</h1>
+    {% endif %}
+{% endblock %}

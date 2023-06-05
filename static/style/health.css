@@ -1,8 +1,1 @@
 /* Style for health template */
-
-.health_article {
-    --border-color: lavender;
-    background-color: var(--border-color);
-    padding: 10px;
-    margin: 10px auto;
-}
