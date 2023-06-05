@@ -9,13 +9,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if blogs %}
-        {% for blog in blogs %}
-            <div class="blog oct">
+    {% if blog %}
+        <div class="blog oct">
                 <div>
-                    <a href="{{ url_for('blog', id=blog.id) }}">
-                        <h2>{{blog.blogTitle}}   {{blog.blogPublishedDate}}</h2>
-                    </a>
+                    <h2>{{blog.blogTitle}}   {{blog.blogPublishedDate}}</h2>
                 </div>
                 <div>
                     <p>{{blog.blogContent}}</p>
@@ -23,7 +20,8 @@
                 <div>
                     {{ blog.comments }}
                 </div>
-            </div>
-        {% endfor %}
+        </div>
+    {% else %}
+        <h1>Bad blog!</h1>
     {% endif %}
 {% endblock %}

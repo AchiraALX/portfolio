@@ -7,3 +7,23 @@
 -->
 
 {% extends 'base.html' %}
+
+{% block content %}
+    {% if data %}
+        {% for health_article in data %}
+            <div class="health_article oct">
+                <div>
+                    <a href="{{ url_for('wellness', id=health_article.id) }}">
+                        <h2>{{health_article.title}}   {{health_article.PublishedDate}}</h2>
+                    </a>
+                </div>
+                <div>
+                    <p>{{health_article.content}}</p>
+                </div>
+                <div>
+                    {{ health_article.comments }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

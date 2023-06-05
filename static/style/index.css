@@ -404,6 +404,13 @@ img {
   color: #fff;
 }
 
+.blog{
+    --border-color: rgba(192, 192, 192, 0.899);
+    background: var(--border-color);
+    padding: 20px;
+    margin: 15px auto;
+}
+
 .index-foot {
     background-color: silver;
     padding: 35px 15px;

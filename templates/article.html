@@ -1,0 +1,29 @@
+<!--
+
+    Copyright
+    Jacob Achira Obara
+    2023
+
+-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if article %}
+        <div class="health_article oct">
+                <div>
+                    <a href="{{ url_for('wellness', id=article.id) }}">
+                        <h2>{{article.title}}   {{article.PublishedDate}}</h2>
+                    </a>
+                </div>
+                <div>
+                    <p>{{.content}}</p>
+                </div>
+                <div>
+                    {{ article.comments }}
+                </div>
+            </div>
+    {% else %}
+        <h1>Bad article</h1>
+    {% endif %}
+{% endblock %}

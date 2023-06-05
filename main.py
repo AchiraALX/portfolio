@@ -79,20 +79,6 @@ def index():
         user=user
     )
 
-
-@app.route('/test', strict_slashes=False)
-def test():
-    """Test
-    """
-
-
-
-    return render_template(
-        'test.html',
-        title="Test",
-        code=request.args.get('code')
-    )
-
 # Generate authorization url
 @app.route('/auth', strict_slashes=False)
 def auth():
@@ -126,7 +112,10 @@ def projects(name={}):
 def wellness():
     """Wellness
     """
-    return render_template('health_articles.html', title="Wellness")
+
+    data = main('heats')['heats']
+    return render_template('health_articles.html', title="Wellness", data=data)
+
 
 @app.route('/register', strict_slashes=False, methods=['POST', 'GET'])
 @app.route('/register/<name>', strict_slashes=False)
@@ -247,6 +236,38 @@ def two_articles(num=2):
     }
 
     return dict(data)
+
+
+# Single article
+@app.route('/blog/<id>', strict_slashes=False)
+def blog(id):
+    """Blog
+    """
+    try:
+        id = int(id)
+    except ValueError:
+        return redirect(url_for('blogs'))
+
+    blog = get_blog(id)
+    return render_template('blog.html', title=blog['blogTitle'], blog=blog)
+
+@app.route('/article/<id>', strict_slashes=False)
+def article(id):
+    """Wellness article
+    """
+
+    try:
+        id = int(id)
+        if request.args.get('id'):
+            id = int(request.args.get('id'))
+
+    except ValueError:
+        flash("Broken URL. Redirected to blogs")
+        return redirect(url_for('wellness'))
+
+    article = get_article(id)
+    print(article)
+    return render_template('article.html', title=article['title'], article=article)
 
 # Deal with messages
 def get_message_and_category(

@@ -22,14 +22,29 @@ def query_user(username: str) -> dict:
     return None
 
 # Get blogs
-def get_blog():
+def get_blog(id: int):
     """Fetch a blog from the database
     """
-    pass
+    blogs = main("blogs")['blogs']
 
-blogs = main("blogs")
+    for blog in blogs:
+        if blog['id'] == id:
+            return blog
 
-print(blogs)
+    return None
+
+# Get health article
+def get_article(id: int):
+    """Fetch a health article from the database
+    """
+    articles = main("heats")['heats']
+
+    for article in articles:
+        if article['id'] == id:
+            return article
+
+    return None
+
 
 
 #
