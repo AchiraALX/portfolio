@@ -23,7 +23,6 @@
     --border-color: honeydew;
     background-color: var(--border-color);
     padding: 10px;
-    border-radius: 10px;
     min-height: 100vh;
 }
 
@@ -32,7 +31,8 @@
     outline: none;
     border: none;
     padding: 10px;
-    background-color: silver;
+    background-color: transparent;
+    font-weight: 800;
 }
 
 #comment-area {
@@ -41,7 +41,7 @@
     position: relative;
 }
 
-#comment-area > button {
+#comment-area > form > button {
     --border-color: #000c83;
     position: absolute;
     bottom: 0;
@@ -71,8 +71,73 @@
     font-weight: 1000;
     color: #000c83;
     text-align: center;
+    position: sticky;
 }
 
-.h-id {
-    display: none;
+.comment-login {
+    --border-color: #000c83;
+    background-color: var(--border-color);
+    padding: 10px;
+    margin: 10px 15px;
+    text-align: center;
+}
+
+.comment-login > a {
+    --border-color: honeydew;
+    color: var(--border-color);
+    text-decoration: none;
+    font-size: large;
+    font-weight: 1000;
+}
+
+.comment-login > a:hover {
+    --border-color: #666;
+}
+
+.comment-for {
+    --border-color: #000c83;
+    padding: 10px;
+    margin: 10px 15px;
+    text-align: center;
+}
+
+.comment-for > input[type="submit"] {
+    --border-color: honeydew;
+    width: 150px;
+    outline: none;
+    border: none;
+    padding: 10px;
+    background-color: silver;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.comments-div  {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.o-comment {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rebeccapurple;
+    font-weight: 1000;
+}
+
+.comment-content {
+    --border-color: #e8ddf4;
+    background-color: var(--border-color);
+    margin: -15px auto;
+    color: rebeccapurple;
+    font-weight: 1000;
+}
+
+.comment-content:hover {
+    --border-color: #e3dac9;
+}
+
+.comment-content > p {
+    padding: 10px;
 }

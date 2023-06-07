@@ -59,16 +59,35 @@
             <div class="health_article oct">
                 <div>
                     <a href="{{ url_for('article', id=health_article.id) }}">
-                        <h2>{{health_article.title}}   {{health_article.PublishedDate}}</h2>
+                        <h4>{{health_article.title}}</h4>
                     </a>
+                    <span class="date-time">{{health_article.publishedDate}}</span>
                 </div>
                 <div>
                     <p>{{health_article.content}}</p>
                 </div>
-                <div>
-                    {{ health_article.comments }}
+                <div class="obj-id oct">
+                    {{ health_article.id }}
                 </div>
             </div>
+            <div class="comment-parent">
+            <div class="oct inner-parent">
+                <div class="comments-div"></div>
+                {% if current_user.is_authenticated %}
+                    <form action="{{ url_for('blog_comments') }}" method="post" class="comment-for oct">
+                        <textarea name="comment" id="comment" placeholder="Type" required></textarea>
+                        <input name="blog" id="id-value" type="hidden">
+                        <input type="submit" value="Submit" class="oct">
+                    </form>
+                {% else %}
+                    <div class="oct comment-login">
+                        <a href="{{ url_for('login') }}">Login to comment</a>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
         {% endfor %}
     {% endif %}
+    <script src="/static/script/comment.js"></script>
 {% endblock %}

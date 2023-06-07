@@ -159,6 +159,7 @@ def blogs():
             flash('Log in first')
             return redirect(url_for('login'))
     data = main('blogs')['blogs']
+    data = sorted(data, key=lambda x: x['blogPublishedDate'], reverse=True)
     return render_template('blogs.html', title="Blogs", blogs=data)
 
 
@@ -213,6 +214,7 @@ def wellness():
             flash("Login first.")
 
     data = main('heats')['heats']
+    data = sorted(data, key=lambda x: x['publishedDate'], reverse=True)
     return render_template('health_articles.html', title="Wellness", data=data)
 
 
@@ -518,20 +520,16 @@ def blog_comments():
     """Load blog comment as per blog
     """
 
-    if current_user.is_authenticated:
-        if request.method == 'POST':
+    if request.method == 'POST':
+        if current_user.is_authenticated:
             comment = request.form['comment']
+            blog = request.form['blog']
             author = current_user.username
-            try:
-                blog_id = request.args.get('blog_id')
-            except Exception as e:
-                flash("Can't resolve the blog.")
-                return redirect(url_for('blogs'))
 
             details = {
                 'comment': comment,
-                'author': author,
-                'blog_id': blog_id
+                'blog': blog,
+                'author': author
             }
 
             failed = []
@@ -539,17 +537,21 @@ def blog_comments():
                 if not value:
                     failed.append(key)
 
-            if len(failed) > 0:
-                flash("Some values failed {failed!r}")
+            if failed:
+                flash(f"Fill in the required fields{failed!r}")
                 return redirect(url_for('blogs'))
 
             add = Add()
-
             try:
                 add.add_blog_comment(**details)
-            except Exception as e:
-                flash(f"Error {e!r}")
+                flash("Comment added")
                 return redirect(url_for('blogs'))
+            except Exception as e:
+                flash("Error while adding comment")
+                return redirect(url_for('blogs'))
+        else:
+            flash("Login to comment")
+            return redirect(url_for('login'))
 
     if request.args.get('id'):
         id = request.args.get('id')
@@ -562,9 +564,62 @@ def blog_comments():
         available_comment = get_blog_comments(id)
 
         return available_comment
-    else:
-        flash("Can't get comments")
-        return redirect(url_for('blogs'))
+
+    return redirect(url_for('blogs'))
+
+
+# Route to handle the health article comments
+@app.route('/article_comments', strict_slashes=False, methods=['POST', 'GET'])
+def article_comments():
+    """Load article comment as per article
+    """
+
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            comment = request.form['comment']
+            article = request.form['article']
+            author = current_user.username
+
+            details = {
+                'comment': comment,
+                'article': article,
+                'author': author
+            }
+
+            failed = []
+            for key, value in details.items():
+                if not value:
+                    failed.append(key)
+
+            if failed:
+                flash(f"Fill in the required fields{failed!r}")
+                return redirect(url_for('wellness'))
+
+            add = Add()
+            try:
+                add.add_article_comment(**details)
+                flash("Comment added")
+                return redirect(url_for('wellness'))
+            except Exception as e:
+                flash("Error while adding comment")
+                return redirect(url_for('wellness'))
+        else:
+            flash("Login to comment")
+            return redirect(url_for('login'))
+
+    if request.args.get('id'):
+        id = request.args.get('id')
+        try:
+            id = int(id)
+        except Exception as e:
+            flash("Error while loading comments")
+            return redirect(url_for('wellness'))
+
+        available_comment = get_article_comments(id)
+
+        return available_comment
+
+    return redirect(url_for('wellness'))
 
 @app.errorhandler(404)
 def handle_not_found(error):

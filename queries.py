@@ -105,8 +105,24 @@ def get_blog_comments(id):
 
     return comments_available
 
-print(get_blog_comments(4))
+# Get comment per specified article id
+def get_article_comments(id):
+    """Get comment that belong to article with id equal to id
 
+    Args:
+        id (int): The id of the article
+    """
+
+    all_comments = main('heat_comments')['heatComments']
+    comments_available = []
+    for comment in all_comments:
+        if comment['id'] == id:
+            comments_available.append(comment)
+
+    return comments_available
+
+
+print(get_article_comments(4))
 
 
 
