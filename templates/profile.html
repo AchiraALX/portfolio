@@ -9,11 +9,113 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if current_user.is_authenticated %}
-        <h2> {{ current_user.username }} </h2>
-        <h3> {{ current_user.user.name}} </h3>
-        <p> {{ current_user.user }} </p>
-    {% else %}
-        <p>No info yet</p>
-    {% endif %}
+    <div class="profile oct">
+        <div class="p-details oct">
+            <div class="username-image">
+                <div class="profile-image oct">
+                    <p class="letter-image"> {{ current_user.user.username[0].upper() }} </p>
+                </div>
+                <div class="username oct">
+                    <p> {{ current_user.username }} </p>
+                </div>
+            </div>
+            <div class="p-info-title">
+                <p>Personal Info</p>
+            </div>
+            <div class="oct detail">
+                <p>Name  : </p>
+                <p>{{ current_user.user.name}}</p>
+            </div>
+            <div class="oct detail">
+                <p>Email  :</p>
+                <p>{{ current_user.user.email }}</p>
+            </div>
+            <div class="oct detail">
+                <p>Gender  : </p>
+                <p class="gender">{{ current_user.user.gender }}</p>
+            </div>
+            <div class="oct detail date">
+                <p>Joined  : </p>
+                <p>{{ current_user.user.regDate }}</p>
+            </div>
+            <div class="oct detail date">
+                <p>Last login  :</p>
+                <p> {{ current_user.user.lastLogin }} </p>
+            </div>
+            <script>
+                const elements = document.getElementsByClassName('date');
+                for (let i = 0; i < elements.length; i++){
+                    element = elements[i]
+                    element.innerHTML = element.innerHTML.replace('T', ' ');
+                }
+            </script>
+        </div>
+        <div class="general-details">
+            <div class="g-title oct">
+                <p>General Info</p>
+            </div>
+            <br>
+            <h2 class="g-title">Repositories</h2>
+            <div id="repo-container">
+
+            </div>
+            <script>
+                const repoContainer = document.querySelector('#repo-container');
+                const pContainer = document.querySelector('.p-details');
+                let repos = 5;
+
+                // Function to get repos
+                function get_repos(num, repoContainer, pContainer) {
+                    fetch(`http://127.0.0.1:5000/ghub_repos?num=${repos}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        repos = data.repos;
+                        ghubs = data.ghubs;
+                        console.log(data);
+                        repos.forEach(repo => {
+                            const div = document.createElement('div');
+                            div.classList.add('repo');
+                            div.classList.add('oct');
+                            div.innerHTML = `
+                                <div class="repo-name">
+                                    <p>${repo.repositoryName}</p>
+                                </div>
+                                <div class="repo-description">
+                                    <p>${repo.repositoryDescription}</p>
+                                </div>
+                                <a href=${repo.repositoryUrl} class="repo-link">
+                                    <div>
+                                        View repository on Github
+                                    </div>
+                                </a>
+                            `;
+                            repoContainer.appendChild(div);
+                        });
+                        ghubs.forEach(ghub => {
+                            const div = document.createElement('div')
+                            div.innerHTML = `
+                            <div class="oct detail date">
+                                <p>Followers :</p>
+                                <p>${ghub.followers}</p>
+                            </div>
+                            <div class="oct detail date">
+                                <p>Repositories :</p>
+                                <p>${ghub.repos}</p>
+                            </div>
+                            <div class="oct detail date">
+                                <p>Stars :</p>
+                                <p>${ghub.stars}</p>
+                            </div>
+                            `
+                            pContainer.appendChild(div)
+                        });
+                    });
+                }
+
+                get_repos(repos, repoContainer, pContainer);
+
+            </script>
+            <p> {{ current_user.user.repos }} </p>
+        </div>
+    </div>
 {% endblock %}

@@ -39,8 +39,18 @@
         <link rel="stylesheet" href="/static/style/health.css">
     {% endif %}
     <!-- CSS for profile template -->
-    {% if title == 'Profile' %}
-        <link rel="stylesheet" href="/static/style/profile.css">
+    {% if current_user.is_authenticated %}
+        {% if title == current_user.user.name %}
+            <link rel="stylesheet" href="/static/style/profile.css">
+        {% endif %}
+    {% endif %}
+    <!-- CSS for about template -->
+    {% if title == 'About' %}
+        <link rel="stylesheet" href="/static/style/about.css">
+    {% endif %}
+
+    {% if title == 'Contact' %}
+        <link rel="stylesheet" href="/static/style/contact.css">
     {% endif %}
 
 
@@ -49,22 +59,24 @@
 <header>
     <nav class="navbar oct">
         <div class="container-fluid">
-            <a class="navbar-brand oct" href="{{ url_for('index') }}">
-                Code Well
+            <a class="navbar-brand oct scale brand" href="{{ url_for('index') }}">
+                <div class="brand">
+                    Code Well
+                </div>
             </a>
             <ul class="nav justify-content-end">
-                <li class="nav-item dropdown oct" id="menu" onclick="nav()">
+                <li class="nav-item dropdown oct scale" id="menu" onclick="nav()">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Menu
                         </a>
                 </li>
                 {% if current_user.is_authenticated %}
-                    <li class="nav-item oct">
+                    <li class="nav-item oct scale">
                         <a class="nav-link" href="{{ url_for('profile') }}">
                             {{ current_user.username }}
                         </a>
                     </li>
-                    <li class="nav-item oct">
+                    <li class="nav-item oct scale">
                         <a class="nav-link" href="{{ url_for('logout') }}">
                             <img width="20" height="20" src="https://img.icons8.com/ios-filled/20/logout-rounded.png" alt="logout-rounded"/>
                         </a>
@@ -73,7 +85,7 @@
                     <!-- dropdown button -->
 
                     <!-- login -->
-                    <li class="nav-item oct">
+                    <li class="nav-item oct scale">
                         <a class="nav-link" href="{{ url_for('login') }}">
                             Sign in
                         </a>
@@ -145,7 +157,7 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-        <div class="parent oct">
+        <div class="parent oct" id="parent">
             {% block content %}
 
             {% endblock %}

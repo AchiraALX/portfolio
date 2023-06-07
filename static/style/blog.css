@@ -1,1 +1,39 @@
 /* Style file for most blog page features */
+
+.add-blog-parent {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+    width: 95%;
+    padding: 15px;
+    background-color: honeydew;
+}
+
+.blog-input, .blog-text, .blog-submit {
+    margin: 10px auto;
+}
+
+.blog-input > input, .blog-text > textarea, .blog-submit > input {
+    outline: none;
+    border: 0;
+    width: 100%;
+    padding: 15px;
+}
+
+.blog-submit > input, .blog-input > input {
+    font-weight: 800;
+}
+
+.blog-submit > input {
+    background-color: var(--border-color);
+}
+
+#blog-slide {
+    background-color: transparent;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 15px;
+    font-weight: 800;
+}

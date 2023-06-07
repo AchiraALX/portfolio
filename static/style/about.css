@@ -1,0 +1,63 @@
+/* Style for about page */
+#about-cover {
+    background-color: honeydew;
+    background-image: url(https://photo-cdn2.icons8.com/PYi0q0U8iKjNkCrOQRDAkMfca8rZpAO2VQFrrWIgY-4/rs:fit:1608:1072/czM6Ly9pY29uczgu/bW9vc2UtcHJvZC5l/eHRlcm5hbC9hMmE0/Mi8xMzQxNGM0NTVk/OWQ0ODc2OTNlMTY5/ZjQ4MTMzODEyMy5q/cGc.jpg);
+    min-height: 400px;
+    position: relative;
+    margin-top: -100px;
+    z-index: -1;
+}
+
+#code-banner {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    text-align: center;
+    background-color: var(--border-color);
+    padding: 10px;
+}
+
+#code-banner > h3 {
+    font-size: 35px;
+    font-weight: 800;
+    color: honeydew;
+}
+
+.about-parent {
+    padding: 15px;
+    margin: 10px auto;
+}
+
+.bottom-home {
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: brown;
+}
+
+.about-title {
+    padding: 10px;
+    font-weight: 1000;
+    margin-bottom: 15px;
+    color: honeydew;
+    background-color: var(--border-color);
+}
+
+.about-sub-t {
+    font-weight: 800;
+    display: block;
+    padding: 20px;
+}
+
+.bottom-home:hover {
+    background-color: var(--border-color);
+    color: aliceblue;
+}
+
+#bottom-home {
+    text-decoration: none;
+}

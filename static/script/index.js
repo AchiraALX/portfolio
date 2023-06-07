@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.querySelector('.navbar');
     const drop_menu = document.querySelector('.drop-menu');
     const menu_btn = document.querySelector('#menu');
+    const parent = document.querySelector('#parent')
 
 
     drop_menu.style.top = '-100%'
@@ -55,6 +56,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Fetch the data
         fetch_data(2, index_blog, index_heat);
 
+    }
+
+    if (title() === '404') {
+        parent.style.display = 'none';
+    }
+
+    if (title() === 'login') {
+        parent.style.backgroundColor = 'transparent';
+    }
+
+    if (title() === 'register') {
+        parent.style.backgroundColor = 'transparent'
     }
 
 });

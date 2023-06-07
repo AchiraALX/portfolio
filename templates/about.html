@@ -7,3 +7,58 @@
 -->
 
 {% extends 'base.html' %}
+
+{% block cover %}
+    <div id="about-cover">
+        <div id="code-banner" class="oct">
+            <h3>Code Well</h3>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="oct about-parent">
+        <div class="about-title oct" >
+            Objective
+        </div>
+        <div class="about-body">
+            <p>To create a web service that uses the GitHub API, as well as curated resources, to provide features that promote well-being and mental health for software developers.</p>
+        </div>
+    </div>
+    <div class="oct about-parent">
+        <div class="about-title oct" >
+            Features
+        </div>
+        <div class="about-body">
+            <p>
+                - GitHub Profile Analysis: The web service will retrieve a user's GitHub profile information using the GitHub API and display an overview of their repositories, contributions, and followers. <br>
+                - Productivity Suggestions: The web service will suggest resources for improving productivity and managing stress based on the user's GitHub activity, such as recommending time management strategies, breaks, or activities to do during breaks. <br>
+                - Well-Being Dashboard: The web service will track the user's coding activities and provide feedback on how much time they spend on specific tasks. The dashboard will also display suggestions for physical activities, stretches, or relaxation techniques based on the user's activity levels. <br>
+                - Community Features: To promote a sense of community and collaboration among users, the web service could include features like a forum or chat room where users can discuss coding challenges, share tips, and support each other. <br>
+                - User Feedback: To continuously improve the web service and gather feedback from users, the web service could include a feedback form or survey where users can provide input on the features and suggest improvements. <br>
+            </p>
+        </div>
+    </div>
+    <div class="oct about-parent">
+        <div class="about-title oct" >
+            Technologies
+        </div>
+        <div class="about-body">
+            <p>
+                <span class="about-sub-t">Python</span>
+                Python is a versatile and easy-to-learn programming language that is widely used in web development, data analysis, and machine learning. We chose Python because of its flexibility, readability, and extensive library support, making it an excellent choice for developing a complex web service like Code Well. <br>
+                <span class="about-sub-t">Flask</span>
+                Flask is a lightweight web framework that is built in Python and allows us to create a web service quickly and efficiently. Flask is easy to learn and has a low overhead, making it a good choice for developing a web service that needs to handle multiple requests and provide dynamic content. <br>
+                <span class="about-sub-t">GitHub API</span>
+                The GitHub API provides us with access to a user's GitHub profile information, including repositories, contributions, and followers. We will use the GitHub API to retrieve user data and provide feedback and suggestions based on their activity. <br>
+            </p>
+        </div>
+    </div>
+
+    <a href="{{ url_for('index') }}" id="bottom-home">
+        <div class="oct bottom-home">
+            Home
+        </div>
+    </a>
+
+{% endblock %}

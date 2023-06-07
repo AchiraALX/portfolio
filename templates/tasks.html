@@ -9,10 +9,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if tasks %}
-        {% for task in tasks %}
-            {% set later = task.taskDueDate > date %}
-            <div class="task oct">
+    {% if y_t %}
+        {% for task in y_t %}
+            <div class="task oct yellow">
                 <div>
                     <h2>{{task.taskTitle}}   {{task.taskDueDate}} {{ task.taskStatus }}</h2>
                 </div>
@@ -25,6 +24,70 @@
             </div>
         {% endfor %}
     {% else %}
-        <h1>Bad task!</h1>
+            <div class="task oct yellow">
+                <div class="no-task">No task in Progress</div>
+            </div>
     {% endif %}
+
+    {% if b_t %}
+        {% for task in b_t %}
+            <div class="task oct blue">
+                <div>
+                    <h2>{{task.taskTitle}}   {{task.taskDueDate}} {{ task.taskStatus }}</h2>
+                </div>
+                <div>
+                    <p>{{task.taskDescription}}</p>
+                </div>
+                <div>
+                    {{ task.comments }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="task oct blue">
+                <div class="no-task">No future task! PLan</div>
+            </div>
+    {% endif %}
+
+    {% if r_t %}
+        {% for task in r_t %}
+            <div class="task oct red">
+                <div>
+                    <a href="/task/{{ task.id }}">
+                        <h2>{{task.taskTitle}}   {{task.taskDueDate}} {{ task.taskStatus }}</h2>
+                    </a>
+                </div>
+                <div>
+                    <p>{{task.taskDescription}}</p>
+                </div>
+                <div>
+                    {{ task.comments }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="task oct red">
+                <div class="no-task">No pending tasks! Great work</div>
+            </div>
+    {% endif %}
+    {% if g_t %}
+        {% for task in g_t %}
+            <div class="task oct green">
+                <div>
+                    <h2>{{task.taskTitle}}   {{task.taskDueDate}} {{ task.taskStatus }}</h2>
+                </div>
+                <div>
+                    <p>{{task.taskDescription}}</p>
+                </div>
+                <div>
+                    {{ task.comments }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="task oct green">
+            <div class="no-task">No completed tasks yet!</div>
+        </div>
+    {% endif %}
+
 {% endblock %}

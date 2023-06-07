@@ -25,9 +25,19 @@
                 also setting reminders and managing you mental wellbeing.
                 Take a control of you work-life balance today
             </p>
-            <button class="btn" id="cover-btn">
-                Button
-            </button>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('wellness') }}">
+                    <button class="btn" id="cover-btn">
+                        Wellness
+                    </button>
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}">
+                    <button class="btn" id="cover-btn">
+                        Sign in Or Register
+                    </button>
+                </a>
+            {% endif %}
         </div>
         <div class="home-sign oct">
             <div class="fix-form">

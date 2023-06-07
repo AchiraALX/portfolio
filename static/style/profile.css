@@ -1,0 +1,116 @@
+/* Style for the profile template */
+
+.profile {
+   --border-color: #0083;
+   padding: 15px;
+   margin: 15px;
+}
+
+.profile > div {
+    padding: 5px;
+    margin: 10px;
+}
+
+.profile > div:first-child {
+    --border-color: #0083;
+}
+
+.detail {
+    --border-color: #0083;
+    padding: 5px;
+    margin: 15px 10px;
+    display: flex;
+}
+
+.detail > p {
+    flex: 1;
+}
+
+.detail > p:first-child {
+    text-align: right;
+    padding-right: 15px;
+    font-weight: 800;
+}
+
+.detail > p:last-child {
+    text-align: justify;
+}
+
+.username-image {
+    min-height: 100px;
+    background-color: #D2CCCC;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.profile-image {
+    background-color: var(--border-color);
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 15px auto;
+}
+
+.username, .g-title {
+    --border-color:#0083;
+    position: relative;
+    min-height: 50px;
+    padding: 5px;
+}
+
+.g-title {
+    color: #4C5D70;
+}
+
+.username > p, .g-title > p {
+    text-align: center;
+    padding: 5px;
+    font-weight: 800;
+    font-size: 18px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.p-info-title {
+    font-weight: 800;
+    font-size: 20px;
+    margin-bottom: 5px;
+    text-indent: 15px;
+}
+
+.letter-image {
+    color: aliceblue;
+    font-size: 100px;
+    text-align: center;
+    font-weight: 800;
+}
+
+.repo {
+    background-color: var(--border-color);
+    padding: 10px;
+}
+
+.repo-name{
+    /* Capitalize first letter */
+    text-transform: capitalize;
+    font-weight: 800;
+}
+
+.repo-link {
+    text-decoration: none;
+}
+
+.repo-link > div {
+    background-color: #4C5D70;
+    color: honeydew;
+    border-radius: 3px;
+    text-align: center;
+    padding: 5px;
+}
+
+.repo-link > div:hover {
+    background-color: #D2CCCC;
+    color: #4C5D70;
+}

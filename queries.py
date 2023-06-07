@@ -45,6 +45,51 @@ def get_article(id: int):
 
     return None
 
+# Query single task
+def get_task(id):
+    """Fetch a single task
+    """
+
+    tasks = main('tasks')['tasks']
+
+    for task in tasks:
+        if task['id'] == id:
+            return task
+
+    return None
+
+# Get ghubs matching id
+def get_ghub(id):
+    """Fetch a single ghub
+    """
+
+    ghubs = main('ghub')['ghub']
+    # List for the ghubs
+    hubs = []
+
+    for ghub in ghubs:
+        if ghub['ownerId'] == id:
+            hubs.append(ghub)
+
+    return hubs
+
+
+# Get all repos matching id
+def get_repos(id):
+    """Fetch a single repo
+    """
+
+    repos = main('repos')['repos']
+    # List for the repos
+    repositories = []
+
+    for repo in repos:
+        if repo['ownerId'] == id:
+            repositories.append(repo)
+
+    return repositories
+
+
 
 
 #

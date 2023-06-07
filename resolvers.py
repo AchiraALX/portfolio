@@ -88,6 +88,7 @@ class HeatType(ObjectType):
     content = String()
     published_date = DateTime()
     last_modified_date = DateTime()
+    author_id = Int()
 
 
 # Define RepoType
@@ -101,6 +102,7 @@ class RepoType(ObjectType):
     repository_name = String()
     repository_url = String()
     repository_description = String()
+    owner_id = Int()
 
 
 # Define GhubType
@@ -116,6 +118,7 @@ class GhubType(ObjectType):
     stars = Int()
     description = String()
     last_refreshed = DateTime()
+    owner_id = Int()
 
 
 # Define TaskCommentType
@@ -582,6 +585,7 @@ def main(query: str = None) -> dict:
             content
             publishedDate
             lastModifiedDate
+            authorId
         }
     }
     '''
@@ -592,6 +596,7 @@ def main(query: str = None) -> dict:
             repositoryName
             repositoryDescription
             repositoryUrl
+            ownerId
         }
     }
     '''
@@ -604,6 +609,7 @@ def main(query: str = None) -> dict:
             stars
             description
             lastRefreshed
+            ownerId
         }
     }
     '''
@@ -661,7 +667,7 @@ def main(query: str = None) -> dict:
 
 
 if __name__ == "__main__":
-    print(main('usernames'))
+    print(main('blogs'))
 
 
 #
