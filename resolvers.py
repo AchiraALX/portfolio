@@ -145,6 +145,8 @@ class BlogCommentType(ObjectType):
     comment = String()
     comment_date = DateTime()
     last_modified_date = DateTime()
+    blog_id = Int()
+    author_id = Int()
 
 
 # Define HeatCommentType
@@ -626,6 +628,8 @@ def main(query: str = None) -> dict:
         blogComments {
             id
             comment
+            blogId
+            authorId
         }
     }
     '''
@@ -667,7 +671,7 @@ def main(query: str = None) -> dict:
 
 
 if __name__ == "__main__":
-    print(main('blogs'))
+    print(main('blog_comments'))
 
 
 #

@@ -17,10 +17,18 @@
                 <div>
                     <p>{{blog.blogContent}}</p>
                 </div>
-                <div>
-                    {{ blog.comments }}
+                <div class="obj-id">
+                    {{ blog.id }}
                 </div>
         </div>
+        <script>
+            const obj_id = document.querySelector('.obj-id').innerText;
+            if (parseInt(obj_id) !== isNaN) {
+                alert("Syncing comments")
+            } else {
+                alert(`Could not resolve ${obj_id}`)
+            }
+        </script>
     {% else %}
         <h1>Bad blog!</h1>
     {% endif %}

@@ -8,6 +8,51 @@
 
 {% extends 'base.html' %}
 
+{% block cover %}
+    {% if current_user.is_authenticated %}
+            <div class="add-blog-parent">
+                <div id="toggle" class="oct">Edit</div>
+                <div id="blog-form">
+                    <form action="{{ url_for('tasks') }}" method="post">
+                        <div class="oct blog-input">
+                            <input type="text" name="title" placeholder="Title">
+                        </div>
+                        <div class="oct blog-text">
+                            <textarea name="content" id="blog-content" cols="30" rows="10" placeholder="Start typing"></textarea>
+                        </div>
+                        <div class="oct blog-submit">
+                            <input type="submit" value="Send">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <script>
+                const parent = document.querySelector('.add-blog-parent')
+                const blogSend = document.querySelector('.blog-submit')
+                const blogForm = document.querySelector('#blog-form')
+                const toggle = document.querySelector('#toggle')
+
+                blogForm.style.display = 'none'
+
+                toggle.addEventListener('click', () => {
+                    if (toggle.innerText == 'Edit') {
+                        blogForm.style.display = 'block';
+                        toggle.innerText = 'Collapse'
+                    } else {
+                        blogForm.style.display = 'none';
+                        toggle.innerText = 'Edit'
+
+                    }
+                });
+
+            </script>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="add-blog-link">
+            <div class="oct add-blog-div">Add</div>
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     {% if y_t %}
         {% for task in y_t %}

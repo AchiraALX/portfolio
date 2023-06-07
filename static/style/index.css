@@ -490,6 +490,80 @@ img {
     font-size: 20px;
 }
 
+.add-blog-parent {
+    z-index: 1;
+    width: 95%;
+    padding: 15px;
+    background-color: honeydew;
+    margin: 0 auto;
+    width: 100%;
+}
+
+#toggle {
+    width: 100%;
+    background-color: var(--border-color);
+    text-align: center;
+    color: honeydew;
+    font-weight: 1000;
+    padding: 15px;
+    cursor: pointer;
+}
+
+#toggle:hover {
+    --border-color: silver;
+}
+
+.add-blog-parent {
+    min-height: 100%;
+    overflow: hidden;
+}
+
+.blog-input, .blog-text, .blog-submit {
+    margin: 10px auto;
+}
+
+.blog-input > input, .blog-text > textarea, .blog-submit > input {
+    outline: none;
+    border: 0;
+    width: 100%;
+    padding: 15px;
+}
+
+.blog-submit > input, .blog-input > input {
+    font-weight: 800;
+}
+
+.blog-submit > input {
+    background-color: var(--border-color);
+}
+
+#blog-slide {
+    background-color: transparent;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 15px;
+    font-weight: 800;
+}
+
+.add-blog-div {
+    padding: 15px;
+    text-align: center;
+    margin: 10px 15px;
+    background-color: var(--border-color);
+    color: honeydew;
+    font-weight: 1000;
+    font-size: larger;
+}
+
+.add-blog-div:hover {
+    --border-color: pink;
+}
+
+.add-blog-link {
+    text-decoration: none;
+}
+
 .index-foot {
     background-color: silver;
     padding: 35px 15px;

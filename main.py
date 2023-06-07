@@ -174,21 +174,85 @@ def projects(name={}):
     return render_template('projects.html', title="Projects")
 
 
-@app.route('/wellness', strict_slashes=False)
+@app.route('/wellness', strict_slashes=False, methods=['POST', 'GET'])
 def wellness():
     """Wellness
     """
+
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            title = request.form['title']
+            content = request.form['content']
+            author = current_user.username
+
+            details = {
+                'title': title,
+                'content': content,
+                'author': author
+            }
+
+            failed = []
+            for key, value in details.items():
+                if not value:
+                    failed.append(key)
+
+            if len(failed) >  0:
+                flash(f"Some values are failing {failed!r}")
+
+            add = Add()
+
+            try:
+                add.add_heat(**details)
+
+            except Exception as e:
+                flash("Error {e!r}")
+
+            return redirect(url_for('wellness'))
+
+        else:
+            flash("Login first.")
 
     data = main('heats')['heats']
     return render_template('health_articles.html', title="Wellness", data=data)
 
 
 @login_required
-@app.route('/tasks', strict_slashes=False)
+@app.route('/tasks', strict_slashes=False, methods=['POST', 'GET'])
 def tasks(id=None):
     """Tasks
     """
     if current_user.is_authenticated:
+        if request.method == 'POST':
+            task_title = request.form['title']
+            task_description = request.form['content']
+            task_assignee = current_user.username
+            task_status = 'pending'
+
+            details = {
+                'task_title': task_title,
+                'task_description': task_description,
+                'task_assignee': task_assignee,
+                'task_status': task_status
+            }
+
+            failed = []
+            for key, value in details.items():
+                if not value:
+                    failed.append(key)
+
+            if len(failed) > 0:
+                flash(f"Some values failed {failed!r}")
+                return redirect(url_for('tasks'))
+
+            add = Add()
+            try:
+                add.add_task(**details)
+
+            except Exception as e:
+                flash("Error {e!r}")
+
+            return redirect(url_for('tasks'))
+
         all_tasks = main('tasks')['tasks']
         yellow_tasks = []
         red_tasks = []
@@ -448,6 +512,60 @@ def one_task(id):
     return redirect(url_for('login'))
 
 
+# Route for blog comments
+@app.route('/blog_comments', strict_slashes=False, methods=['POST', 'GET'])
+def blog_comments():
+    """Load blog comment as per blog
+    """
+
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            comment = request.form['comment']
+            author = current_user.username
+            try:
+                blog_id = request.args.get('blog_id')
+            except Exception as e:
+                flash("Can't resolve the blog.")
+                return redirect(url_for('blogs'))
+
+            details = {
+                'comment': comment,
+                'author': author,
+                'blog_id': blog_id
+            }
+
+            failed = []
+            for key, value in details.items():
+                if not value:
+                    failed.append(key)
+
+            if len(failed) > 0:
+                flash("Some values failed {failed!r}")
+                return redirect(url_for('blogs'))
+
+            add = Add()
+
+            try:
+                add.add_blog_comment(**details)
+            except Exception as e:
+                flash(f"Error {e!r}")
+                return redirect(url_for('blogs'))
+
+    if request.args.get('id'):
+        id = request.args.get('id')
+        try:
+            id = int(id)
+        except Exception as e:
+            flash("Error while loading comments")
+            return redirect(url_for('blogs'))
+
+        available_comment = get_blog_comments(id)
+
+        return available_comment
+    else:
+        flash("Can't get comments")
+        return redirect(url_for('blogs'))
+
 @app.errorhandler(404)
 def handle_not_found(error):
     """Handle 404
@@ -491,6 +609,8 @@ def log_user_in(user, password, username):
     else:
         flash("User doesn't exist")
         return redirect('/register')
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

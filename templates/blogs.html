@@ -8,50 +8,172 @@
 
 {% extends 'base.html' %}
 
+{% block cover %}
+{% if current_user.is_authenticated %}
+<div class="add-blog-parent">
+    <div id="toggle" class="oct">Edit</div>
+    <div id="blog-form">
+        <form action="{{ url_for('blogs') }}" method="post">
+            <div class="oct blog-input">
+                <input type="text" name="title" placeholder="Title">
+            </div>
+            <div class="oct blog-text">
+                <textarea name="content" id="blog-content" cols="30" rows="10" placeholder="Start typing"></textarea>
+            </div>
+            <div class="oct blog-submit">
+                <input type="submit" value="Send">
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    const parent = document.querySelector('.add-blog-parent')
+    const blogSend = document.querySelector('.blog-submit')
+    const blogForm = document.querySelector('#blog-form')
+    const toggle = document.querySelector('#toggle')
+
+    blogForm.style.display = 'none'
+
+    toggle.addEventListener('click', () => {
+        if (toggle.innerText == 'Edit') {
+            blogForm.style.display = 'block';
+            toggle.innerText = 'Collapse'
+        } else {
+            blogForm.style.display = 'none';
+            toggle.innerText = 'Edit'
+
+        }
+    });
+
+</script>
+{% else %}
+<a href="{{ url_for('login') }}" class="add-blog-link">
+    <div class="oct add-blog-div">Add</div>
+</a>
+{% endif %}
+{% endblock %}
+
 {% block content %}
     {% if blogs %}
         {% for blog in blogs %}
-            <div class="blog oct">
-                <div>
-                    <a href="{{ url_for('blog', id=blog.id) }}">
-                        <h2>{{blog.blogTitle}}   {{blog.blogPublishedDate}}</h2>
-                    </a>
-                </div>
-                <div>
-                    <p>{{blog.blogContent}}</p>
-                </div>
-                <div>
-                    {{ blog.comments }}
-                </div>
+        <div class="blog oct blog-parent">
+            <div>
+                <a href="{{ url_for('blog', id=blog.id) }}">
+                    <h2>{{blog.blogTitle}} {{blog.blogPublishedDate}}</h2>
+                </a>
             </div>
+            <div>
+                <p>{{blog.blogContent}}</p>
+            </div>
+            <div class="obj-id oct">
+                {{ blog.id }}
+            </div>
+            <div class="h-id"> {{ blog.id }} </div>
+        </div>
         {% endfor %}
-    {% endif %}
-    {% if current_user.is_authenticated %}
-            <div class="add-blog-parent oct">
-                <form action="{{ url_for('blogs') }}" method="post">
-                    <div class="oct blog-input">
-                        <input type="text" name="title" placeholder="Title">
-                    </div>
-                    <div class="oct blog-text">
-                        <textarea name="content" id="blog-content" cols="30" rows="10" placeholder="Start typing"></textarea>
-                    </div>
-                    <div class="oct blog-submit">
-                        <input type="submit" value="Send">
-                        <div id="blog-slide">Name</div>
-                    </div>
-                </form>
+        <div class="comment-parent">
+            <div class="oct inner-parent">
+                <div class="comments-div"></div>
+                <div id="comment-area">
+                    <textarea name="comment" id="comment" placeholder="Type"></textarea>
+                    <button class="oct" id="comm-btn">&RightArrow;</button>
+                </div>
             </div>
-            <script>
-                const parent = document.querySelector('.add-blog-parent')
-                const blogSend = document.querySelector('.blog-submit')
-
-                parent.style.height = '40px'
-                parent.style.overflow = 'hidden'
-                parent.style.padding = '0'
-            </script>
-    {% else %}
-        <a href="{{ url_for('login') }}" class="add-blog-link">
-            <div class="oct add-blog-div">Add</div>
-        </a>
+        </div>
     {% endif %}
+    <script>
+        const blogParent = document.getElementsByClassName('blog-parent')
+        const blogs = document.getElementsByClassName('obj-id');
+        const comment_parent = document.querySelector('.comment-parent')
+        const comment_container = document.querySelector('.comments-div')
+        const send_button = document.querySelector('#comm-btn')
+        const comment_text = document.querySelector('#comment')
+        const h_id = document.getElementsByClassName('.h-id')
+
+        send_button.addEventListener('click', () => {
+            const b_com_form = document.createElement('form')
+
+            b_com_form.method = 'post'
+            b_com_form.action = `http://127.0.0.1:5000/blogs_comments?id=${id}`
+
+            text = comment_text.value
+            if (text.trim() !== '') {
+                alert("There is some text")
+            } else {
+                alert("Black container")
+            }
+
+            const comment = document.createElement('input');
+            comment.value = text;
+
+            alert(comment.value)
+            comment_text.value = ''
+        })
+
+        comment_parent.addEventListener('click', (event) => {
+            if (event.target == comment_parent) {
+                comment_parent.style.height = '0';
+                comment_parent.style.bottom = '-100%'
+            }
+        })
+
+        for (let i = 0; i < blogs.length; i++) {
+            let element = blogs[i];
+
+            const id = parseInt(element.innerText)
+            element.innerText = "Comments";
+
+            element.addEventListener('click', () => {
+                comment_parent.style.bottom = '0';
+                comment_parent.style.height = '100%'
+                comment_parent.style.paddingTop = '8%'
+                for (let i = 0; i < blogs.length; i++) {
+                    if (blogs[i] !== element) {
+                        blogs[i].style.display = 'none'
+                    }
+                }
+
+                comment_container.innerHTML = '<h2 class="comment-title"> Available Reactions </h2>'
+
+                // Get the comment data
+                fetch(`http://localhost:5000/blog_comments?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length <= 0) {
+                        comment_container.innerHTML = '<h2 class="o-comment"> No comments yet </h2>'
+                    } else {
+                        for (let i = 0; i < data.length; i++) {
+                            const element = data[i];
+                            const comment = document.createElement('div')
+                            comment.classList.add('commented')
+                            comment.innerHTML = `
+                                <div class="comment-content">
+                                    <p>${element.comment}</p>
+                                </div>
+                            `
+                            comment_container.appendChild(comment)
+                        }
+                    }
+                });
+            });
+        }
+
+        for (let i = 0; i < blogParent.length; i++) {
+            blogs[i].style.display = 'none'
+
+            blogParent[i].addEventListener('click', (event) => {
+                if (event.target == blogParent[i]) {
+                    if (blogs[i].style.display === 'none') {
+                        blogs[i].style.display = 'block';
+                    } else {
+                        blogs[i].style.display = 'none';
+                    }
+                }
+            })
+        }
+
+        function get_blog_id(id) {
+            return id
+        }
+    </script>
 {% endblock %}

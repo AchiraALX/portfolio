@@ -89,6 +89,24 @@ def get_repos(id):
 
     return repositories
 
+# Get comment per specified blog id
+def get_blog_comments(id):
+    """Get comment that belong to blog with id equal to id
+
+    Args:
+        id (int): The id of the blog
+    """
+
+    all_comments = main('blog_comments')['blogComments']
+    comments_available = []
+    for comment in all_comments:
+        if comment['blogId'] == id:
+            comments_available.append(comment)
+
+    return comments_available
+
+print(get_blog_comments(4))
+
 
 
 

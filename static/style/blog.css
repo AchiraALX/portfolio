@@ -1,39 +1,78 @@
 /* Style file for most blog page features */
 
-.add-blog-parent {
+.obj-id {
+    --border-color: silver;
+    background-color: var(--border-color);
+    text-align: center;
+    padding: 10px;
+    display: none;
+    cursor: pointer;
+}
+
+.comment-parent {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: -100%;
+    width: 98%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px;
     z-index: 1;
-    width: 95%;
-    padding: 15px;
-    background-color: honeydew;
 }
 
-.blog-input, .blog-text, .blog-submit {
-    margin: 10px auto;
+.inner-parent {
+    --border-color: honeydew;
+    background-color: var(--border-color);
+    padding: 10px;
+    border-radius: 10px;
+    min-height: 100vh;
 }
 
-.blog-input > input, .blog-text > textarea, .blog-submit > input {
-    outline: none;
-    border: 0;
+#comment {
     width: 100%;
-    padding: 15px;
+    outline: none;
+    border: none;
+    padding: 10px;
+    background-color: silver;
 }
 
-.blog-submit > input, .blog-input > input {
-    font-weight: 800;
+#comment-area {
+    display: flex;
+    flex-direction: row;
+    position: relative;
 }
 
-.blog-submit > input {
+#comment-area > button {
+    --border-color: #000c83;
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    outline: none;
+    border: none;
+    padding: 5px 15px;
+    font-size: x-large;
+    font-weight: 1000;
+    color: aliceblue;
     background-color: var(--border-color);
 }
 
-#blog-slide {
-    background-color: transparent;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 15px;
-    font-weight: 800;
+#comment-area > button:hover {
+    --border-color: #666;
+}
+
+.commented {
+    --border-color: honeydew;
+    background-color: var(--border-color);
+    padding: 10px;
+    margin: 10px 15px;
+}
+
+.comment-title {
+    font-size: large;
+    font-weight: 1000;
+    color: #000c83;
+    text-align: center;
+}
+
+.h-id {
+    display: none;
 }
