@@ -13,15 +13,17 @@
                 {% if current_user.is_authenticated %}
                     {% if repo %}
                         {% if 'error' in repo %}
-                            <p class="caught-up no-repo oct">An error occurred</p>
+                            <p class="caught-up no-repo oct">Error fetching the repo</p>
                         {% else %}
-                            <div id="repo-summary">
+                            <div id="repo-summary" class="oct">
                                 <p id="repo-name">{{ repo.name }}</p>
+                                <p id="languages"> {{ repo.languages }} </p>
                                 <br>
-                                <p id="repo-readme"> {{ repo.readme }} </p>
+                                <p id="repo-readme" class="oct"> {{ repo.readme }} </p>
                                 <br>
                                 <p id="files"> {{ repo.files }} </p>
-                                {{repo}}
+                                <br>
+                                <p id="followers"> {{ repo.followers }} </p>
                             </div>
                         {% endif %}
                     {% else %}
