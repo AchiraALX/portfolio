@@ -38,6 +38,7 @@
                     if (toggle.innerText == 'Edit') {
                         blogForm.style.display = 'block';
                         toggle.innerText = 'Collapse'
+                        alert("Be responsible, currently you can neither edit nor delete your post once you submit it.")
                     } else {
                         blogForm.style.display = 'none';
                         toggle.innerText = 'Edit'
@@ -66,17 +67,17 @@
                 <div>
                     <p>{{health_article.content}}</p>
                 </div>
-                <div class="obj-id oct">
+                <div class="obj-id oct obj-article">
                     {{ health_article.id }}
                 </div>
             </div>
-            <div class="comment-parent">
+        <div class="comment-parent">
             <div class="oct inner-parent">
                 <div class="comments-div"></div>
                 {% if current_user.is_authenticated %}
-                    <form action="{{ url_for('blog_comments') }}" method="post" class="comment-for oct">
+                    <form action="{{ url_for('article_comments') }}" method="post" class="comment-for oct">
                         <textarea name="comment" id="comment" placeholder="Type" required></textarea>
-                        <input name="blog" id="id-value" type="hidden">
+                        <input name="article" id="id-value" type="hidden">
                         <input type="submit" value="Submit" class="oct">
                     </form>
                 {% else %}

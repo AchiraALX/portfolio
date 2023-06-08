@@ -21,10 +21,37 @@
                     {{ blog.id }}
                 </div>
         </div>
+        <div id="blogs-comment"></div>
         <script>
             const obj_id = document.querySelector('.obj-id').innerText;
             if (parseInt(obj_id) !== isNaN) {
-                alert("Syncing comments")
+                const commentDiv = document.querySelector('#blogs-comment');
+                const id = parseInt(obj_id)
+                blog_comments(id, commentDiv)
+
+                function blog_comments(id, active_container) {
+                    fetch(`http://localhost:5000/blog_comments?id=${id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                            if (data.length <= 0) {
+                                active_container.innerHTML = '<h2 class="o-comment"> No comments yet </h2>'
+                            } else {
+                                for (let i = 0; i < data.length; i++) {
+                                    const element = data[i];
+                                    const comment = document.createElement('div')
+                                    comment.classList.add('commented')
+                                    comment.classList.add('oct')
+                                    comment.innerHTML = `
+                                                    <div class="comment-content oct">
+                                                        <p>${element.comment}</p>
+                                                    </div>
+                                                `
+                                    active_container.appendChild(comment)
+                                }
+                            }
+                        });
+                }
             } else {
                 alert(`Could not resolve ${obj_id}`)
             }
@@ -32,4 +59,5 @@
     {% else %}
         <h1>Bad blog!</h1>
     {% endif %}
+    <script src="/static/script/comment.js"></script>
 {% endblock %}

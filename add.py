@@ -766,7 +766,7 @@ def main(model: str = None, items: dict = None):
 
 if __name__ == '__main__':
     add = Add()
-    add.add_blog_comment()
+    add.add_heat_comment()
 
 #
 # Copyright

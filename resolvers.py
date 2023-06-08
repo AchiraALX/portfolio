@@ -74,6 +74,7 @@ class BlogType(ObjectType):
     blog_title = String()
     blog_content = String()
     blog_published_date = DateTime()
+    author_id = Int()
 
 
 # Define HeatType
@@ -119,6 +120,7 @@ class GhubType(ObjectType):
     description = String()
     last_refreshed = DateTime()
     owner_id = Int()
+    token = String()
 
 
 # Define TaskCommentType
@@ -132,6 +134,7 @@ class TaskCommentType(ObjectType):
     task_comment = String()
     task_comment_date = DateTime()
     last_modified_date = DateTime()
+    author_id = Int()
 
 
 # Define BlogCommentType
@@ -578,6 +581,7 @@ def main(query: str = None) -> dict:
             blogTitle
             blogContent
             blogPublishedDate
+            authorId
         }
     }
     '''
@@ -614,6 +618,7 @@ def main(query: str = None) -> dict:
             description
             lastRefreshed
             ownerId
+            token
         }
     }
     '''
@@ -634,6 +639,7 @@ def main(query: str = None) -> dict:
             comment
             blogId
             authorId
+            commentDate
         }
     }
     '''
@@ -642,6 +648,7 @@ def main(query: str = None) -> dict:
         taskComments {
             id
             taskComment
+            authorId
         }
     }
     '''
@@ -675,7 +682,7 @@ def main(query: str = None) -> dict:
 
 
 if __name__ == "__main__":
-    print(main('heat_comments'))
+    print(main('ghub'))
 
 
 #

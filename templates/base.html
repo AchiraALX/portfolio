@@ -26,9 +26,9 @@
     {% if title == 'Blogs' %}
         <link rel="stylesheet" href="/static/style/blog.css">
     {% endif %}
-    {% if title == 'Projects' %}
+    {% if title == 'Projects' or title == 'Project' %}
         <!-- Css for project template -->
-        <link rel="stylesheet" href="/static/style/project.css">
+        <link rel="stylesheet" href="/static/style/projects.css">
     {% endif %}
     <!-- CSS for login template -->
     {% if title == 'Login' or title == 'Register' or title == 'Home' %}
@@ -95,7 +95,7 @@
             </ul>
         </div>
     </nav>
-    <div class="drop-menu oct nav">
+    <div class="drop-menu oct">
         <li class="nav-item oct">
             <a href="{{ url_for('index') }}" class="nav-link">
                 Home

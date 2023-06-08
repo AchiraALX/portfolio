@@ -98,6 +98,7 @@ header {
     text-align: center;
     height: auto;
     z-index: 1;
+    list-style-type: none;
 }
 
 .drop-menu > li {

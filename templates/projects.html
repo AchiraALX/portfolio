@@ -1,24 +1,75 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>I am the projects template and the projects go <h1>Here</h1></p>
-
-    <form action="{{ url_for('projects') }}" method="get" id="repo_form">
-        <input type="text" name="repo_name" id="repository_name" required>
-        <input type="submit" value="Submit">
-    </form>
-
-    <div>
-        {% if repo %}
-            <p>Repository name: {{ repo.name }}</p>
-            <p>Repository description: {{ repo.readme }}</p>
-            <p>Repository language: {{ repo.languages }}</p>
-            <p>Contents: {{ repo.files }} </p>
-        {% endif %}
+    {% if current_user.is_authenticated %}
+        <div class="oct" id="view-repo">View a project</div>
+        <div class="oct title">
+            <p>Available Projects</p>
+        </div>
+    {% endif %}
+    <div id="repos-container">
+        <div class="repo-holder">
+            <div>
+                {% if current_user.is_authenticated %}
+                    {% if repo %}
+                        {% if 'error' in repo %}
+                            <p class="caught-up no-repo oct">An error occurred</p>
+                        {% else %}
+                            <div id="repo-summary">
+                                <p id="repo-name">{{ repo.name }}</p>
+                                <br>
+                                <p id="repo-readme"> {{ repo.readme }} </p>
+                                <br>
+                                <p id="files"> {{ repo.files }} </p>
+                                {{repo}}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        {% if repos %}
+                            {% for repo in repos %}
+                                <div class="repo oct">
+                                    <div class="repo-name">
+                                        <p>{{repo.repositoryName.capitalize() }}</p>
+                                    </div>
+                                    <div class="repo-description">
+                                        <p>{{repo.repositoryDescription}}</p>
+                                    </div>
+                                    <a href="{{repo.repositoryUrl}}" class="repo-link">
+                                        <div class="oct">
+                                            View repository on Github
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="caught-up oct no-repo">All caught up</p>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <a href="{{ url_for('login') }}" id="no-repo">
+                        <p class="oct login">Log in to see your repos</p>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-
-{% endblock %}
-
-{% block footer %}
-    <p>I am the projects footer and the projects have been declared</p>
+    {% if current_user.is_authenticated %}
+    <div class="project-form">
+        <form action="{{ url_for('projects') }}" method="get" id="repo_form" class="oct">
+            <p>Enter the repository names below separating with a space</p>
+            <p>Use the select button to see available repos</p>
+            <input type="text" name="repo_name" id="repository_name" placeholder="Enter repo names" required>
+            <!-- A dropdown -->
+            <select name="repo_type" id="select-repo" required class="custom-select">
+                <option value="">Select</option>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+            </select>
+            <div class="oct">
+                <input type="submit" value="Submit" class="oct">
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    <script src="/static/script/projects.js"></script>
 {% endblock %}

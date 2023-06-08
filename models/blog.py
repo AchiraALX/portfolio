@@ -35,11 +35,11 @@ class Blog(Base):
 
     # Columns
     blog_title: Mapped[str] = mapped_column(
-        String(50),
+        String(500),
         nullable=False
     )
     blog_content: Mapped[str] = mapped_column(
-        String(1000),
+        String(100000),
         nullable=False,
     )
     blog_published_date: Mapped[datetime] = mapped_column(
@@ -90,7 +90,7 @@ class BlogComment(Base):
 
     # Columns
     comment: Mapped[str] = mapped_column(
-        String(1000),
+        String(100000),
         nullable=False
     )
     comment_date: Mapped[datetime] = mapped_column(

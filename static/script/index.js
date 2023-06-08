@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const menu_btn = document.querySelector('#menu');
     const parent = document.querySelector('#parent')
 
-
     drop_menu.style.top = '-100%'
     menu_btn.addEventListener('click', () => {
         if (drop_menu.style.top === '-100%') {
@@ -36,16 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
             parent_form_first.style.height = "auto";
             parent_form_second.style.height = "0px";
             confirm.style.display = "none";
-        });
-    }
-
-    if (title() === 'projects') {
-        document.querySelector('#repo_form').addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const repo_name = document.querySelector('#repository_name').value;
-            const repo_url = "/projects/" + encodeURIComponent(repo_name);
-            window.location.href = repo_url;
         });
     }
 
@@ -101,7 +90,7 @@ function fetch_data(num, blog_element, heat_element) {
                 div.innerHTML = `
                     <h1>${heat.title}</h1>
                     <p>${heat.content}</p>
-                    <a href="/heat/${heat.id}">Read More</a>
+                    <a href="/article/${heat.id}">Read More</a>
                     `
                 heat_element.appendChild(div);
             });

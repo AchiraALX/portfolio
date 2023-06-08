@@ -76,7 +76,7 @@
                     {% if current_user.is_authenticated %}
                         <form action="{{ url_for('blog_comments') }}" method="post" class="comment-for oct">
                             <textarea name="comment" id="comment" placeholder="Type" required></textarea>
-                            <input name="blog" class="id-value" type="hidden">
+                            <input name="blog" id="id-value" type="hidden">
                             <input type="submit" value="Submit" class="oct">
                         </form>
                     {% else %}

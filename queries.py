@@ -116,14 +116,73 @@ def get_article_comments(id):
     all_comments = main('heat_comments')['heatComments']
     comments_available = []
     for comment in all_comments:
-        if comment['id'] == id:
+        if comment['heatId'] == id:
             comments_available.append(comment)
 
     return comments_available
 
+# Get repositories per specified ghub id
+def get_user_repos(id):
+    """Get repositories that belong to ghub with id equal to id
 
-print(get_article_comments(4))
+    Args:
+        id (int): The id of the ghub
+    """
 
+    all_repos = main('repos')['repos']
+    repos_available = []
+    for repo in all_repos:
+        if repo['ownerId'] == id:
+            repos_available.append(repo)
+
+    return repos_available
+
+# Get a single blog comment
+def get_blog_comment(id):
+    """Get a single blog comment
+
+    Args:
+        id (int): The id of the blog comment
+    """
+
+    all_comments = main('blog_comments')['blogComments']
+    for comment in all_comments:
+        if comment['id'] == id:
+            return comment
+
+    return None
+
+# Get a single article comment
+def get_article_comment(id):
+    """Get a single article comment
+
+    Args:
+        id (int): The id of the article comment
+    """
+
+    all_comments = main('heat_comments')['heatComments']
+    for comment in all_comments:
+        if comment['id'] == id:
+            return comment
+
+    return None
+
+# Get a single task comment
+def get_task_comment(id):
+    """Get a single task comment
+
+    Args:
+        id (int): The id of the task comment
+    """
+
+    all_comments = main('task_comments')['taskComments']
+    for comment in all_comments:
+        if comment['id'] == id:
+            return comment
+
+    return None
+
+print(get_blog(18))
 
 
 #

@@ -1,0 +1,187 @@
+/* Style for the projects template */
+.project-form {
+    position: fixed;
+    bottom: -200%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    height: 100%;
+    background-color: thistle;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+form {
+    width: 50%;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+form > div {
+    background-color: var(--border-color);
+    text-align: center;
+    cursor: pointer;
+    width: 50%;
+    margin: 0 auto;
+    color: aliceblue;
+}
+
+form > div:hover {
+    --border-color: #666;
+}
+
+form > p {
+    text-align: justify;
+    font-weight: 800;
+    text-decoration: 1px dotted underline;
+}
+
+input[type='submit'] {
+    padding: 15px;
+    color: aliceblue;
+    background-color: var(--border-color);
+}
+
+input[type='submit']:hover {
+    --border-color: #666;
+}
+
+input {
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 10px;
+    font-weight: 800;
+    display: block;
+    margin: 10px auto;
+    background-color: rgb(221, 174, 221);
+    border-radius: 5px;
+}
+
+#view-repo {
+    text-align: center;
+    font-weight: 800;
+    margin: 10px auto;
+    padding: 15px;
+    background-color: var(--border-color);
+    cursor: pointer;
+    width: 50%;
+}
+
+.custom-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: rgb(221, 174, 221);
+  font-size: 16px;
+  width: 100%;
+}
+
+.custom-select:hover,
+.custom-select:focus {
+  border-color: #999;
+}
+
+.custom-select option {
+  padding: 10px;
+}
+
+.login {
+    padding: 15px;
+    background-color: var(--border-color);
+    text-align: center;
+    font-weight: 800;
+}
+
+.login:hover {
+    --border-color: #666;
+    color: aliceblue;
+}
+
+.title {
+    --border-color: thistle;
+    background-color: var(--border-color);
+    color: #666;
+    text-align: center;
+    font-weight: 800;
+    margin: 10px auto;
+}
+
+.title > p {
+    padding: 15px;
+    font-size: 20px;
+}
+
+#repos-container {
+    min-height: 70vh;
+    position: relative;
+}
+
+.no-repo {
+    position: absolute;
+    width: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.repo {
+    --border-color: thistle;
+    background-color: var(--border-color);
+    padding: 15px;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.repo-link {
+    text-decoration: none;
+    color: #666;
+}
+
+.repo-link:hover {
+    color: aliceblue;
+}
+
+.repo-link > div {
+    padding: 10px;
+    background-color: var(--border-color);
+}
+
+.repo-link > div:hover {
+    --border-color: #666;
+}
+
+.caught-up {
+    --border-color: thistle;
+    padding: 15px;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 800;
+    margin: 10px auto;
+    color: #000c83;
+}
+
+#repo-summary {
+    --border-color: thistle;
+    background-color: var(--border-color);
+    padding: 15px;
+    text-align: justify;
+    cursor: pointer;
+    font-weight: 800;
+    margin: 10px auto;
+}

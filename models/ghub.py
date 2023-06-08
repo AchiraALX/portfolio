@@ -40,6 +40,7 @@ class Ghub(Base):
         nullable=False,
         default=datetime.utcnow()
     )
+    token: Mapped[str] = mapped_column(String(1000), nullable=False)
 
     # Foreign Keys
     owner_id: Mapped[int] = mapped_column(

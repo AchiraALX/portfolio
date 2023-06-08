@@ -74,46 +74,46 @@ class User(Base):
         Blog,
         back_populates='author',
         uselist=True,
-        cascade='all, delete'
+        cascade='all, delete-orphan'
     )
     heats = relationship(
-        Heat, back_populates='author', uselist=True, cascade='all, delete'
+        Heat, back_populates='author', uselist=True, cascade='all, delete-orphan'
     )
     blog_comments = relationship(
         BlogComment,
         back_populates='author',
         uselist=True,
-        cascade='all, delete'
+        cascade='all, delete-orphan'
     )
     heat_comments = relationship(
         HeatComment,
         back_populates='author',
         uselist=True,
-        cascade='all, delete'
+        cascade='all, delete-orphan'
     )
     tasks = relationship(
         Task,
         back_populates='task_assignee',
         uselist=True,
-        cascade='all, delete'
+        cascade='all, delete-orphan'
     )
     task_comments = relationship(
         TaskComment,
         back_populates='author',
         uselist=True,
-        cascade='all, delete'
+        cascade='all, delete-orphan'
     )
     repos = relationship(
         Repo,
         back_populates='author_id',
         uselist=True,
-        cascade='all, delete'
+        cascade='all, delete-orphan'
     )
     ghub = relationship(
         Ghub,
         back_populates='owner_info',
         uselist=True,
-        cascade='all, delete'
+        cascade='all, delete-orphan'
     )
 
     # Representation

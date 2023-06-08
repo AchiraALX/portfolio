@@ -3,6 +3,7 @@
 Runs the flask app
 """
 
+from delete import Delete
 import contextlib
 from flask import (
     Flask,
@@ -169,10 +170,26 @@ def projects(name={}):
     """Projects
     """
     if name:
-        repo = get_repo_details(name)
-        return render_template('projects.html', title="Project", repo=repo)
+        try:
+            repo = get_repo_details(name)
+            return render_template('projects.html', title="Project", repo=repo)
 
-    return render_template('projects.html', title="Projects")
+        except Exception as e:
+            flash(f"Error {e!r}")
+
+    if request.args.get('repo_name'):
+        try:
+            repo = get_repo_details(request.args.get('repo_name'))
+            return render_template('projects.html', title="Project", repo=repo)
+
+        except Exception as e:
+            flash(f"Error {e!r}")
+
+    repos = None
+    if current_user.is_authenticated:
+        repos = get_user_repos(current_user.user['id'])
+        print(repos)
+    return render_template('projects.html', title="Projects", repos=repos)
 
 
 @app.route('/wellness', strict_slashes=False, methods=['POST', 'GET'])
@@ -562,7 +579,7 @@ def blog_comments():
             return redirect(url_for('blogs'))
 
         available_comment = get_blog_comments(id)
-
+        available_comment.sort(key=lambda x: x['commentDate'], reverse=True)
         return available_comment
 
     return redirect(url_for('blogs'))
@@ -577,12 +594,15 @@ def article_comments():
     if request.method == 'POST':
         if current_user.is_authenticated:
             comment = request.form['comment']
-            article = request.form['article']
+            print(comment)
+            heat = request.form['article']
+            print(heat)
             author = current_user.username
+            print(author)
 
             details = {
                 'comment': comment,
-                'article': article,
+                'heat': heat,
                 'author': author
             }
 
@@ -597,7 +617,7 @@ def article_comments():
 
             add = Add()
             try:
-                add.add_article_comment(**details)
+                add.add_heat_comment(**details)
                 flash("Comment added")
                 return redirect(url_for('wellness'))
             except Exception as e:
@@ -616,7 +636,6 @@ def article_comments():
             return redirect(url_for('wellness'))
 
         available_comment = get_article_comments(id)
-
         return available_comment
 
     return redirect(url_for('wellness'))
@@ -627,6 +646,280 @@ def handle_not_found(error):
     """
 
     return render_template('404.html', title="404")
+
+@app.errorhandler(400)
+def handle_bad_request(error):
+    """Handle 400
+    """
+
+    return render_template('400.html', title="400")
+
+# Delete a user
+@app.route('/delete_user', strict_slashes=False, methods=['POST', 'GET'])
+def delete_user():
+    """Delete a user
+    """
+    if not request.args.get('username'):
+        flash("No specified user")
+        if not is_logged_in():
+            return redirect(url_for('login'))
+        return redirect(url_for('index'))
+
+    if request.args.get('username'):
+        if current_user.is_authenticated:
+            user = query_user(current_user.username)
+            if user['id'] == current_user.user['id']:
+                delete = Delete()
+                try:
+                    delete.delete_user(user['id'])
+                    flash("User deleted")
+                    return redirect(url_for('logout'))
+                except Exception as e:
+                    flash("Error while deleting user")
+                    return redirect(url_for('index'))
+            else:
+                flash("You can only delete your account")
+                return redirect(url_for('index'))
+        else:
+            flash("Login to delete your account")
+            return redirect(url_for('login'))
+
+    return redirect(url_for('logout'))
+
+
+# Delete a task if the ownerId is the current user
+@app.route('/delete_task', strict_slashes=False, methods=['POST', 'GET'])
+def delete_task():
+    """Deletes a task if the ownerId is the current user
+    """
+    if request.args.get('id'):
+        try:
+            id = int(request.args.get('id'))
+        except ValueError:
+            flash("Bad argument")
+            abort(400)
+
+        if current_user.is_authenticated:
+            try:
+                task = get_task(int(id))
+            except ValueError:
+                flash("Broken URL. Aborted")
+                abort(404)
+
+            if task['assigneeId'] == current_user.user['id']:
+                delete = Delete()
+                try:
+                    delete.delete_task(int(id))
+                    flash("Task deleted")
+                    return redirect(url_for('tasks'))
+                except Exception as e:
+                    flash("Error while deleting task")
+                    return redirect(url_for('tasks'))
+            else:
+                flash("You are not authorized to perform this action")
+                return redirect(url_for('tasks'))
+        else:
+            flash("Login to delete task")
+            return redirect(url_for('login'))
+
+    else:
+        flash("No task specified")
+
+    return redirect(url_for('tasks'))
+
+
+# Delete a blog if the ownerId is the current user
+@app.route('/delete_blog', strict_slashes=False, methods=['POST', 'GET'])
+def delete_blog():
+    """Deletes a blog if the ownerId is the current user
+    """
+    if request.args.get('id'):
+        try:
+            id = int(request.args.get('id'))
+        except ValueError:
+            flash("Bad argument")
+            abort(400)
+
+        if current_user.is_authenticated:
+            try:
+                blog = get_blog(id)
+            except ValueError:
+                flash("Broken URL. Aborted")
+                abort(404)
+
+            if blog['authorId'] == current_user.user['id']:
+                delete = Delete()
+                try:
+                    delete.delete_blog(id)
+                    flash("Blog deleted")
+                    return redirect(url_for('blogs'))
+                except Exception as e:
+                    flash("Error while deleting blog")
+                    return redirect(url_for('blogs'))
+            else:
+                flash("You are not authorized to perform this action")
+                return redirect(url_for('blogs'))
+        else:
+            flash("Login to delete blog")
+            return redirect(url_for('login'))
+    else:
+        flash("No blog specified")
+
+    return redirect(url_for('blogs'))
+
+
+# Delete a heat if the ownerId is the current user
+@app.route('/delete_heat', strict_slashes=False, methods=['POST', 'GET'])
+def delete_heat():
+    """Deletes a heat if the ownerId is the current user
+    """
+    if request.args.get('id'):
+        try:
+            id = int(request.args.get('id'))
+        except ValueError:
+            flash("Bad argument")
+            abort(400)
+
+        if current_user.is_authenticated:
+            try:
+                heat = get_article(int(id))
+            except ValueError:
+                flash("Broken URL. Aborted")
+                abort(404)
+
+            if heat['ownerId'] == current_user.user['id']:
+                delete = Delete()
+                try:
+                    delete.delete_heat(int(id))
+                    flash("Heat deleted")
+                    return redirect(url_for('wellness'))
+                except Exception as e:
+                    flash("Error while deleting heat")
+                    return redirect(url_for('heats'))
+            else:
+                flash("You are not authorized to perform this action")
+                return redirect(url_for('wellness'))
+        else:
+            flash("Login to delete heat")
+            return redirect(url_for('login'))
+
+    return redirect(url_for('wellness'))
+
+
+# Delete a comment if the ownerId is the current user
+@app.route('/delete_blog_comment', strict_slashes=False, methods=['POST', 'GET'])
+def delete_comment():
+    """Deletes a comment if the ownerId is the current user
+    """
+    if request.args.get('id'):
+        try:
+            id = int(request.args.get('id'))
+        except ValueError:
+            flash("Bad argument")
+            abort(400)
+
+        if current_user.is_authenticated:
+            try:
+                comment = get_blog_comment(int(id))
+
+            except Exception as e:
+                flash("Broken URL. Aborted")
+                abort(404)
+
+            if comment['authorId'] == current_user.user['id']:
+                delete = Delete()
+                try:
+                    delete.delete_blog_comment(int(id))
+                    flash("Comment deleted")
+                    return redirect(url_for('blogs'))
+                except Exception as e:
+                    flash("Error while deleting comment")
+                    return redirect(url_for('blogs'))
+            else:
+                flash("You are not authorized to perform this action")
+                return redirect(url_for('blogs'))
+        else:
+            flash("Login to delete comment")
+            return redirect(url_for('login'))
+
+    return redirect(url_for('blogs'))
+
+
+# Delete a task comment if the authorId is the current user
+@app.route('/delete_task_comment', strict_slashes=False, methods=['POST', 'GET'])
+def delete_task_comment():
+    """Deletes a task comment if the authorId is the current user
+    """
+    if request.args.get('id'):
+        try:
+            id = int(request.args.get('id'))
+        except ValueError:
+            flash("Bad argument")
+            abort(400)
+
+        if current_user.is_authenticated:
+            try:
+                comment = get_task_comment(id)
+
+            except Exception as e:
+                flash("Broken URL. Aborted")
+                abort(404)
+
+            if comment['authorId'] == current_user.user['id']:
+                delete = Delete()
+                try:
+                    delete.delete_task_comment(int(id))
+                    flash("Comment deleted")
+                    return redirect(url_for('tasks'))
+                except Exception as e:
+                    flash("Error while deleting comment")
+                    return redirect(url_for('tasks'))
+            else:
+                flash("You are not authorized to perform this action")
+                return redirect(url_for('tasks'))
+        else:
+            flash("Login to delete comment")
+            return redirect(url_for('login'))
+
+    return redirect(url_for('tasks'))
+
+# Delete a heat comment if the authorId is the current user
+@app.route('/delete_heat_comment', strict_slashes=False, methods=['POST', 'GET'])
+def delete_heat_comment():
+    """Deletes a heat comment if the authorId is the current user
+    """
+    if request.args.get('id'):
+        try:
+            id = int(request.args.get('id'))
+        except ValueError:
+            flash("Bad argument")
+            abort(400)
+
+        if current_user.is_authenticated:
+            try:
+                comment = get_article_comment(id)
+
+            except Exception as e:
+                flash("Broken URL. Aborted")
+                abort(404)
+
+            if comment['authorId'] == current_user.user['id']:
+                delete = Delete()
+                try:
+                    delete.delete_heat_comment(int(id))
+                    flash("Comment deleted")
+                    return redirect(url_for('wellness'))
+                except Exception as e:
+                    flash("Error while deleting comment")
+                    return redirect(url_for('wellness'))
+            else:
+                flash("You are not authorized to perform this action")
+                return redirect(url_for('wellness'))
+        else:
+            flash("Login to delete comment")
+            return redirect(url_for('login'))
+
+    return redirect(url_for('wellness'))
 
 # Deal with messages
 def get_message_and_category(
@@ -652,7 +945,7 @@ def log_user_in(user, password, username):
         if user['password'] == password and user['username'] == username:
             login_user(User(username))
             flash('You were successfully logged in')
-            return redirect('/profile')
+            return redirect(url_for('index'))
         elif user['password'] != password:
             flash('Invalid password')
 
@@ -666,6 +959,9 @@ def log_user_in(user, password, username):
         return redirect('/register')
 
 
+# Return if the user is logged in
+def is_logged_in():
+    return current_user.is_authenticated
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
