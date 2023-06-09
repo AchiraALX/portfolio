@@ -14,7 +14,7 @@ with open(file_dir) as f:
 client_id = admin_data["client_id"]
 client_secret = admin_data["client_secret"]
 token = admin_data["token"]
-redirect_uri = "http://127.0.0.1:8000"
+redirect_uri = "http://localhost:5000"
 g = Github(token)
 
 scope = "user:email,repo"

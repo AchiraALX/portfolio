@@ -83,11 +83,15 @@ def index():
                 'gender': gender
             }
 
+            flash(data)
+
             user = query_user(username)
 
             if user:
+                print('User exists login')
                 log_user_in(user, password, username)
             else:
+                print('User does not exist sign up')
                 sign_up(**details)
         except Exception as e:
             pass
@@ -164,11 +168,17 @@ def blogs():
     return render_template('blogs.html', title="Blogs", blogs=data)
 
 
-@app.route('/projects', strict_slashes=False)
+@app.route('/projects', strict_slashes=False, methods=['GET', 'POST'])
 @app.route('/projects/<name>', strict_slashes=False)
 def projects(name={}):
     """Projects
     """
+
+    user = None
+    if current_user.is_authenticated:
+        if query_user(current_user.username):
+            user = query_user(current_user.username)
+
     if name:
         try:
             repo = get_repo_details(name)
@@ -189,7 +199,7 @@ def projects(name={}):
     if current_user.is_authenticated:
         repos = get_user_repos(current_user.user['id'])
         print(repos)
-    return render_template('projects.html', title="Projects", repos=repos)
+    return render_template('projects.html', title="Projects", repos=repos, user=user)
 
 
 @app.route('/wellness', strict_slashes=False, methods=['POST', 'GET'])
@@ -964,5 +974,5 @@ def is_logged_in():
     return current_user.is_authenticated
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8000))
-    app.run(host='0.0.0.0', port=8000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=5000)

@@ -2,8 +2,25 @@
 
 const theParent = document.querySelector('.project-form')
 const selectRepo = document.querySelector('#select-repo');
-const viewRepo = document.querySelector('#view-repo');
 const projectForm = document.querySelector('.project-form');
+const caughtUp = document.querySelectorAll('.caught-up');
+
+// Add an event listener to .title to redirect to previous page
+const myTitle = document.querySelector(".title");
+myTitle.style.cursor = "pointer";
+myTitle.addEventListener("click", () => {
+    window.location.href = "/projects";
+});
+
+
+// Hide the caught up message if caughtUp is not null
+if (caughtUp.length === 1) {
+    caughtUp.forEach((message) => {
+        message.addEventListener('click', () => {
+            projectForm.style.bottom = "0%";
+        });
+    });
+}
 
 projectForm.addEventListener('click', (event)=>{
     if (event.target == projectForm) {
@@ -11,34 +28,39 @@ projectForm.addEventListener('click', (event)=>{
     }
 });
 
-viewRepo.addEventListener('click', () => {
-    projectForm.style.bottom = "0px";
-});
+// Check if the url ends with projects
+if (window.location.href.endsWith("projects")) {
+    const repoName = document.querySelectorAll('.repo-name');
+    const viewRepo = document.querySelector('#view-repo');
+    repoName.forEach((repo) => {
+        repo.parentElement.addEventListener('click', () => {
+            // redirect to the repo page
+            const repo_url = "/projects?" + encodeURIComponent(repo.innerText);
+            window.location.href = repo_url;
+        });
+    });
+
+    viewRepo.addEventListener('click', () => {
+        projectForm.style.bottom = "0px";
+    });
+}
 
 document.querySelector('#repo_form').addEventListener('submit', (e) => {
     e.preventDefault();
 
     const repo_names = document.querySelector('#repository_name').value;
     const repo_url = "/projects/" + encodeURIComponent(repo_names);
-    window.location.href = repo_url;
+    alert(repo_url);
+    alert(document.querySelector('#repo_form').method)
+    setTimeout(() => {
+        window.location.href = repo_url;
+    }, 1000);
 
     projectForm.style.bottom = "-200%";
 });
 
 try {
     const myList = document.querySelector("#files");
-    const languages = document.querySelector("#languages");
-
-    let myLangs = languages.innerText.split(",");
-    for (lang of myLangs) {
-        const num = lang.split(":")[1].trim();
-        try {
-            num = parseInt(num);
-            alert("Convertible");
-        } catch {
-            alert("Not convertible");
-        }
-    }
 
     const myFiles = myList.innerText.split(",");
     myList.innerHTML = "<h3>Files</h3>";
@@ -80,6 +102,15 @@ try {
     console.log("No files found");
 }
 
+// Confirm the the url does not end with projects
+if (!window.location.href.endsWith("projects") && caughtUp.length === 0) {
+    const markedText = document.querySelector("#repo-readme").innerText;
+    const htmlText = convert_markdown(markedText);
+    document.querySelector("#repo-readme").innerHTML = htmlText;
+
+    alert(htmlText)
+};
+
 function extension(text) {
     const ext = text.split(".")[1];
     return ext;
@@ -92,4 +123,11 @@ function create_file_label(text) {
     label.classList.add("oct");
 
     return label;
+}
+
+// Convert the markDown to HTML using showdown
+function convert_markdown(text) {
+    const converter = new showdown.Converter();
+    const html = converter.makeHtml(text);
+    return html;
 }

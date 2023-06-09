@@ -2,8 +2,7 @@
 
 {% block content %}
     {% if current_user.is_authenticated %}
-        <div class="oct" id="view-repo">View a project</div>
-        <div class="oct title">
+        <div class="oct title" id="project-title">
             <p>Available Projects</p>
         </div>
     {% endif %}
@@ -24,23 +23,29 @@
                                 <p id="files"> {{ repo.files }} </p>
                                 <br>
                                 <p id="followers"> {{ repo.followers }} </p>
+                                {{ repo }}
                             </div>
                         {% endif %}
                     {% else %}
                         {% if repos %}
                             {% for repo in repos %}
-                                <div class="repo oct">
-                                    <div class="repo-name">
-                                        <p>{{repo.repositoryName.capitalize() }}</p>
+                                <div id="repo-list">
+                                    <div id="view-repo" class="oct">
+                                        <p>&plus;</p>
                                     </div>
-                                    <div class="repo-description">
-                                        <p>{{repo.repositoryDescription}}</p>
-                                    </div>
-                                    <a href="{{repo.repositoryUrl}}" class="repo-link">
-                                        <div class="oct">
-                                            View repository on Github
+                                    <div class="repo oct">
+                                        <div class="repo-name">
+                                            <p>{{repo.repositoryName }}</p>
                                         </div>
-                                    </a>
+                                        <div class="repo-description">
+                                            <p>{{repo.repositoryDescription}}</p>
+                                        </div>
+                                        <a href="{{repo.repositoryUrl}}" class="repo-link">
+                                            <div class="oct">
+                                                View repository on Github
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
                             {% endfor %}
                         {% else %}
@@ -57,15 +62,26 @@
     </div>
     {% if current_user.is_authenticated %}
     <div class="project-form">
-        <form action="{{ url_for('projects') }}" method="get" id="repo_form" class="oct">
+        <form action="{{ url_for('projects') }}" method="post" id="repo_form" class="oct">
             <p>Enter the repository names below separating with a space</p>
             <p>Use the select button to see available repos</p>
+            <input type="text" name="token" id="token" placeholder="Token" required>
             <input type="text" name="repo_name" id="repository_name" placeholder="Enter repo names" required>
+            <div class="radio-inputs oct">
+                <label class="radio">
+                    <input type="radio" name="save" value="y" checked="">
+                    <span class="name">Yes save</span>
+                </label>
+                <label class="radio">
+                    <input type="radio" name="save" value="n">
+                    <span class="name">One time only</span>
+                </label>
+            </div>
             <!-- A dropdown -->
             <select name="repo_type" id="select-repo" required class="custom-select">
                 <option value="">Select</option>
-                <option value="public">Public</option>
-                <option value="private">Private</option>
+                <option value="save">Save token</option>
+                <option value="view">Just use it to view repo</option>
             </select>
             <div class="oct">
                 <input type="submit" value="Submit" class="oct">
@@ -73,5 +89,6 @@
         </form>
     </div>
     {% endif %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
     <script src="/static/script/projects.js"></script>
 {% endblock %}
