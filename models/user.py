@@ -21,6 +21,7 @@ from .heat import Heat, HeatComment
 from .task import Task, TaskComment
 from .repo import Repo
 from .ghub import Ghub
+from .token import Token
 
 
 # Declare User class
@@ -115,7 +116,11 @@ class User(Base):
         uselist=True,
         cascade='all, delete-orphan'
     )
-
+    tokens = relationship(
+        Token,
+        back_populates='user_info',
+        cascade='all, delete-orphan'
+    )
     # Representation
     def __repr__(self) -> str:
         return \

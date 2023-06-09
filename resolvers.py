@@ -18,6 +18,7 @@ from models.blog import Blog, BlogComment
 from models.heat import Heat, HeatComment
 from models.repo import Repo
 from models.ghub import Ghub
+from models.token import Token
 import json
 
 
@@ -44,6 +45,7 @@ class UserType(ObjectType):
     task_comments = List(lambda: TaskCommentType)
     repos = List(lambda: RepoType)
     ghub = List(lambda: GhubType)
+    tokens = List(lambda: TokenType)
 
 
 # Define TaskType
@@ -167,6 +169,20 @@ class HeatCommentType(ObjectType):
     author_id = Int()
 
 
+# Declare the Token type
+class TokenType(ObjectType):
+    """TokenType class. Creates type for Token
+
+    Args:
+        ObjectType (Inherited): graphene ObjectType
+    """
+
+    id = Int()
+    token = String()
+    user_id = Int()
+
+
+# Declare the Query class
 class Query(ObjectType):
     """Query class
 
@@ -193,6 +209,7 @@ class Query(ObjectType):
     task_comments = List(TaskCommentType)
     blog_comments = List(BlogCommentType)
     heat_comments = List(HeatCommentType)
+    tokens = List(TokenType)
 
     def resolve_users(self, info):
         """resolve_users method. Resolves users query
@@ -234,6 +251,9 @@ class Query(ObjectType):
 
         # HeatComments filter by user id
         heat_comments = session.query(HeatComment).all()
+
+        # Tokens filter by user id
+        tokens = session.query(Token).all()
 
         users_list = [user.__dict__ for user in users]
 
@@ -285,6 +305,15 @@ class Query(ObjectType):
             ] = [
                 heat_comment.__dict__ for heat_comment in
                 heat_comments if heat_comment.author_id == user[
+                    'id'
+                ]
+            ]
+
+            user[
+                'tokens'
+            ] = [
+                token.__dict__ for token in
+                tokens if token.user_id == user[
                     'id'
                 ]
             ]
@@ -484,6 +513,19 @@ class Query(ObjectType):
 
         return heat_comments_list
 
+    # Resolve tokens
+    def resolve_tokens(self, info):
+        """Resolve tokens method. Resolves tokens query
+        """
+
+        ses = DBStorage().n_session()
+        tokens = ses.query(Token).all()
+        tokens_list = [token.__dict__ for token in tokens]
+
+        ses.close()
+
+        return tokens_list
+
 
 schema = Schema(query=Query)
 
@@ -558,6 +600,10 @@ def main(query: str = None) -> dict:
             ghub {
                 id
                 description
+            }
+            tokens {
+                id
+                token
             }
         }
     }
@@ -656,6 +702,20 @@ def main(query: str = None) -> dict:
     {
         users {
             username
+            tokens {
+                id
+                token
+            }
+        }
+    }
+    '''
+
+    tokens = '''
+    {
+        tokens {
+            id
+            token
+            userId
         }
     }
     '''
@@ -670,7 +730,8 @@ def main(query: str = None) -> dict:
         'heat_comments': heat_comments,
         'blog_comments': blog_comments,
         'task_comments': task_comments,
-        'usernames': usernames
+        'usernames': usernames,
+        'tokens': tokens
     }
 
     for key, value in query_list.items():
@@ -682,7 +743,7 @@ def main(query: str = None) -> dict:
 
 
 if __name__ == "__main__":
-    print(main('ghub'))
+    print(main('usernames'))
 
 
 #

@@ -11,6 +11,7 @@ from models.heat import Heat, HeatComment
 from models.repo import Repo
 from models.task import Task, TaskComment
 from models.user import User
+from models.token import Token
 
 
 class Add:
@@ -372,6 +373,32 @@ class Add:
         return self.unpack_and_add_to_db(
             details, HeatComment, 'heat comment'
         )
+
+    # Add token to database
+    def add_token(
+        self,
+        token: str = None,
+        user_info=None
+    ) -> Token:
+        """Insert a token into the database.
+
+        Keyword arguments:
+            token -- the token to insert
+            user_info -- the id of the user
+        """
+
+        details = {
+            'token': token,
+            'user_info': user_info
+        }
+
+        token = Token(**details)
+
+        try:
+            self.db.commit(token)
+
+        except Exception as e:
+            print(e)
 
     def add_comment(
         self,
@@ -766,7 +793,12 @@ def main(model: str = None, items: dict = None):
 
 if __name__ == '__main__':
     add = Add()
-    add.add_heat_comment()
+    user = add.get_user('achira')
+    token = {
+        'token': 'can be very new',
+        'user_info': user
+    }
+    print(add.add_token(**token))
 
 #
 # Copyright

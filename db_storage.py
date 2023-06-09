@@ -8,6 +8,7 @@ from models.task import Task, TaskComment
 from models.repo import Repo
 from models.user import User
 from models.ghub import Ghub
+from models.token import Token
 from sqlalchemy import create_engine, select, text
 from sqlalchemy.orm import Session
 from datetime import datetime
@@ -165,7 +166,16 @@ class DBStorage:
 
 if __name__ == "__main__":
     db = DBStorage()
-    print(db.__repr__())
+    user = db.n_session().query(User).filter_by(id=26).first()
+    token = Token(
+        token="alkjfhalsjkdfasd",
+        user_info=user
+    )
+
+    db.commit(token)
+    print(db.n_session().query(Token).all())
+
+
 
 
 #

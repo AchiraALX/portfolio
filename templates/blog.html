@@ -30,7 +30,7 @@
                 blog_comments(id, commentDiv)
 
                 function blog_comments(id, active_container) {
-                    fetch(`http://localhost:5000/blog_comments?id=${id}`)
+                    fetch(`http://localhost:8000/blog_comments?id=${id}`)
                         .then(response => response.json())
                         .then(data => {
                             console.log('Success:', data);

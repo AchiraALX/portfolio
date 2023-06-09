@@ -12,7 +12,8 @@ from models.base import Base
 from sqlalchemy import (
     ForeignKey,
     String,
-    DateTime
+    DateTime,
+    Text
 )
 from sqlalchemy.orm import (
     relationship,
@@ -39,7 +40,7 @@ class Blog(Base):
         nullable=False
     )
     blog_content: Mapped[str] = mapped_column(
-        String(100000),
+        Text(100000),
         nullable=False,
     )
     blog_published_date: Mapped[datetime] = mapped_column(
@@ -90,7 +91,7 @@ class BlogComment(Base):
 
     # Columns
     comment: Mapped[str] = mapped_column(
-        String(100000),
+        Text(100000),
         nullable=False
     )
     comment_date: Mapped[datetime] = mapped_column(

@@ -121,7 +121,7 @@ if (docTitle === 'wellness') {
 
             active_container.innerHTML = '<h2 class="comment-title"> Available Reactions </h2> <br>'
             // Get the comment data
-            fetch(`http://localhost:5000/article_comments?id=${id}`)
+            fetch(`http://localhost:8000/article_comments?id=${id}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
@@ -173,7 +173,7 @@ if (docTitle !== 'blogs' && docTitle !== 'wellness') {
 }
 
 function blog_comments(id, active_container) {
-    fetch(`http://localhost:5000/blog_comments?id=${id}`)
+    fetch(`http://localhost:8000/blog_comments?id=${id}`)
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
