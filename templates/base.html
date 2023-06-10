@@ -22,25 +22,22 @@
     <link rel="stylesheet" href="/static/style/index.css">
     <!-- Bootstrap JS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
-    <!-- fa font awesome -->
-    {% if title == 'Blogs' %}
-        <link rel="stylesheet" href="/static/style/blog.css">
-    {% endif %}
+    <link rel="stylesheet" href="/static/style/blog.css">
     {% if title == 'Projects' or title == 'Project' %}
         <!-- Css for project template -->
         <link rel="stylesheet" href="/static/style/projects.css">
     {% endif %}
-    <!-- CSS for login template -->
     {% if title == 'Login' or title == 'Register' or title == 'Home' %}
+        <!-- CSS for login template -->
         <link rel="stylesheet" href="/static/style/forms.css">
     {% endif %}
-    <!-- CSS for health articles template -->
     {% if title == 'Wellness' %}
+        <!-- CSS for health articles template -->
         <link rel="stylesheet" href="/static/style/health.css">
         <link rel="stylesheet" href="/static/style/blog.css">
     {% endif %}
-    <!-- CSS for profile template -->
     {% if current_user.is_authenticated %}
+        <!-- CSS for profile template -->
         {% if title == current_user.user.name %}
             <link rel="stylesheet" href="/static/style/profile.css">
         {% endif %}

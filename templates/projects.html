@@ -1,94 +1,91 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if current_user.is_authenticated %}
-        <div class="oct title" id="project-title">
-            <p>Available Projects</p>
-        </div>
-    {% endif %}
-    <div id="repos-container">
-        <div class="repo-holder">
-            <div>
-                {% if current_user.is_authenticated %}
-                    {% if repo %}
-                        {% if 'error' in repo %}
-                            <p class="caught-up no-repo oct">Error fetching the repo</p>
-                        {% else %}
-                            <div id="repo-summary" class="oct">
-                                <p id="repo-name">{{ repo.name }}</p>
-                                <p id="languages"> {{ repo.languages }} </p>
-                                <br>
-                                <p id="repo-readme" class="oct"> {{ repo.readme }} </p>
-                                <br>
-                                <p id="files"> {{ repo.files }} </p>
-                                <br>
-                                <p id="followers"> {{ repo.followers }} </p>
-                                {{ repo }}
-                            </div>
-                        {% endif %}
-                    {% else %}
-                        {% if repos %}
-                            {% for repo in repos %}
-                                <div id="repo-list">
-                                    <div id="view-repo" class="oct">
-                                        <p>&plus;</p>
-                                    </div>
-                                    <div class="repo oct">
-                                        <div class="repo-name">
-                                            <p>{{repo.repositoryName }}</p>
-                                        </div>
-                                        <div class="repo-description">
-                                            <p>{{repo.repositoryDescription}}</p>
-                                        </div>
-                                        <a href="{{repo.repositoryUrl}}" class="repo-link">
-                                            <div class="oct">
-                                                View repository on Github
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p class="caught-up oct no-repo">All caught up</p>
-                        {% endif %}
-                    {% endif %}
-                {% else %}
-                    <a href="{{ url_for('login') }}" id="no-repo">
-                        <p class="oct login">Log in to see your repos</p>
+{% if current_user.is_authenticated %}
+<div class="oct title" id="project-title">
+    <p>Available Projects</p>
+</div>
+{% endif %}
+<div id="repos-container">
+    <div class="repo-holder">
+        <div>
+            {% if current_user.is_authenticated %}
+            {% if repo %}
+            {% if 'error' in repo %}
+            <p class="caught-up no-repo oct">Error fetching the repo</p>
+            {% else %}
+            <div id="repo-summary" class="oct">
+                <p id="repo-name">{{ repo.name }}</p>
+                <p id="languages"> {{ repo.languages }} </p>
+                <br>
+                <p id="repo-readme" class="oct"> {{ repo.readme }} </p>
+                <br>
+                <p id="files"> {{ repo.files }} </p>
+                <br>
+                <p id="followers"> {{ repo.followers }} </p>
+                {{ repo }}
+            </div>
+            {% endif %}
+            {% else %}
+            {% if repos %}
+            {% if 'error' in repos %}
+            <p class="caught-up no-repo oct">Error fetching the repo</p>
+            {% endif %}
+            <div id="view-repo" class="oct">
+                <p>&plus;</p>
+            </div>
+            {% for repo in repos %}
+            <div id="repo-list">
+
+                <div class="repo oct">
+                    <div class="repo-name">
+                        <p>{{repo.repositoryName }}</p>
+                    </div>
+                    <div class="repo-description">
+                        <p>{{repo.repositoryDescription}}</p>
+                    </div>
+                    <a href="{{repo.repositoryUrl}}" class="repo-link">
+                        <div class="oct">
+                            View repository on Github
+                        </div>
                     </a>
-                {% endif %}
+                </div>
             </div>
+            {% endfor %}
+            {% else %}
+            <p class="caught-up oct no-repo">All caught up</p>
+            {% endif %}
+            {% endif %}
+            {% else %}
+            <a href="{{ url_for('login') }}" id="no-repo">
+                <p class="oct login">Log in to see your repos</p>
+            </a>
+            {% endif %}
         </div>
     </div>
-    {% if current_user.is_authenticated %}
-    <div class="project-form">
-        <form action="{{ url_for('projects') }}" method="post" id="repo_form" class="oct">
-            <p>Enter the repository names below separating with a space</p>
-            <p>Use the select button to see available repos</p>
-            <input type="text" name="token" id="token" placeholder="Token" required>
-            <input type="text" name="repo_name" id="repository_name" placeholder="Enter repo names" required>
-            <div class="radio-inputs oct">
-                <label class="radio">
-                    <input type="radio" name="save" value="y" checked="">
-                    <span class="name">Yes save</span>
-                </label>
-                <label class="radio">
-                    <input type="radio" name="save" value="n">
-                    <span class="name">One time only</span>
-                </label>
-            </div>
-            <!-- A dropdown -->
-            <select name="repo_type" id="select-repo" required class="custom-select">
-                <option value="">Select</option>
-                <option value="save">Save token</option>
-                <option value="view">Just use it to view repo</option>
-            </select>
-            <div class="oct">
-                <input type="submit" value="Submit" class="oct">
-            </div>
-        </form>
-    </div>
-    {% endif %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
-    <script src="/static/script/projects.js"></script>
+</div>
+{% if current_user.is_authenticated %}
+<div class="project-form">
+    <form action="{{ url_for('projects') }}" method="post" id="repo_form" class="oct">
+        <p>Enter the repository names below separating with a space</p>
+        <p>Use the select button to see available repos</p>
+        <input type="text" name="token" id="token" placeholder="Token" required>
+        <div class="radio-inputs oct">
+            <label class="radio">
+                <input type="radio" name="save" value='y' checked="">
+                <span class="name">Yes save</span>
+            </label>
+            <label class="radio">
+                <input type="radio" name='save' value="n">
+                <span class="name">One time only</span>
+            </label>
+        </div>
+        <div class="oct">
+            <input type="submit" value="Submit" class="oct">
+        </div>
+    </form>
+</div>
+{% endif %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
+<script src="/static/script/projects.js"></script>
 {% endblock %}

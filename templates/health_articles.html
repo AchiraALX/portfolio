@@ -60,9 +60,10 @@
             <div class="health_article oct">
                 <div>
                     <a href="{{ url_for('article', id=health_article.id) }}">
-                        <h4>{{health_article.title}}</h4>
+                        <h4>{{health_article.title}}
+                            <span class="date-time">{{health_article.publishedDate}}</span>
+                        </h4>
                     </a>
-                    <span class="date-time">{{health_article.publishedDate}}</span>
                 </div>
                 <div>
                     <p>{{health_article.content}}</p>

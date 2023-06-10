@@ -9,55 +9,137 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if blog %}
-        <div class="blog oct">
-                <div>
-                    <h2>{{blog.blogTitle}}   {{blog.blogPublishedDate}}</h2>
-                </div>
-                <div>
-                    <p>{{blog.blogContent}}</p>
-                </div>
-                <div class="obj-id">
-                    {{ blog.id }}
-                </div>
+{% if blog %}
+<div class="blog oct">
+    <div>
+        <h2>
+            <span>{{blog.blogTitle}} </span>
+            <span id="date">{{blog.blogPublishedDate}}</span>
+        </h2>
+    </div>
+    <div>
+        <p>{{blog.blogContent}}</p>
+    </div>
+    <div class="obj-id">
+        {{ blog.id }}
+    </div>
+    <div class="oct" id="reactions">Add comment</div>
+</div>
+<br>
+<div id="blogs-comment"></div>
+<div class="comment-parent">
+    <div class="oct inner-parent">
+        <div class="comments-div"></div>
+        {% if current_user.is_authenticated %}
+        <form action="{{ url_for('blog_comments') }}" method="post" class="comment-for oct">
+            <textarea name="comment" id="comment" placeholder="Type" required></textarea>
+            <input name="blog" class="id-value" type="hidden">
+            <input type="submit" value="Submit" class="oct">
+        </form>
+        {% else %}
+        <div class="oct comment-login">
+            <a href="{{ url_for('login') }}">Login to comment</a>
         </div>
-        <div id="blogs-comment"></div>
-        <script>
-            const obj_id = document.querySelector('.obj-id').innerText;
-            if (parseInt(obj_id) !== isNaN) {
-                const commentDiv = document.querySelector('#blogs-comment');
-                const id = parseInt(obj_id)
-                blog_comments(id, commentDiv)
+        {% endif %}
 
-                function blog_comments(id, active_container) {
-                    fetch(`http://localhost:5000/blog_comments?id=${id}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Success:', data);
-                            if (data.length <= 0) {
-                                active_container.innerHTML = '<h2 class="o-comment"> No comments yet </h2>'
-                            } else {
-                                for (let i = 0; i < data.length; i++) {
-                                    const element = data[i];
-                                    const comment = document.createElement('div')
-                                    comment.classList.add('commented')
-                                    comment.classList.add('oct')
-                                    comment.innerHTML = `
+    </div>
+</div>
+<script>
+    const obj_id = document.querySelector('.obj-id').innerText;
+    const blog_blog = document.querySelector('.blog');
+    const comment_parent = document.querySelector('.comment-parent');
+    const in_parent = document.querySelector('.inner-parent');
+    const comment_form = document.querySelector('.comment-for');
+    const id_value = document.querySelector('.id-value');
+    const date = document.querySelector('#date')
+    const reactions = document.querySelector('#reactions')
+
+    reactions.style.padding = "15px";
+    reactions.style.margin = "15px";
+    reactions.style.backgroundColor = "var(--border-color)";
+    reactions.style.textAlign = "center";
+    reactions.style.color = "honeydew";
+    reactions.style.cursor = "pointer";
+    reactions.style.fontWeight = "800";
+
+    reactions.addEventListener('click', (event) => {
+        commentParent.style.bottom = '0';
+        commentParent.style.height = '100%';
+        commentParent.style.paddingTop = "100px"
+
+        commentParent.addEventListener('click', (event) => {
+            if (event.target == commentParent) {
+                commentParent.style.bottom = '-210%';
+            }
+        });
+    });
+
+    date.innerText = new Date(date.innerText).toDateString();
+    date.style.fontWeight = "800";
+    date.style.color = "var(--border-color)";
+    date.style.fontSize = "60%";
+    date.style.fontStyle = "italic";
+
+    date.parentElement.style.textAlign = "right";
+    date.parentElement.style.color = "rebbeccapurple";
+
+    // get the date an change it to readable
+
+
+    blog_blog.addEventListener('click', (event) => {
+        comment_parent.style.bottom = '0';
+        comment_parent.style.height = '100%';
+        comment_parent.style.width = '100%';
+        comment_parent.style.paddingTop = '100px'
+
+        comment_parent.addEventListener('click', (event) => {
+            if (event.target == comment_parent) {
+                comment_parent.style.bottom = '-110%';
+            }
+        })
+    });
+
+    if (parseInt(obj_id) !== isNaN) {
+        const commentDiv = document.querySelector('#blogs-comment');
+        const id = parseInt(obj_id)
+        blog_comments(id, commentDiv);
+
+        comment_form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            id_value.value = id;
+            comment_form.submit();
+        })
+
+        function blog_comments(id, active_container) {
+            fetch(`http://localhost:5000/blog_comments?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    if (data.length <= 0) {
+                        active_container.innerHTML = '<h2> No comments yet </h2>'
+                    } else {
+                        active_container.innerHTML = "<h4 class='comment-title'> Available reactions </h4>"
+                        for (let i = 0; i < data.length; i++) {
+                            const element = data[i];
+                            const comment = document.createElement('div');
+                            comment.classList.add('commented');
+
+                            comment.innerHTML = `
                                                     <div class="comment-content oct">
                                                         <p>${element.comment}</p>
                                                     </div>
                                                 `
-                                    active_container.appendChild(comment)
-                                }
-                            }
-                        });
-                }
-            } else {
-                alert(`Could not resolve ${obj_id}`)
-            }
-        </script>
-    {% else %}
-        <h1>Bad blog!</h1>
-    {% endif %}
-    <script src="/static/script/comment.js"></script>
+                            active_container.appendChild(comment);
+                        }
+                    }
+                });
+        }
+    } else {
+        alert(`Could not resolve ${obj_id}`)
+    }
+</script>
+{% else %}
+<h1>Bad blog!</h1>
+{% endif %}
+<script src="/static/script/comment.js"></script>
 {% endblock %}

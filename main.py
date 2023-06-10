@@ -169,37 +169,61 @@ def blogs():
 
 
 @app.route('/projects', strict_slashes=False, methods=['GET', 'POST'])
-@app.route('/projects/<name>', strict_slashes=False)
-def projects(name={}):
+@app.route('/projects/<name>', strict_slashes=False, methods=['GET', 'POST'])
+def projects(name=None):
     """Projects
     """
-
-    user = None
     if current_user.is_authenticated:
-        if query_user(current_user.username):
-            user = query_user(current_user.username)
+        repos = None
+        user = query_user(current_user.username)
+        available_repos = get_user_repos(current_user.user['id'])
+        if request.method == 'POST':
+            user = user
+            token = request.form['token']
+            saving = request.form['save']
 
-    if name:
-        try:
-            repo = get_repo_details(name)
-            return render_template('projects.html', title="Project", repo=repo)
+            details = {
+                'token': token,
+                'user_info': user
+            }
 
-        except Exception as e:
-            flash(f"Error {e!r}")
+            failed = []
+            for key, value in details.items():
+                if not value:
+                    failed.append(key)
 
-    if request.args.get('repo_name'):
-        try:
-            repo = get_repo_details(request.args.get('repo_name'))
-            return render_template('projects.html', title="Project", repo=repo)
+            if len(failed) > 0:
+                flash(f"Some values failed. {failed!r}")
 
-        except Exception as e:
-            flash(f"Error {e!r}")
+            else:
+                repos = git_all_repos(token)
+                if 'error' in repos:
+                    flash(repos['error'])
+                    return redirect(url_for('projects'))
 
-    repos = None
-    if current_user.is_authenticated:
-        repos = get_user_repos(current_user.user['id'])
-        print(repos)
-    return render_template('projects.html', title="Projects", repos=repos, user=user)
+                if saving == 'y':
+                    if not get_user_tokens(current_user.username, token):
+                        add = Add()
+                        user = add.get_user(current_user.username)
+                        token = {
+                            'token': token,
+                            'user_info': user
+                        }
+                        add.add_token(**token)
+
+                return render_template(
+                    'projects.html',
+                    title="Projects",
+                    repos=repos,
+                )
+
+        return render_template(
+            'projects.html',
+            title="Projects",
+            repos=available_repos
+        )
+
+    return render_template('projects.html', title="Projects")
 
 
 @app.route('/wellness', strict_slashes=False, methods=['POST', 'GET'])
@@ -461,7 +485,7 @@ def ghubs_repos(num=3):
         except ValueError:
             return redirect(url_for('profile'))
 
-        repos = get_repos(current_user.user['id'])[:num]
+        repos = get_user_repos(current_user.user['id'])[:num]
         ghubs = get_ghub(current_user.user['id'])[:num]
 
         data = {
@@ -566,16 +590,16 @@ def blog_comments():
 
             if failed:
                 flash(f"Fill in the required fields{failed!r}")
-                return redirect(url_for('blogs'))
+                return redirect(request.referrer)
 
             add = Add()
             try:
                 add.add_blog_comment(**details)
                 flash("Comment added")
-                return redirect(url_for('blogs'))
+                return redirect(request.referrer)
             except Exception as e:
                 flash("Error while adding comment")
-                return redirect(url_for('blogs'))
+                return redirect(request.referrer)
         else:
             flash("Login to comment")
             return redirect(url_for('login'))
@@ -623,16 +647,16 @@ def article_comments():
 
             if failed:
                 flash(f"Fill in the required fields{failed!r}")
-                return redirect(url_for('wellness'))
+                return redirect(request.referrer)
 
             add = Add()
             try:
                 add.add_heat_comment(**details)
                 flash("Comment added")
-                return redirect(url_for('wellness'))
+                return redirect(request.referrer)
             except Exception as e:
                 flash("Error while adding comment")
-                return redirect(url_for('wellness'))
+                return redirect(request.referrer)
         else:
             flash("Login to comment")
             return redirect(url_for('login'))
@@ -958,12 +982,16 @@ def log_user_in(user, password, username):
             return redirect(url_for('index'))
         elif user['password'] != password:
             flash('Invalid password')
+            return redirect(url_for('login'))
 
         elif user['username'] != username:
             flash('Invalid username')
+            return redirect(url_for('login'))
 
         else:
             flash('Invalid username and password')
+
+            return redirect(url_for('login'))
     else:
         flash("User doesn't exist")
         return redirect('/register')

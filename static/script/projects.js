@@ -40,22 +40,18 @@ if (window.location.href.endsWith("projects")) {
         });
     });
 
-    viewRepo.addEventListener('click', () => {
-        projectForm.style.bottom = "0px";
-    });
+    try {
+        viewRepo.addEventListener('click', () => {
+            projectForm.style.bottom = "0px";
+        });
+    } catch (e) {}
 }
 
-document.querySelector('#repo_form').addEventListener('submit', (e) => {
+const myForm = document.querySelector('#repo_form');
+
+myForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    const repo_names = document.querySelector('#repository_name').value;
-    const repo_url = "/projects/" + encodeURIComponent(repo_names);
-    alert(repo_url);
-    alert(document.querySelector('#repo_form').method)
-    setTimeout(() => {
-        window.location.href = repo_url;
-    }, 1000);
-
+    myForm.submit();
     projectForm.style.bottom = "-200%";
 });
 

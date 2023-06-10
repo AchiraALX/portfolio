@@ -743,7 +743,7 @@ def main(query: str = None) -> dict:
 
 
 if __name__ == "__main__":
-    print(main('usernames'))
+    print(main('users')['users'])
 
 
 #

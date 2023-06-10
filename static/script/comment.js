@@ -14,13 +14,10 @@ for (let i = 0; i < date_time.length; i++) {
     const date = new Date(element.innerText)
     element.innerText = date.toDateString()
 
-    // Style it absolute to the right-top
-    element.style.position = 'absolute'
-    element.style.right = '0'
-    element.style.top = '0'
-
-    // Add oct class to it
-    element.classList.add('oct')
+    element.parentElement.parentElement.style.textDecoration = "none";
+    element.style.color = "rebeccapurple";
+    element.style.fontWeight = "800";
+    element.style.fontSize = "70%";
 
     // Margin 15px and padding 5px
     element.style.margin = '15px'
@@ -134,10 +131,10 @@ if (docTitle === 'wellness') {
                             comment.classList.add('commented')
                             comment.classList.add('oct')
                             comment.innerHTML = `
-                        <div class="comment-content oct">
-                        <p>${element.comment}</p>
-                        </div>
-                        `
+                                <div class="comment-content oct">
+                                <p>${element.comment}</p>
+                                </div>
+                            `
                             active_container.appendChild(comment)
                         }
                     }
@@ -163,13 +160,6 @@ if (docTitle === 'wellness') {
         });
     }
 
-}
-
-if (docTitle !== 'blogs' && docTitle !== 'wellness') {
-    const parent = document.getElementById('blogs-comment');
-    const id = parseInt(document.getElementById('id-value').value)
-
-    blog_comments(id, parent)
 }
 
 function blog_comments(id, active_container) {

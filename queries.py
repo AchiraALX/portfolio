@@ -2,6 +2,8 @@
 """Queries"""
 
 from resolvers import *
+from add import Add
+from models.token import Token
 
 users = main("users")['users']
 
@@ -18,6 +20,21 @@ def query_user(username: str) -> dict:
     for user in users:
         if user['username'] == username:
             return user
+
+    return None
+
+
+# Get user_tokens from database
+def get_user_tokens(username: str, tk: str) -> dict:
+    """Get user tokens
+    """
+
+    tokens = query_user(username)['tokens']
+
+    for token in tokens:
+        for key, value in token.items():
+            if value == tk:
+                return token
 
     return None
 
@@ -74,21 +91,6 @@ def get_ghub(id):
     return hubs
 
 
-# Get all repos matching id
-def get_repos(id):
-    """Fetch a single repo
-    """
-
-    repos = main('repos')['repos']
-    # List for the repos
-    repositories = []
-
-    for repo in repos:
-        if repo['ownerId'] == id:
-            repositories.append(repo)
-
-    return repositories
-
 # Get comment per specified blog id
 def get_blog_comments(id):
     """Get comment that belong to blog with id equal to id
@@ -137,6 +139,8 @@ def get_user_repos(id):
 
     return repos_available
 
+print(get_user_repos(26))
+
 # Get a single blog comment
 def get_blog_comment(id):
     """Get a single blog comment
@@ -181,8 +185,6 @@ def get_task_comment(id):
             return comment
 
     return None
-
-print(get_blog(18))
 
 
 #

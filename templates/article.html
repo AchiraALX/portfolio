@@ -9,19 +9,133 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if article %}
-        <div class="health_article oct">
-                <div>
-                    <h2>{{article.title}}   {{article.PublishedDate}}</h2>
-                </div>
-                <div>
-                    <p>{{article.content}}</p>
-                </div>
-                <div>
-                    {{ article.comments }}
-                </div>
+{% if article %}
+<div class="health_article oct">
+    <div>
+        <h2>{{article.title}}
+            <span class="date-time">{{article.publishedDate}}</span>
+        </h2>
+    </div>
+    <div>
+        <p>{{article.content}}</p>
+    </div>
+    <div class="obj-id oct obj-article">
+        {{ article.id }}
+    </div>
+    <div class="oct" id="reactions">Add comment.</div>
+</div>
+<div id="article-comments"></div>
+<div class="comment-parent">
+    <div class="oct inner-parent">
+        <div class="comments-div"></div>
+        {% if current_user.is_authenticated %}
+        <form action="{{ url_for('article_comments') }}" method="post" class="comment-for oct">
+            <textarea name="comment" id="comment" placeholder="Type" required></textarea>
+            <input name="article" id="id-value" type="hidden">
+            <input type="submit" value="Submit" class="oct">
+        </form>
+        {% else %}
+        <div class="oct comment-login">
+            <a href="{{ url_for('login') }}">Login to comment</a>
         </div>
-    {% else %}
-        <h1>Bad article</h1>
-    {% endif %}
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+    const articleParent = document.querySelector('.health_article');
+    const commentParent = document.querySelector('.comment-parent');
+    const activeContainer = document.querySelector('.comments-div');
+    const idValue = document.querySelector(".obj-id")
+    const reactions = document.querySelector('#reactions')
+    const date = document.querySelector('.date-time');
+    const articleComments = document.querySelector('#article-comments');
+
+    articleComments.classList.add('oct');
+    articleComments.style.padding = "15px";
+
+    date.innerText = new Date(date.innerText).toDateString();
+    date.style.fontWeight = "800";
+    date.style.color = "var(--border-color)";
+    date.style.fontSize = "60%";
+    date.style.fontStyle = "italic";
+
+    date.parentElement.style.textAlign = "right";
+    date.parentElement.style.color = "rebbeccapurple";
+
+    reactions.style.padding = "15px";
+    reactions.style.margin = "15px";
+    reactions.style.backgroundColor = "var(--border-color)";
+    reactions.style.textAlign = "center";
+    reactions.style.color = "honeydew";
+    reactions.style.cursor = "pointer";
+    reactions.style.fontWeight = "800";
+
+    reactions.addEventListener('click', (event) => {
+        commentParent.style.bottom = '0';
+        commentParent.style.height = '100%';
+        commentParent.style.paddingTop = "100px"
+
+        commentParent.addEventListener('click', (event) => {
+            if (event.target == commentParent) {
+                commentParent.style.bottom = '-210%';
+            }
+        });
+    });
+
+    articleParent.addEventListener('click', (event) => {
+        if (event.target == articleParent) {
+            commentParent.style.bottom = '0';
+            commentParent.style.height = '100%';
+            commentParent.style.paddingTop = "100px"
+
+            commentParent.addEventListener('click', (event) => {
+                if (event.target == commentParent) {
+                    commentParent.style.bottom = '-210%';
+                }
+            });
+        }
+
+        id = parseInt(idValue.innerText);
+
+        activeContainer.innerHTML = '<h2 class="comment-title"> Available Reactions </h2> <br>'
+
+        article_comment(id, activeContainer);
+
+        const idInput = document.querySelector('#id-value')
+        idInput.value = id
+    });
+
+    article_comment(parseInt(idValue.innerText), articleComments);
+
+    function article_comment(id, activeContainer) {
+        // Get the comment data
+        fetch(`http://localhost:5000/article_comments?id=${id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if (data.length <= 0) {
+                    activeContainer.innerHTML = '<h2 class="o-comment"> No comments yet </h2>'
+                } else {
+                    for (let i = 0; i < data.length; i++) {
+                        const element = data[i];
+                        const comment = document.createElement('div')
+                        comment.classList.add('commented')
+                        comment.classList.add('oct')
+                        comment.innerHTML = `
+                                <div class="comment-content oct">
+                                <p>${element.comment}</p>
+                                </div>
+                            `
+                        activeContainer.appendChild(comment)
+                    }
+                }
+            });
+    }
+
+</script>
+{% else %}
+<h1>Bad article</h1>
+{% endif %}
 {% endblock %}

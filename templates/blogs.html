@@ -59,9 +59,10 @@
         <div class="blog oct blog-parent">
             <div>
                 <a href="{{ url_for('blog', id=blog.id) }}">
-                    <h5>{{blog.blogTitle}} </h5>
+                    <h5>{{blog.blogTitle}}
+                        <span class="date-time">{{blog.blogPublishedDate}}</span>
+                    </h5>
                 </a>
-                <span class="date-time">{{blog.blogPublishedDate}}</span>
             </div>
             <div>
                 <p>{{blog.blogContent}}</p>

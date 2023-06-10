@@ -5,6 +5,7 @@ from github import Github
 import requests
 from urllib.parse import urlencode
 import json
+import time
 
 # GitHub OAuth app credentials
 file_dir = "/home/achira/Desktop/achira/token.json"
@@ -13,24 +14,26 @@ with open(file_dir) as f:
 
 client_id = admin_data["client_id"]
 client_secret = admin_data["client_secret"]
-token = admin_data["token"]
+app_id = admin_data["app_id"]
+app_secret = admin_data["app_secret"]
 redirect_uri = "http://localhost:5000"
-g = Github(token)
-
 scope = "user:email,repo"
 
+# Create a GitHub instance
+def github_instance(token):
+    """GitHub instance
 
-def get_auth_url():
-    """Get authorization url
+    Returns:
+        object: GitHub instance
     """
-    return 'https://github.com/login/oauth/authorize?' + urlencode({
-        'client_id': client_id,
-        'redirect_uri': redirect_uri,
-        'scope': scope
-    })
+    if token:
+        g = Github(token)
+    else:
+        g = Github()
 
+    return g
 
-def get_repo_details(name):
+def get_repo_details(token, name, username):
     """Get repo details
 
     Args:
@@ -40,8 +43,10 @@ def get_repo_details(name):
         dict: Repository details
     """
 
+    g = github_instance(token)
+
     try:
-        repo = g.get_repo(f"AchiraALX/{name}")
+        repo = g.get_repo(f"{username}/{name}")
         return {
             "name": repo.name,
             "description": repo.description,
@@ -56,6 +61,44 @@ def get_repo_details(name):
         return {
             "error": "Repository not found"
         }
+
+def git_all_repos(token):
+    """Get repos
+
+    Returns:
+        list: List of repos
+    """
+    g = github_instance(token)
+    user = g.get_user()
+
+    try:
+        repos = []
+        for repo in g.get_user().get_repos():
+            details = {
+                "repositoryName": repo.name,
+                "repositoryUrl": repo.html_url
+            }
+            repos.append(details)
+
+    except Exception as e:
+        return {
+            "error": "Invalid rprprpr"
+        }
+
+    return repos
+
+
+# Get GitHub authorization url
+def get_auth_url():
+    """Get authorization url
+    """
+    return 'https://github.com/login/oauth/authorize?' + urlencode({
+        'client_id': client_id,
+        'redirect_uri': redirect_uri,
+        'scope': scope
+    })
+
+
 
 # Using the code returned by the OAuth app
 def get_user_details(code):
