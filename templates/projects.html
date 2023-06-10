@@ -10,6 +10,7 @@
     <div class="repo-holder">
         <div>
             {% if current_user.is_authenticated %}
+            <div>{{current_user.user}}</div>
             {% if repo %}
             {% if 'error' in repo %}
             <p class="caught-up no-repo oct">Error fetching the repo</p>
@@ -34,24 +35,25 @@
             <div id="view-repo" class="oct">
                 <p>&plus;</p>
             </div>
-            {% for repo in repos %}
-            <div id="repo-list">
-
-                <div class="repo oct">
-                    <div class="repo-name">
-                        <p>{{repo.repositoryName }}</p>
-                    </div>
-                    <div class="repo-description">
-                        <p>{{repo.repositoryDescription}}</p>
-                    </div>
-                    <a href="{{repo.repositoryUrl}}" class="repo-link">
-                        <div class="oct">
-                            View repository on Github
+            <div id="list-repos">
+                {% for repo in repos %}
+                <div id="repo-list">
+                    <div class="repo oct">
+                        <div class="repo-name">
+                            <p>{{repo.repositoryName }}</p>
                         </div>
-                    </a>
+                        <div class="repo-description">
+                            <p>{{repo.repositoryDescription}}</p>
+                        </div>
+                        <a href="{{repo.repositoryUrl}}" class="repo-link">
+                            <div class="oct">
+                                View Repo
+                            </div>
+                        </a>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
             {% else %}
             <p class="caught-up oct no-repo">All caught up</p>
             {% endif %}
@@ -67,24 +69,67 @@
 {% if current_user.is_authenticated %}
 <div class="project-form">
     <form action="{{ url_for('projects') }}" method="post" id="repo_form" class="oct">
-        <p>Enter the repository names below separating with a space</p>
-        <p>Use the select button to see available repos</p>
-        <input type="text" name="token" id="token" placeholder="Token" required>
-        <div class="radio-inputs oct">
-            <label class="radio">
-                <input type="radio" name="save" value='y' checked="">
-                <span class="name">Yes save</span>
-            </label>
-            <label class="radio">
-                <input type="radio" name='save' value="n">
-                <span class="name">One time only</span>
-            </label>
+        <p>Paste your token or use the drop down to select</p>
+        <p>saved tokens</p>
+        <div id="new-token">
+            <div class="select-parent oct">
+                <input type="password" name="token" id="token" placeholder="Token">
+            </div>
+            <br>
+            <div class="radio-inputs oct select-parent" id="drop-down">
+                <label class="radio">
+                    <input type="radio" name="save" value='y' checked="">
+                    <span class="name">Yes save</span>
+                </label>
+                <label class="radio">
+                    <input type="radio" name='save' value="n">
+                    <span class="name">One time only</span>
+                </label>
+            </div>
         </div>
+        <div id="select-token">
+            <div class="oct select-parent">
+                <select name="token-select" id="token-drop" class="custom-select">
+                    {% if current_user.is_authenticated %}
+                    <option value="" selected>Use select.</option>
+                    {% for token in current_user.user.tokens %}
+                    <option value="{{ token.token }}">{{ token.token }}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+        <div id="switch" class="oct select-parent">Switch</div>
         <div class="oct">
             <input type="submit" value="Submit" class="oct">
         </div>
     </form>
 </div>
+<script>
+    const newToken = document.getElementById('new-token');
+    const selectToken = document.getElementById('select-token');
+    const switcher = document.getElementById('switch');
+    switcher.style.padding = '5px';
+    switcher.style.margin = '5px';
+
+    newToken.style.width = '100%';
+    newToken.style.backgroundColor = 'transparent';
+    selectToken.style.width = '100%';
+
+    newToken.style.display = 'none';
+
+    switcher.addEventListener('click', (event) => {
+        if (event.target === switcher) {
+            if (newToken.style.display === 'none') {
+                newToken.style.display = 'block';
+                selectToken.style.display = 'none';
+            } else {
+                newToken.style.display = 'none';
+                selectToken.style.display = 'block';
+            }
+        }
+    });
+</script>
 {% endif %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
 <script src="/static/script/projects.js"></script>

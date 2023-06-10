@@ -64,7 +64,6 @@ input {
     display: block;
     margin: 10px auto;
     background-color: rgb(221, 174, 221);
-    border-radius: 5px;
 }
 
 #repo-list {
@@ -109,11 +108,11 @@ input {
   -webkit-appearance: none;
   -moz-appearance: none;
   padding: 10px;
-  border-radius: 4px;
   border: none;
   background-color: rgb(221, 174, 221);
   font-size: 16px;
   width: 100%;
+  font-weight: 800;
 }
 
 .custom-select:hover,
@@ -264,4 +263,23 @@ input {
 .radio-inputs .radio input:checked + .name {
   background-color: #fff;
   font-weight: 600;
+}
+
+#list-repos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#list-repos > div {
+    flex: 1 1 auto;
+}
+
+.select-parent {
+    width: 100%;
+    cursor: pointer;
+}
+
+#tk > p {
+    padding: 10px;
 }

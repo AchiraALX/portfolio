@@ -182,6 +182,7 @@ def projects(name=None):
             token = request.form['token']
             saving = request.form['save']
 
+
             details = {
                 'token': token,
                 'user_info': user
@@ -686,7 +687,7 @@ def handle_bad_request(error):
     """Handle 400
     """
 
-    return render_template('400.html', title="400")
+    return render_template('400.html', title="400", error=error)
 
 # Delete a user
 @app.route('/delete_user', strict_slashes=False, methods=['POST', 'GET'])
