@@ -761,33 +761,35 @@ def main(model: str = None, items: dict = None):
         return None
 
     add = Add()
-    match model:
-        case 'user':
-            return add.add_user(**items)
+    if model == 'user':
+        return add.add_user(**items)
 
-        case 'task':
-            return add.add_task(**items)
+    elif model == 'task':
+        return add.add_task(**items)
 
-        case 'blog':
-            return add.add_blog(**items)
+    elif model == 'blog':
+        return add.add_blog(**items)
 
-        case 'repo':
-            return add.add_repo(**items)
+    elif model == 'repo':
+        return add.add_repo(**items)
 
-        case 'ghub':
-            return add.add_ghub(**items)
+    elif model == 'ghub':
+        return add.add_ghub(**items)
 
-        case 'heat':
-            return add.add_heat(**items)
+    elif model == 'heat':
+        return add.add_heat(**items)
 
-        case 'heatComment':
-            return add.add_heat_comment(**items)
+    elif model == 'heatComment':
+        return add.add_heat_comment(**items)
 
-        case 'blogComment':
-            return add.add_blog_comment(**items)
+    elif model == 'blogComment':
+        return add.add_blog_comment(**items)
 
-        case 'taskComment':
-            return add.add_task_comment(**items)
+    elif model == 'taskComment':
+        return add.add_task_comment(**items)
+
+    else:
+        pass
 
     return None
 
