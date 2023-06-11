@@ -343,15 +343,14 @@ def tasks(id=None):
         for task in all_tasks:
             if task['assigneeId'] == current_user.user['id']:
                 status = get_task_status(task['taskDueDate'])
-                match status:
-                    case 'Past Due':
-                        red_tasks.append(task)
+                if status == 'Past Due':
+                    red_tasks.append(task)
 
-                    case 'In Progress':
-                        yellow_tasks.append(task)
+                elif status == 'In Progress':
+                    yellow_tasks.append(task)
 
-                    case 'Future Task':
-                        blue_tasks.append(task)
+                else:
+                    blue_tasks.append(task)
                 if task['taskStatus'] != 'pending':
                     green_task.append(task)
         print(tasks)
