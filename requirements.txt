@@ -3,3 +3,4 @@ flask
 sqlalchemy
 Flask-Login
 graphene
+PyGithub

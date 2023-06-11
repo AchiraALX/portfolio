@@ -6,9 +6,13 @@ import requests
 from urllib.parse import urlencode
 import json
 import mistune
+import getpass
+
+# Get the local host name
+local = getpass.getuser()
 
 # GitHub OAuth app credentials
-file_dir = "/home/achira/Desktop/achira/token.json"
+file_dir = f"/home/{local}/token.json"
 with open(file_dir) as f:
     admin_data = json.load(f)
 
@@ -42,8 +46,6 @@ def get_username(token):
     username = g.get_user().login
 
     return username
-
-print(get_username(admin_data['token']))
 
 def get_repo_details(token, name, username):
     """Get repo details
