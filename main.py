@@ -23,6 +23,7 @@ from flask_login import (
     logout_user
 )
 from funcs import get_task_status
+from flask_cors import CORS
 from git_api import *
 from add import *
 import os
@@ -33,7 +34,10 @@ add = Add()
 app = Flask(__name__)
 login_manager = LoginManager(app)
 
-app.debug = True
+app.debug = False
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.secret_key = os.urandom(24)
 login_manager.init_app(app)
 message = None
