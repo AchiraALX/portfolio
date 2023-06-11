@@ -110,7 +110,7 @@
 
     function article_comment(id, activeContainer) {
         // Get the comment data
-        fetch(`http://localhost:5000/article_comments?id=${id}`)
+        fetch(`http://3.80.18.178:5000/article_comments?id=${id}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
