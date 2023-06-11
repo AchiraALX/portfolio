@@ -20,7 +20,7 @@ client_id = admin_data["client_id"]
 client_secret = admin_data["client_secret"]
 app_id = admin_data["app_id"]
 app_secret = admin_data["app_secret"]
-redirect_uri = "http://3.80.18.178:5000"
+redirect_uri = "https://www.blissprism.tech"
 scope = "user:email,repo"
 
 # Create a GitHub instance
@@ -195,3 +195,8 @@ def get_user_details(code):
 
     else:
         return f"Error: {response.status_code}"
+
+
+#
+# Jacob Achira
+#
