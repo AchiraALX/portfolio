@@ -9,6 +9,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<a href="{{ url_for('blogs') }}" id="back-to-blogs">
+    <div class="oct">
+        <h4>
+            <span>Back to blogs</span>
+        </h4>
+    </div>
+</a>
 {% if blog %}
 <div class="blog oct">
     <div>

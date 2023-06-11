@@ -35,7 +35,7 @@ if (window.location.href.endsWith("projects")) {
     repoName.forEach((repo) => {
         repo.parentElement.addEventListener('click', () => {
             // redirect to the repo page
-            const repo_url = "/projects?" + encodeURIComponent(repo.innerText);
+            const repo_url = "/projects?name=" + encodeURIComponent(repo.innerText);
             window.location.href = repo_url;
         });
     });
@@ -95,16 +95,39 @@ try {
     }
 
 } catch (e) {
-    console.log("No files found");
 }
 
 // Confirm the the url does not end with projects
 if (!window.location.href.endsWith("projects") && caughtUp.length === 0) {
-    const markedText = document.querySelector("#repo-readme").innerText;
-    const htmlText = convert_markdown(markedText);
-    document.querySelector("#repo-readme").innerHTML = htmlText;
+    const languages = document.getElementById("languages");
+    text = languages.innerText.replace(/'/g, '"');
+    text_translated = JSON.parse(text);
 
-    alert(htmlText)
+    let total = 0;
+    for (let key in text_translated) {
+        total += text_translated[key];
+    }
+
+    for (let key in text_translated) {
+        let percent = (text_translated[key] / total) * 100;
+        percent = percent.toFixed(2);
+        text_translated[key] = percent;
+    }
+
+    languages.innerHTML = ""
+    for (let value in text_translated) {
+        const div = document.createElement("div");
+        div.classList.add("language");
+        div.classList.add("oct");
+        div.classList.add(value);
+        div.style.width = text_translated[value] + "%";
+        div.style.margin = "0 15px";
+        div.innerText = value;
+        languages.appendChild(div);
+    }
+
+    const readMe = document.querySelector("#repo-readme");
+    readMe.innerHTML = `<h3>ReadMe</h3>${readMe.innerText}`;
 };
 
 function extension(text) {

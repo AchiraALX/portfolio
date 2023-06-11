@@ -142,3 +142,20 @@
 .comment-content > p {
     padding: 10px;
 }
+
+#back-to-blogs {
+    text-decoration: 1px dotted underline;
+}
+
+#back-to-blogs > div {
+    --border-color: #999;
+    background-color: var(--border-color);
+    padding: 10px;
+    margin: 10px 15px;
+    text-align: center;
+    color: honeydew;
+}
+
+#back-to-blogs > div:hover {
+    --border-color: #666;
+}

@@ -5,7 +5,7 @@ from github import Github
 import requests
 from urllib.parse import urlencode
 import json
-import time
+import mistune
 
 # GitHub OAuth app credentials
 file_dir = "/home/achira/Desktop/achira/token.json"
@@ -33,6 +33,18 @@ def github_instance(token):
 
     return g
 
+# Get the github username
+def get_username(token):
+    """Get username
+    """
+
+    g = github_instance(token)
+    username = g.get_user().login
+
+    return username
+
+print(get_username(admin_data['token']))
+
 def get_repo_details(token, name, username):
     """Get repo details
 
@@ -47,14 +59,17 @@ def get_repo_details(token, name, username):
 
     try:
         repo = g.get_repo(f"{username}/{name}")
+        read_me = repo.get_readme().decoded_content.decode()
+        read_me = mistune.markdown(read_me)
         return {
             "name": repo.name,
             "description": repo.description,
             "stars": repo.stargazers_count,
             "followers": repo.get_contributors().totalCount,
-            "readme": repo.get_readme().decoded_content.decode(),
+            "readme": read_me,
             "languages": repo.get_languages(),
-            "files": repo.get_contents("")
+            "files": repo.get_contents(""),
+            'url': repo.html_url,
         }
 
     except Exception as e:
@@ -82,11 +97,29 @@ def git_all_repos(token):
 
     except Exception as e:
         return {
-            "error": "Invalid rprprpr"
+            "error": "Invalid tk"
         }
 
     return repos
 
+# Get the special readme
+def get_special_repo(token):
+    """Fishes the user readme description
+    """
+
+    g = github_instance(token)
+    try:
+        for repo in g.get_user().get_repos():
+            if repo.name == get_username(token):
+                name = repo.name
+                username = get_username(token)
+                repo = get_repo_details(token, name, username)
+                return repo
+
+    except Exception as e:
+        return {
+            "error": "Invalid tk"
+        }
 
 # Get GitHub authorization url
 def get_auth_url():

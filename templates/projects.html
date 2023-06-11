@@ -10,31 +10,46 @@
     <div class="repo-holder">
         <div>
             {% if current_user.is_authenticated %}
-            <div>{{current_user.user}}</div>
             {% if repo %}
             {% if 'error' in repo %}
             <p class="caught-up no-repo oct">Error fetching the repo</p>
             {% else %}
             <div id="repo-summary" class="oct">
-                <p id="repo-name">{{ repo.name }}</p>
-                <p id="languages"> {{ repo.languages }} </p>
+                <p id="repo-name">
+                    <span style="font-weight: 800; font-size: 105%">{{ repo.name.capitalize() }}</span>
+                    <a href="{{ repo.url }}" id="head-link" target="_blank">
+                        View repo on github
+                    </a>
+                </p>
+                <br>
+                <div id="languages"> {{ repo.languages }} </div>
                 <br>
                 <p id="repo-readme" class="oct"> {{ repo.readme }} </p>
                 <br>
                 <p id="files"> {{ repo.files }} </p>
                 <br>
-                <p id="followers"> {{ repo.followers }} </p>
-                {{ repo }}
+                <p id="followers">Followers: {{ repo.followers }} </p>
             </div>
             {% endif %}
             {% else %}
+            {% if special %}
+                <div id="desc">
+                    {{ special.readme }}
+                </div>
+                <script>
+                    const desc = document.getElementById('desc');
+                    desc.innerHTML = desc.innerText;
+                </script>
+            {% endif %}
             {% if repos %}
             {% if 'error' in repos %}
             <p class="caught-up no-repo oct">Error fetching the repo</p>
             {% endif %}
+            <br>
             <div id="view-repo" class="oct">
                 <p>&plus;</p>
             </div>
+            <br>
             <div id="list-repos">
                 {% for repo in repos %}
                 <div id="repo-list">
@@ -45,11 +60,9 @@
                         <div class="repo-description">
                             <p>{{repo.repositoryDescription}}</p>
                         </div>
-                        <a href="{{repo.repositoryUrl}}" class="repo-link">
-                            <div class="oct">
-                                View Repo
-                            </div>
-                        </a>
+                        <div class="oct repo-link">
+                            View Repo
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -106,6 +119,7 @@
     </form>
 </div>
 <script>
+    const form = document.getElementById('repo_form');
     const newToken = document.getElementById('new-token');
     const selectToken = document.getElementById('select-token');
     const switcher = document.getElementById('switch');
@@ -129,8 +143,22 @@
             }
         }
     });
+
+    form.addEventListener('submit', (event) => {
+        const token = document.getElementById('token');
+        const tokenDrop = document.getElementById('token-drop');
+
+        if (tokenDrop.value !== '') {
+            token.value = tokenDrop.value;
+        } else {
+            if (token.value === '') {
+                event.preventDefault();
+                alert('Please enter a token');
+            }
+        }
+
+    });
 </script>
 {% endif %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
 <script src="/static/script/projects.js"></script>
 {% endblock %}

@@ -1,14 +1,13 @@
-<!--
-
-    Copyright
-    Jacob Achira Obara
-    2023
-
--->
-
 {% extends 'base.html' %}
 
 {% block content %}
+<a href="{{ url_for('wellness') }}" id="back-to-articles">
+    <div class="oct">
+        <h4>
+            <span>Back to articles</span>
+        </h4>
+    </div>
+</a>
 {% if article %}
 <div class="health_article oct">
     <div>

@@ -173,7 +173,23 @@ def blogs():
 def projects(name=None):
     """Projects
     """
+
     if current_user.is_authenticated:
+        if request.args.get('name') or name:
+            if request.args.get('name'):
+                name = request.args.get('name')
+            if name:
+                name = name
+
+            token = current_user.user['tokens'][0]['token']
+            username = get_username(token)
+            repo = get_repo_details(token, name, username)
+            if 'error' in repo:
+                flash(repo['error'])
+                return redirect(request.referrer)
+
+            return render_template('projects.html', title="Project", repo=repo)
+
         repos = None
         user = query_user(current_user.username)
         available_repos = get_user_repos(current_user.user['id'])
@@ -215,13 +231,24 @@ def projects(name=None):
                 return render_template(
                     'projects.html',
                     title="Projects",
-                    repos=repos,
+                    repos=repos + available_repos,
                 )
 
+        token = current_user.user['tokens'][0]['token']
+        special = None
+        if token:
+            try:
+                available_repos = git_all_repos(token) + available_repos
+                special = get_special_repo(token)
+
+            except Exception as e:
+                flash(f"Error {e!r}")
+                return redirect(request.referrer)
         return render_template(
             'projects.html',
             title="Projects",
-            repos=available_repos
+            repos=available_repos,
+            special=special
         )
 
     return render_template('projects.html', title="Projects")

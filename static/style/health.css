@@ -1,1 +1,22 @@
 /* Style for health template */
+
+#back-to-articles {
+    text-decoration: 1px dotted underline;
+}
+
+#back-to-articles > div {
+    --border-color: #999;
+    background-color: var(--border-color);
+    text-align: center;
+    padding: 0.5rem;
+    color: honeydew;
+}
+
+#back-to-articles > div:hover {
+    --border-color: #666;
+    background-color: var(--border-color);
+    text-align: center;
+    padding: 0.5rem;
+    color: honeydew;
+    cursor: pointer;
+}

@@ -294,6 +294,39 @@ header {
     text-align: justify;
 }
 
+#explore {
+    --border-color: #00ad82c9;
+    background-color: var(--border-color);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: honeydew;
+    width: 90%;
+    padding: 15px;
+}
+
+#explore > a {
+    text-decoration: none;
+}
+
+#explore > a > div {
+    --border-color: #666;
+    background-color: var(--border-color);
+    margin: 15px;
+    padding: 10px;
+    width: 100;
+    text-align: center;
+    color: #EAEDF0;
+    font-weight: 800;
+}
+
+#explore > a > div:hover {
+    --border-color: #00ad82c9;
+    color: honeydew;
+}
+
+
 .btn {
   --border-color: linear-gradient(-45deg, #00ad83, #00ad83);
   --border-width: .125em;
