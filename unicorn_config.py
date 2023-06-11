@@ -4,5 +4,5 @@ from main import app
 workers = 4
 
 # Address and port to bind the server to
-# By default, it will bind to localhost on port 8000
-bind = "127.0.0.1:8000"
+# By default, it will bind to localhost on port 5000
+bind = "127.0.0.1:5000"

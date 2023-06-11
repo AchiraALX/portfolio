@@ -20,7 +20,7 @@ client_id = admin_data["client_id"]
 client_secret = admin_data["client_secret"]
 app_id = admin_data["app_id"]
 app_secret = admin_data["app_secret"]
-redirect_uri = "http://localhost:8000"
+redirect_uri = "http://localhost:5000"
 scope = "user:email,repo"
 
 # Create a GitHub instance
