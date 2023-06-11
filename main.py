@@ -178,6 +178,10 @@ def projects(name=None):
     """Projects
     """
 
+    token = None
+    with contextlib.suppress(Exception):
+        token = current_user.user['tokens'][0]['token']
+
     if current_user.is_authenticated:
         if request.args.get('name') or name:
             if request.args.get('name'):
@@ -238,7 +242,6 @@ def projects(name=None):
                     repos=repos + available_repos,
                 )
 
-        token = current_user.user['tokens'][0]['token']
         special = None
         if token:
             try:
@@ -248,6 +251,7 @@ def projects(name=None):
             except Exception as e:
                 flash(f"Error {e!r}")
                 return redirect(request.referrer)
+
         return render_template(
             'projects.html',
             title="Projects",
