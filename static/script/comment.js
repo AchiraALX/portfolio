@@ -118,7 +118,7 @@ if (docTitle === 'wellness') {
 
             active_container.innerHTML = '<h2 class="comment-title"> Available Reactions </h2> <br>'
             // Get the comment data
-            fetch(`http://3.80.18.178:5000/article_comments?id=${id}`)
+            fetch(`https://www.blissprism.tech/article_comments?id=${id}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
@@ -163,7 +163,7 @@ if (docTitle === 'wellness') {
 }
 
 function blog_comments(id, active_container) {
-    fetch(`http://3.80.18.178:5000/blog_comments?id=${id}`)
+    fetch(`https://www.blissprism.tech/blog_comments?id=${id}`)
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
