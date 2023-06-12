@@ -5,8 +5,6 @@ from resolvers import *
 from add import Add
 from models.token import Token
 
-users = main("users")['users']
-
 def query_user(username: str) -> dict:
     """Return user details
 
@@ -17,6 +15,7 @@ def query_user(username: str) -> dict:
         dict: _description_
     """
 
+    users = main("users")['users']
     for user in users:
         if user['username'] == username:
             return user
