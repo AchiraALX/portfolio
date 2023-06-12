@@ -189,7 +189,21 @@ def projects(name=None):
             if name:
                 name = name
 
-            token = current_user.user['tokens'][0]['token']
+            token = None
+            # Try checking the token from the current user
+            # If it fails, check the token from the database
+            # If it fails, redirect
+            try:
+                token = current_user.user['tokens'][0]['token']
+                if not token:
+                    token = query_user(current_user.username)['tokens'][0]['token']
+
+            except Exception as e:
+                flash(f"Error {e!r} redirected")
+                return redirect(request.referrer)
+
+            # Fetch the GitHub username using the GitHub token
+            # and get the repository details
             username = get_username(token)
             repo = get_repo_details(token, name, username)
             if 'error' in repo:
