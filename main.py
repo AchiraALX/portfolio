@@ -1004,6 +1004,15 @@ def delete_heat_comment():
 
     return redirect(url_for('wellness'))
 
+# Route for fun, Include my details
+@app.route('/dev', strict_slashes=False)
+def dev():
+    """Return the dev.html template
+    """
+
+    return render_template('dev.html', title="Dev")
+
+
 # Deal with messages
 def get_message_and_category(
     text: str,
