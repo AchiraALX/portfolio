@@ -154,8 +154,28 @@
                 'Copyright © ' + new Date().getFullYear() + ' Jacob';
         </script>
     </li>
-    <li class="oct nav-item foot-item">Facebook</li>
-    <li class="oct nav-item foot-item">Twitter</li>
-    <li class="oct nav-item foot-item">LinkedIn</li>
+    <li class="oct nav-item foot-item">
+        Twitter
+    </li>
+    <li class="oct nav-item foot-item">
+        <a href="http://" target="_blank" rel="noopener noreferrer">
+            LinkedIn
+        </a>
+    </li>
+    <script>
+        const footItems = document.querySelectorAll('.foot-item');
+        footItems.forEach(item => {
+            // Check if innerText is Facebook
+            if (item.innerText === 'Twitter') {
+                item.addEventListener('click', () => {
+                    window.open('https://twitter.com/AchitraJacobs', '_blank')
+                })
+            } else if (item.innerText === 'LinkedIn') {
+                item.addEventListener('click', () => {
+                    window.open('https://www.linkedin.com/in/jacob-obara-2b9b8522a/', '_blank')
+                })
+            }
+        })
+    </script>
 </div>
 {% endblock %}
