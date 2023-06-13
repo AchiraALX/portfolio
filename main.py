@@ -436,6 +436,8 @@ def sign_up(name, username, password, email, gender):
         flash("User already exists")
         return redirect(url_for('register'))
 
+    # Try saving the user to the database
+    # If it fails, redirect to register
     try:
         add.add_user(**details)
         flash("User seem to have been added successfully")
@@ -476,7 +478,7 @@ def login():
 
 @app.route('/logout', strict_slashes=False)
 def logout():
-    """Logout
+    """Logout user out of the system
     """
     logout_user()
     return redirect('/')
@@ -484,7 +486,7 @@ def logout():
 @login_required
 @app.route('/profile', strict_slashes=False)
 def profile():
-    """Profile
+    """User profile
     """
 
     if current_user.is_authenticated:
