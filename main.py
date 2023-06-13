@@ -732,12 +732,16 @@ def one_task(id):
     return redirect(url_for('login'))
 
 
-# Route for blog comments
+# Define blog comments endpoint
 @app.route('/blog_comments', strict_slashes=False, methods=['POST', 'GET'])
 def blog_comments():
-    """Load blog comment as per blog
+    """Routes to the blog comments
     """
 
+    # If the request method is POST
+    # Extract the data from the form
+    # If the data is not empty, try adding the comment
+    # Else redirect to the blog page
     if request.method == 'POST':
         if current_user.is_authenticated:
             comment = request.form['comment']
@@ -771,6 +775,10 @@ def blog_comments():
             flash("Login to comment")
             return redirect(url_for('login'))
 
+    # Get available comments from a database
+    # If the id is available, get the comments for that blog
+    # Sort the comments according to date published
+    # Else redirect to the blogs page
     if request.args.get('id'):
         id = request.args.get('id')
         try:
@@ -786,12 +794,16 @@ def blog_comments():
     return redirect(url_for('blogs'))
 
 
-# Route to handle the health article comments
+# Define the article comments endpoint
 @app.route('/article_comments', strict_slashes=False, methods=['POST', 'GET'])
 def article_comments():
     """Load article comment as per article
     """
 
+    # If the request method is POST
+    # Extract the data from the form
+    # If the data is not empty, try adding the comment
+    # Else redirect to the article page
     if request.method == 'POST':
         if current_user.is_authenticated:
             comment = request.form['comment']
@@ -828,6 +840,10 @@ def article_comments():
             flash("Login to comment")
             return redirect(url_for('login'))
 
+    # Get available comments from a database
+    # If the id is available, get the comments for that article
+    # Sort the comments according to date published
+    # Else redirect to the article page
     if request.args.get('id'):
         id = request.args.get('id')
         try:
@@ -841,6 +857,9 @@ def article_comments():
 
     return redirect(url_for('wellness'))
 
+
+# Define error handlers
+# Handle 404
 @app.errorhandler(404)
 def handle_not_found(error):
     """Handle 404
@@ -848,6 +867,8 @@ def handle_not_found(error):
 
     return render_template('404.html', title="404")
 
+
+# Handle 400
 @app.errorhandler(400)
 def handle_bad_request(error):
     """Handle 400
@@ -855,11 +876,25 @@ def handle_bad_request(error):
 
     return render_template('400.html', title="400", error=error)
 
-# Delete a user
+
+# Handle 500
+@app.errorhandler(500)
+def handle_server_error(error):
+    """Handle 500
+    """
+
+    return render_template('500.html', title="500", error=error)
+
+
+# Define the delete user endpoint
 @app.route('/delete_user', strict_slashes=False, methods=['POST', 'GET'])
 def delete_user():
     """Delete a user
     """
+
+    # Verify that the user performing the action is the
+    # owner of the account
+    # If the user is the owner, delete the account
     if not request.args.get('username'):
         flash("No specified user")
         if not is_logged_in():
@@ -893,6 +928,10 @@ def delete_user():
 def delete_task():
     """Deletes a task if the ownerId is the current user
     """
+
+    # Verify that the user performing the action is the
+    # owner of the task
+    # If the user is the owner, delete the task
     if request.args.get('id'):
         try:
             id = int(request.args.get('id'))
@@ -934,6 +973,10 @@ def delete_task():
 def delete_blog():
     """Deletes a blog if the ownerId is the current user
     """
+
+    # Verify that the user performing the action is the
+    # owner of the blog
+    # If the user is the owner, delete the blog
     if request.args.get('id'):
         try:
             id = int(request.args.get('id'))
@@ -974,6 +1017,10 @@ def delete_blog():
 def delete_heat():
     """Deletes a heat if the ownerId is the current user
     """
+
+    # Verify that the user performing the action is the
+    # owner of the heat
+    # If the user is the owner, delete the heat
     if request.args.get('id'):
         try:
             id = int(request.args.get('id'))
@@ -1012,6 +1059,11 @@ def delete_heat():
 def delete_comment():
     """Deletes a comment if the ownerId is the current user
     """
+
+    # Verify that the user performing the action is the
+    # owner of the comment
+    # If the user is the owner, delete the comment
+    # else flash a message and route back to the referring page
     if request.args.get('id'):
         try:
             id = int(request.args.get('id'))
@@ -1051,6 +1103,12 @@ def delete_comment():
 def delete_task_comment():
     """Deletes a task comment if the authorId is the current user
     """
+
+    # Verify that the user performing the action is the
+    # owner of the comment
+    # If the user is the owner, delete the comment
+    # else flash a message and route back to the referring page
+
     if request.args.get('id'):
         try:
             id = int(request.args.get('id'))
@@ -1089,6 +1147,12 @@ def delete_task_comment():
 def delete_heat_comment():
     """Deletes a heat comment if the authorId is the current user
     """
+
+    # Verify that the user performing the action is the
+    # owner of the comment
+    # If the user is the owner, delete the comment
+    # else flash a message and route back to the referring page
+
     if request.args.get('id'):
         try:
             id = int(request.args.get('id'))
@@ -1122,11 +1186,15 @@ def delete_heat_comment():
 
     return redirect(url_for('wellness'))
 
+
 # Route for fun, Include my details
 @app.route('/dev', strict_slashes=False)
 def dev():
     """Return the dev.html template
+    Route for the developer
     """
+
+    # Render the dev.html template
 
     return render_template('dev.html', title="Dev")
 
@@ -1151,6 +1219,13 @@ def get_message_and_category(
 
 # Login user
 def log_user_in(user, password, username):
+    """Perform the logging in of a user
+
+    Arguments:
+        user {dict} -- user details
+        password {str} -- password
+        username {str} -- username
+    """
     if user:
         if user['password'] == password and user['username'] == username:
             login_user(User(username))
@@ -1174,7 +1249,9 @@ def log_user_in(user, password, username):
 
 
 # Return if the user is logged in
-def is_logged_in():
+def is_logged_in() -> bool:
+    """Check if the user is logged in
+    """
     return current_user.is_authenticated
 
 if __name__ == '__main__':

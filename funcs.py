@@ -5,6 +5,12 @@ from queries import main
 from datetime import datetime, timedelta
 
 def get_task_status(date_str, date_format="%Y-%m-%dT%H:%M:%S"):
+    """Perform date comparison and return task status
+
+    Arguments:
+        date_str {str} -- Date string in the format: YYYY-MM-DDTHH:MM:SS
+        date_format {str} -- Date format
+    """
     try:
         # Convert date string to datetime object
         task_date = datetime.strptime(date_str, date_format)

@@ -77,6 +77,9 @@ def get_task(id):
 # Get ghubs matching id
 def get_ghub(id):
     """Fetch a single ghub
+
+    Arguments:
+        id {int} -- The id of the ghub
     """
 
     ghubs = main('ghub')['ghub']
