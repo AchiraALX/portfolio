@@ -422,7 +422,22 @@ def register():
     return render_template('register.html', title="Register")
 
 # Sign up
-def sign_up(name, username, password, email, gender):
+def sign_up(
+    name: str,
+    username: str,
+    password: str,
+    email: str,
+    gender: str
+) -> None:
+    """Saves a user into the database
+
+    Arguments:
+        name {str} -- Name of the user
+        username {str} -- Username of the user
+        password {str} -- Password of the user
+        email {str} -- Email of the user
+        gender {str} -- Gender of the user
+    """
     add = Add()
     details = {
         'username': username,
