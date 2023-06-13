@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.querySelector('.navbar');
     const drop_menu = document.querySelector('.drop-menu');
     const menu_btn = document.querySelector('#menu');
@@ -21,21 +21,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const right = document.querySelector('#right');
         const left = document.querySelector('#left');
 
-        if (parent_form_second.style.height === "0px") {
-            confirm.style.display = "none";
+        if (parent_form_second) {
+            if (parent_form_second.style.height === "0px") {
+                confirm.style.display = "none";
+            }
+
+            right.addEventListener('click', () => {
+                parent_form_first.style.height = "0px";
+                parent_form_second.style.height = "auto";
+                confirm.style.display = "block";
+            });
+
+            left.addEventListener('click', () => {
+                parent_form_first.style.height = "auto";
+                parent_form_second.style.height = "0px";
+                confirm.style.display = "none";
+            });
         }
-
-        right.addEventListener('click', () => {
-            parent_form_first.style.height = "0px";
-            parent_form_second.style.height = "auto";
-            confirm.style.display = "block";
-        });
-
-        left.addEventListener('click', () => {
-            parent_form_first.style.height = "auto";
-            parent_form_second.style.height = "0px";
-            confirm.style.display = "none";
-        });
     }
 
     if (title() === 'home') {
@@ -67,7 +69,11 @@ function title() {
 
 function fetch_data(num, blog_element, heat_element) {
     // Build the url with the specified number
+<<<<<<< HEAD
      fetch(`https://www.blissprism.tech/index_heat_and_blog?num=${num}`)
+=======
+    fetch(`http://localhost:5000/index_heat_and_blog?num=${num}`)
+>>>>>>> localVersion
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
