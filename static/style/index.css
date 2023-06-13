@@ -30,7 +30,7 @@ body, html {
 
 main {
     flex: 1 0 auto;
-    margin-top: -290px;
+    margin-top: -330px;
 }
 
 footer {
@@ -80,9 +80,6 @@ header {
     top: 0;
 }
 
-.scale {
-    scale: .8;
-}
 
 .drop-menu {
     --border-color: silver;
@@ -159,6 +156,7 @@ header {
 
 .nav-item, .navbar-brand {
     --border-color: #00ad82c9;
+    margin: 0 15px;
 }
 
 .navbar-brand {
@@ -169,6 +167,7 @@ header {
 
 .home-sign {
     --border-color: #00ad82c9;
+    min-height: 400px;
 }
 
 .parent {
@@ -185,6 +184,7 @@ header {
     text-align: justify;
     background-color: aliceblue;
     word-spacing: 3px;
+    padding-top: 50px;
 }
 
 #home-cover-parent > div {
@@ -637,9 +637,6 @@ img {
 
 /* media queries */
 @media only screen and (min-width: 868px) {
-    .scale {
-        scale: 1;
-    }
     .nav-item {
         margin: 0 12px;
     }
@@ -652,6 +649,7 @@ img {
     }
     #home-cover-parent {
         flex-direction: row;
+        padding-top: 15px;
     }
     #home-cover-parent > div {
         flex: 1;
