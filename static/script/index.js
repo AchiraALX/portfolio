@@ -69,11 +69,7 @@ function title() {
 
 function fetch_data(num, blog_element, heat_element) {
     // Build the url with the specified number
-<<<<<<< HEAD
      fetch(`https://www.blissprism.tech/index_heat_and_blog?num=${num}`)
-=======
-    fetch(`http://localhost:5000/index_heat_and_blog?num=${num}`)
->>>>>>> localVersion
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
