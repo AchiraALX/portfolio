@@ -43,7 +43,7 @@ login_manager.init_app(app)
 message = None
 
 class User(UserMixin):
-    """User
+    """Control logged in sessions
     """
     global query_user
 
@@ -61,17 +61,27 @@ class User(UserMixin):
 
 @login_manager.user_loader
 def load_user(username):
-    """Load user
+    """Return a session with a user logged in
+    instantiated by the UserMixin in User class
     """
     return User(username)
 
 @app.route('/', strict_slashes=False)
 def index():
-    """Index
+    """The index route, the home page route
     """
 
     if request.args.get('code'):
+        """Handle the callback from GitHub
+        If user exists, log them in
+        If user does not exist, sign them up
+        """
         try:
+            """Get the username, name, and id from GitHub
+            Set gender to 'o' for other
+            make a generic password using the id and username
+            make a generic email using the username
+            """
             data = get_user_details(request.args.get('code'))
             username = data['login']
             password = str(data['id']) + data['login']
@@ -103,11 +113,15 @@ def index():
     else:
         data = "No data!"
 
+    # If the user is logged in, get their username
+    # If the user is not logged in, set the username to Guest
     if current_user.is_authenticated:
         user = current_user.username
     else:
         user = 'Guest'
 
+    # Render the index.html template
+    # Pass the data, title, and user to the template
     return render_template(
         'index.html',
         title="Home",
@@ -132,11 +146,16 @@ def auth_login():
     # redirect to authorization url
     return redirect(get_auth_url())
 
+
+# Define the blogs route
 @app.route('/blogs', strict_slashes=False, methods=['GET', 'POST'])
 def blogs():
-    """Blogs
+    """Render blogs using the blogs.html template
     """
     if request.method == 'POST':
+        # If a request is POST save try to save the blog
+        # for failed values, flash a message and redirect back
+        # for successful values, add the blog to the database
         if current_user.is_authenticated:
             add = Add()
             blog_title = request.form['title']
@@ -167,17 +186,26 @@ def blogs():
         else:
             flash('Log in first')
             return redirect(url_for('login'))
+
+    # Get the blogs from the database
+    # Sort the blogs by date
+    # Render the blogs.html template
     data = main('blogs')['blogs']
     data = sorted(data, key=lambda x: x['blogPublishedDate'], reverse=True)
     return render_template('blogs.html', title="Blogs", blogs=data)
 
 
+# Define the projects route and
+# the projects/<name> route
 @app.route('/projects', strict_slashes=False, methods=['GET', 'POST'])
 @app.route('/projects/<name>', strict_slashes=False, methods=['GET', 'POST'])
 def projects(name=None):
-    """Projects
+    """Render all projects using the projects.html template
+    For the projects/<name> route, render a single detailed project
     """
 
+    # Set token to None an try accessing token from the current user
+    # Pass if the token is not available
     token = None
     with contextlib.suppress(Exception):
         token = current_user.user['tokens'][0]['token']
@@ -192,7 +220,7 @@ def projects(name=None):
             token = None
             # Try checking the token from the current user
             # If it fails, check the token from the database
-            # If it fails, redirect
+            # If it fails, redirect to the referrer
             try:
                 token = current_user.user['tokens'][0]['token']
                 if not token:
@@ -212,10 +240,16 @@ def projects(name=None):
 
             return render_template('projects.html', title="Project", repo=repo)
 
+        # Set the repos to None and query the current user
+        # get available_repos from the already saved repos in the database
         repos = None
         user = query_user(current_user.username)
         available_repos = get_user_repos(current_user.user['id'])
         if request.method == 'POST':
+            # For POST requests, get the data from the form
+            # If saving is set to 'y', save the token to the database
+            # Else use the token to query repos from github
+            # and discard the token
             user = user
             token = request.form['token']
             saving = request.form['save']
@@ -232,9 +266,12 @@ def projects(name=None):
                     failed.append(key)
 
             if len(failed) > 0:
+                # Redirect if their are value that are empty
                 flash(f"Some values failed. {failed!r}")
 
             else:
+                # Try get the repos from GitHub using the token
+                # and report any errors
                 repos = git_all_repos(token)
                 if 'error' in repos:
                     flash(repos['error'])
@@ -250,12 +287,15 @@ def projects(name=None):
                         }
                         add.add_token(**token)
 
+                # Render the projects.html template
+                # Pass the repos concatenating the available_repos
                 return render_template(
                     'projects.html',
                     title="Projects",
                     repos=repos + available_repos,
                 )
-
+        # Special repo is the repo that is displayed on the
+        # user profile in github
         special = None
         if token:
             try:
@@ -266,6 +306,8 @@ def projects(name=None):
                 flash(f"Error {e!r}")
                 return redirect(request.referrer)
 
+        # Render the projects.html template
+        # Pass the available_repos and special
         return render_template(
             'projects.html',
             title="Projects",
@@ -276,12 +318,19 @@ def projects(name=None):
     return render_template('projects.html', title="Projects")
 
 
+# Define the wellness route
 @app.route('/wellness', strict_slashes=False, methods=['POST', 'GET'])
 def wellness():
-    """Wellness
+    """Render the wellness.html template
+    Routes to the wellness dashboard
     """
 
     if request.method == 'POST':
+        # If the request method is POST
+        # Extract the data from the form
+        # If the user is authenticated,
+        # get the username and try
+        # saving the article with the username as the author
         if current_user.is_authenticated:
             title = request.form['title']
             content = request.form['content']
@@ -314,16 +363,25 @@ def wellness():
         else:
             flash("Login first.")
 
+    # Get health articles from the database
+    # Sort the articles by the published date
+    # and render the wellness.html template
     data = main('heats')['heats']
     data = sorted(data, key=lambda x: x['publishedDate'], reverse=True)
     return render_template('health_articles.html', title="Wellness", data=data)
 
 
+# Define the tasks route
 @login_required
 @app.route('/tasks', strict_slashes=False, methods=['POST', 'GET'])
 def tasks(id=None):
-    """Tasks
+    """Routes to the user tasks dashboard
     """
+
+    # If the user is authenticated and the request method is POST
+    # Extract the data from the form
+    # If the data is not empty, try adding the task to the database
+    # Else redirect to the tasks dashboard
     if current_user.is_authenticated:
         if request.method == 'POST':
             task_title = request.form['title']
@@ -356,6 +414,9 @@ def tasks(id=None):
 
             return redirect(url_for('tasks'))
 
+        # Get all the tasks from the database
+        # Sort the tasks by the due date
+        # and render the tasks.html template
         all_tasks = main('tasks')['tasks']
         yellow_tasks = []
         red_tasks = []
@@ -389,11 +450,18 @@ def tasks(id=None):
     return redirect(url_for('login'))
 
 
+# Define the register route
 @app.route('/register', strict_slashes=False, methods=['POST', 'GET'])
 @app.route('/register/<name>', strict_slashes=False)
 def register():
-    """Register
+    """Routes to the register page
     """
+
+    # If the request method is POST
+    # Extract the data from the form
+    # If the data is not empty, try signing up the user
+    # Else redirect to the register page
+
     if request.method == 'POST':
         name = request.form['name']
         username = request.form['username']
@@ -461,25 +529,35 @@ def sign_up(
         flash("Error adding user")
         return redirect(url_for('register'))
 
+
+# Define the about route
 @app.route('/about', strict_slashes=False)
 def about():
-    """About
+    """Routes to the about page
     """
 
     return render_template('about.html', title="About")
 
+
+# Define the contact route
 @app.route('/contact', strict_slashes=False)
 def contact():
-    """Contact
+    """Routes to the contact page
     """
 
     return render_template('contact.html', title="Contact")
 
 
+# Define the login route
 @app.route('/login', strict_slashes=False, methods=['POST', 'GET'])
 def login():
-    """Login
+    """Routes to the login page
     """
+
+    # If the request method is POST
+    # Extract the data from the form
+    # If the data is not empty, try logging in the user
+    # Else redirect to the login page
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -491,6 +569,7 @@ def login():
     return render_template('login.html', title="Login")
 
 
+# Define the logout route
 @app.route('/logout', strict_slashes=False)
 def logout():
     """Logout user out of the system
@@ -498,12 +577,16 @@ def logout():
     logout_user()
     return redirect('/')
 
+
+# Define the profile route
 @login_required
 @app.route('/profile', strict_slashes=False)
 def profile():
-    """User profile
+    """Routes to the profile page
     """
 
+    # If the user is logged in
+    # Render the profile page
     if current_user.is_authenticated:
         return render_template(
             'profile.html',
@@ -514,10 +597,18 @@ def profile():
         flash("Login to view profile")
         return redirect(url_for('login'))
 
+
+# Define the health and blogs
+# available on the home page
+# endpoints
 @app.route('/index_heat_and_blog', strict_slashes=False)
 @app.route('/index_heat_and_blog/<num>', strict_slashes=False)
 def two_articles(num=2):
-    """Return data that will be rendered on home page"""
+    """Return data that will be rendered on home page
+
+    Arguments:
+        num {int} -- Number of articles to return
+    """
     try:
         num = int(num)
         if request.args.get('num'):
@@ -537,11 +628,16 @@ def two_articles(num=2):
 
     return dict(data)
 
+
 # Get all repository details and ghubs
 @app.route('/ghub_repos', strict_slashes=False)
 @app.route('/ghub_repos/<num>', strict_slashes=False)
 def ghubs_repos(num=3):
-    """Return ghubs and repos for the user"""
+    """Return ghubs and repos for the user
+
+    Arguments:
+        num {int} -- Number of repos and ghubs to return
+    """
     if current_user.is_authenticated:
         try:
             num = int(num)
@@ -568,7 +664,10 @@ def ghubs_repos(num=3):
 # Single article
 @app.route('/blog/<id>', strict_slashes=False)
 def blog(id):
-    """Blog
+    """Return a single blog page
+
+    Arguments:
+        id {int} -- Id of the blog
     """
     try:
         id = int(id)
@@ -581,7 +680,10 @@ def blog(id):
 
 @app.route('/article/<id>', strict_slashes=False)
 def article(id):
-    """Wellness article
+    """Return a single article page
+
+    Arguments:
+        id {int} -- Id of the article
     """
 
     try:
@@ -600,14 +702,13 @@ def article(id):
 # Route for single article
 @app.route('/task/<id>', strict_slashes=False)
 def one_task(id):
-    """Get a single task
+    """Return a single task page
 
-    Args:
-        id (_type_, optional): _description_. Defaults to None.
+    Arguments:
+        id {int} -- Id of the task
     """
 
     if current_user.is_authenticated:
-        print("Passed")
         try:
             id = int(id)
             if request.args.get('id'):
