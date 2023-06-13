@@ -307,7 +307,7 @@ def wellness():
                 add.add_heat(**details)
 
             except Exception as e:
-                flash("Error {e!r}")
+                flash(f"Error {e!r}")
 
             return redirect(url_for('wellness'))
 
