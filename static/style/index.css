@@ -30,7 +30,7 @@ body, html {
 
 main {
     flex: 1 0 auto;
-    margin-top: -330px;
+    margin-top: -290px;
 }
 
 footer {
@@ -184,7 +184,7 @@ header {
     text-align: justify;
     background-color: aliceblue;
     word-spacing: 3px;
-    padding-top: 50px;
+    padding-top: 30px;
 }
 
 #home-cover-parent > div {
