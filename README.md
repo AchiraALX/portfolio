@@ -35,4 +35,4 @@ their experiences and ideas.
 The purpose of this project is to meet the ALX
 Software Engineering portfolio requirements and
 complete the foundation level of the ALX Software
-Engineering program.
+Engineering programming.
