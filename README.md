@@ -11,6 +11,7 @@
   - [What I am doing?](#what-i-am-doing)
   - [What is this project about?](#what-is-this-project-about)
   - [What is the purpose of this project?](#what-is-the-purpose-of-this-project)
+    - [Project url](#project-url)
   - [Usage](#usage)
   - [Contributing](#contributing)
   - [License](#license)
@@ -56,6 +57,25 @@ The project is hosted on GitHub. You can visit
 the project by clicking on the link below.
 
 - [Code Well](https://www.blissprism.tech)
+
+## Technologies used
+
+The technologies used in this project are:
+
+- HTML5
+
+- CSS3
+- JavaScript
+- Bootstrap
+- Python
+- Flask
+- MySQL
+- SQLAlchemy
+- Jinja2
+- GraphQL
+- Nginx
+- Gunicorn
+- Haproxy
 
 ## Usage
 
