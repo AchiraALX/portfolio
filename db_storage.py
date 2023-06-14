@@ -176,8 +176,6 @@ if __name__ == "__main__":
     print(db.n_session().query(Token).all())
 
 
-
-
 #
 # Copyright
 # Jacob Achira Obara

@@ -10,6 +10,7 @@ from models.ghub import Ghub
 from models.heat import Heat, HeatComment
 from models.task import Task, TaskComment
 
+
 class Delete:
     """Delete class
     """
@@ -226,6 +227,7 @@ class Delete:
 
 
 delete = Delete()
+
 
 if __name__ == '__main__':
     print(delete.delete_blog(18))

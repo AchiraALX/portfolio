@@ -78,7 +78,10 @@ class User(Base):
         cascade='all, delete-orphan'
     )
     heats = relationship(
-        Heat, back_populates='author', uselist=True, cascade='all, delete-orphan'
+        Heat,
+        back_populates='author',
+        uselist=True,
+        cascade='all, delete-orphan'
     )
     blog_comments = relationship(
         BlogComment,
@@ -121,6 +124,7 @@ class User(Base):
         back_populates='user_info',
         cascade='all, delete-orphan'
     )
+
     # Representation
     def __repr__(self) -> str:
         return \

@@ -10,6 +10,7 @@ from sqlalchemy.orm import (
     mapped_column
 )
 
+
 # Declare Token class
 class Token(Base):
     """Token class.

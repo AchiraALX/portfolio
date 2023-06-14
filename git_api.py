@@ -23,6 +23,7 @@ app_secret = admin_data["app_secret"]
 redirect_uri = "https://www.blissprism.tech"
 scope = "user:email,repo"
 
+
 # Create a GitHub instance
 def github_instance(token):
     """GitHub instance
@@ -37,6 +38,7 @@ def github_instance(token):
 
     return g
 
+
 # Get the github username
 def get_username(token):
     """Get username
@@ -47,6 +49,8 @@ def get_username(token):
 
     return username
 
+
+# Get repo details
 def get_repo_details(token, name, username):
     """Get repo details
 
@@ -79,6 +83,8 @@ def get_repo_details(token, name, username):
             "error": "Repository not found"
         }
 
+
+# Retrieve all repositories from GitHub
 def git_all_repos(token):
     """Get repos
 
@@ -104,6 +110,7 @@ def git_all_repos(token):
 
     return repos
 
+
 # Get the special readme
 def get_special_repo(token):
     """Fishes the user readme description
@@ -123,6 +130,7 @@ def get_special_repo(token):
             "error": "Invalid tk"
         }
 
+
 # Get GitHub authorization url
 def get_auth_url():
     """Get authorization url
@@ -132,7 +140,6 @@ def get_auth_url():
         'redirect_uri': redirect_uri,
         'scope': scope
     })
-
 
 
 # Using the code returned by the OAuth app

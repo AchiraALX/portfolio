@@ -42,6 +42,7 @@ app.secret_key = os.urandom(24)
 login_manager.init_app(app)
 message = None
 
+
 class User(UserMixin):
     """Control logged in sessions
     """
@@ -59,6 +60,8 @@ class User(UserMixin):
     def __repr__(self):
         return f'<User: {self.username}>'
 
+
+# Load user for login session
 @login_manager.user_loader
 def load_user(username):
     """Return a session with a user logged in
@@ -66,6 +69,8 @@ def load_user(username):
     """
     return User(username)
 
+
+# Define the index route
 @app.route('/', strict_slashes=False)
 def index():
     """The index route, the home page route
@@ -130,6 +135,7 @@ def index():
         user=user
     )
 
+
 # Generate authorization url
 @app.route('/auth', strict_slashes=False)
 def auth():
@@ -137,6 +143,7 @@ def auth():
     """
     # redirect to authorization url
     return redirect(get_auth_url())
+
 
 # Login with auth
 @app.route('/auth_login', strict_slashes=False)
@@ -224,7 +231,8 @@ def projects(name=None):
             try:
                 token = current_user.user['tokens'][0]['token']
                 if not token:
-                    token = query_user(current_user.username)['tokens'][0]['token']
+                    user = query_user(current_user.username)
+                    token = user['tokens'][0]['token']
 
             except Exception as e:
                 flash(f"Error {e!r} redirected")
@@ -253,7 +261,6 @@ def projects(name=None):
             user = user
             token = request.form['token']
             saving = request.form['save']
-
 
             details = {
                 'token': token,
@@ -347,7 +354,7 @@ def wellness():
                 if not value:
                     failed.append(key)
 
-            if len(failed) >  0:
+            if len(failed) > 0:
                 flash(f"Some values are failing {failed!r}")
 
             add = Add()
@@ -489,6 +496,7 @@ def register():
 
     return render_template('register.html', title="Register")
 
+
 # Sign up
 def sign_up(
     name: str,
@@ -617,7 +625,6 @@ def two_articles(num=2):
     except ValueError:
         return redirect(url_for('index_heat_and_blog'))
 
-
     heats = main('heats')['heats'][:num]
     blogs = main('blogs')['blogs'][:num]
 
@@ -696,7 +703,11 @@ def article(id):
         return redirect(url_for('wellness'))
 
     article = get_article(id)
-    return render_template('article.html', title=article['title'], article=article)
+    return render_template(
+        'article.html',
+        title=article['title'],
+        article=article
+    )
 
 
 # Route for single article
@@ -1055,7 +1066,11 @@ def delete_heat():
 
 
 # Delete a comment if the ownerId is the current user
-@app.route('/delete_blog_comment', strict_slashes=False, methods=['POST', 'GET'])
+@app.route(
+    '/delete_blog_comment',
+    strict_slashes=False,
+    methods=['POST', 'GET']
+)
 def delete_comment():
     """Deletes a comment if the ownerId is the current user
     """
@@ -1099,7 +1114,11 @@ def delete_comment():
 
 
 # Delete a task comment if the authorId is the current user
-@app.route('/delete_task_comment', strict_slashes=False, methods=['POST', 'GET'])
+@app.route(
+    '/delete_task_comment',
+    strict_slashes=False,
+    methods=['POST', 'GET']
+)
 def delete_task_comment():
     """Deletes a task comment if the authorId is the current user
     """
@@ -1142,8 +1161,13 @@ def delete_task_comment():
 
     return redirect(url_for('tasks'))
 
+
 # Delete a heat comment if the authorId is the current user
-@app.route('/delete_heat_comment', strict_slashes=False, methods=['POST', 'GET'])
+@app.route(
+    '/delete_heat_comment',
+    strict_slashes=False,
+    methods=['POST', 'GET']
+)
 def delete_heat_comment():
     """Deletes a heat comment if the authorId is the current user
     """
@@ -1202,7 +1226,8 @@ def dev():
 # Deal with messages
 def get_message_and_category(
     text: str,
-    category: str = 'info') -> dict:
+    category: str = 'info'
+) -> dict:
     """Format to render message
 
     Args:
@@ -1216,6 +1241,7 @@ def get_message_and_category(
         'text': text,
         'category': category
     }
+
 
 # Login user
 def log_user_in(user, password, username):
@@ -1253,6 +1279,7 @@ def is_logged_in() -> bool:
     """Check if the user is logged in
     """
     return current_user.is_authenticated
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

@@ -2,8 +2,7 @@
 """Queries"""
 
 from resolvers import *
-from add import Add
-from models.token import Token
+
 
 def query_user(username: str) -> dict:
     """Return user details
@@ -37,6 +36,7 @@ def get_user_tokens(username: str, tk: str) -> dict:
 
     return None
 
+
 # Get blogs
 def get_blog(id: int):
     """Fetch a blog from the database
@@ -48,6 +48,7 @@ def get_blog(id: int):
             return blog
 
     return None
+
 
 # Get health article
 def get_article(id: int):
@@ -61,6 +62,7 @@ def get_article(id: int):
 
     return None
 
+
 # Query single task
 def get_task(id):
     """Fetch a single task
@@ -73,6 +75,7 @@ def get_task(id):
             return task
 
     return None
+
 
 # Get ghubs matching id
 def get_ghub(id):
@@ -109,6 +112,7 @@ def get_blog_comments(id):
 
     return comments_available
 
+
 # Get comment per specified article id
 def get_article_comments(id):
     """Get comment that belong to article with id equal to id
@@ -124,6 +128,7 @@ def get_article_comments(id):
             comments_available.append(comment)
 
     return comments_available
+
 
 # Get repositories per specified ghub id
 def get_user_repos(id):
@@ -141,7 +146,6 @@ def get_user_repos(id):
 
     return repos_available
 
-print(get_user_repos(26))
 
 # Get a single blog comment
 def get_blog_comment(id):
@@ -158,6 +162,7 @@ def get_blog_comment(id):
 
     return None
 
+
 # Get a single article comment
 def get_article_comment(id):
     """Get a single article comment
@@ -172,6 +177,7 @@ def get_article_comment(id):
             return comment
 
     return None
+
 
 # Get a single task comment
 def get_task_comment(id):
