@@ -17,9 +17,7 @@
 
 ## What is this?
 
-This is a repository for the Code Well project. The goal
-of this project is meet the ALX Software Engineering
-portfolio requirements.
+This is a repository for the Code Well project.
 
 ## Who I am?
 
@@ -52,6 +50,13 @@ Software Engineering portfolio requirements and
 complete the foundation level of the ALX Software
 Engineering programming.
 
+## Project url
+
+The project is hosted on GitHub. You can visit
+the project by clicking on the link below.
+
+- [Code Well](https://www.blissprism.tech)
+
 ## Usage
 
 To use this project, you need to have a web browser
@@ -74,3 +79,12 @@ personal and commercial purposes. You can also
 use it for educational purposes. You can also
 use it for research purposes. You can also
 use it for study purposes.
+
+## Contact
+
+You can contact me by sending me an email at:
+
+- [Email](<ed127720@students.mu.ac.ke>)
+- [Phone](+254712345678)
+- [Twitter](https://twitter.com/AchitraJacobs)
+- [LinkedIn](https://www.linkedin.com/in/jacob-obara-2b9b8522a/)
